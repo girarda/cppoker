@@ -12,6 +12,7 @@ project(PROJECT_LOCATION)
 
 ### Add or remove packages ###
 set(CMAKE_CXX_FLAGS "-g -Wall -lglut -lGLU -lGL")
+set(CMAKE_CXX_FLAGS "-std=c++0x")
 
 ### Set the gtest location ###
 set(GTEST_DIR ../libs/gmock/gtest)
@@ -70,4 +71,4 @@ add_executable(unittests ${tests_SRC} ${files_SRC} ${files_INC})
 endif(USE_TESTS)
 
 # Build the real deal
-#add_executable(main src/main.cpp ${files_SRC})
+add_executable(main src/main.cpp ${files_SRC})
