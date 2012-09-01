@@ -18,6 +18,8 @@
 #ifndef Card_H
 #define Card_H
 
+#include <string>
+
 namespace pcore 
 {
     enum Face {JACK = 11, QUEEN = 12, KING = 13, ACE = 14};
@@ -32,8 +34,10 @@ class Card
 {
 public:
     Card( int rank, int suit );
-    int getRank();
-    int getSuit();
+    int getRank() const;
+    int getSuit() const;
+
+    std::string toString() const;
 
 private:
     int mRank;

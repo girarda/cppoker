@@ -20,49 +20,40 @@
 
 namespace pcore
 {
-    void Deck::init()
+    Deck::Deck() : mVCards(), mPosition(DECK_SIZE)
     {
-        mVCards.clear();
-    
-        for ( int rank = MIN_RANK; rank <= MAX_RANK; rank++ )
-        {
-            for ( int suit = MIN_SUIT; suit <= MAX_SUIT; ++suit )
-            {
-                mVCards.push_back(Card(rank, suit));
-            }
-        }
-    }
-
-    Deck::Deck() : mVCards()
-    {
-        Deck::init();
-    }
-
-    Deck::~Deck()
-    {
+       for( int rank(MIN_RANK) ; rank <= MAX_RANK ; rank++ )
+       {
+          for( int suit(MIN_SUIT) ; suit <= MAX_SUIT ; ++suit )
+          {
+              mVCards.push_back(Card(rank,suit));
+          }
+          
+       }
+       
     }
 
     void Deck::burn()
     {
-        assert(mVCards.size() > 0);
-        mVCards.pop_back();
+        assert (mPosition > 0);
+        --mPosition;
     }
 
-    Card *Deck::drawCard()
+    const Card& Deck::draw()
     {
-        Card *drewCard = new Card(mVCards.back());
-        Deck::burn();
-        return drewCard;
+        burn();
+        return mVCards[mPosition];
     }
     
-    int Deck::getSize() const
-    {
-        return mVCards.size();
-    }
-
     void Deck::shuffle()
     {
+        mPosition = DECK_SIZE;
         std::random_shuffle (mVCards.begin(), mVCards.end());
+    }
+
+    int Deck::getCount() const
+    {
+        return mPosition;
     }
 
     

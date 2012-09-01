@@ -1,3 +1,4 @@
+#include "core/Hand.h"
 #include "core/Deck.h"
 #include <iostream>
 
@@ -5,13 +6,10 @@ void shuffle_test()
 {
     std::cout << "Shuffle test" << std::endl; 
     pcore::Deck newDeck;
-    pcore::Card *pCard;
-    newDeck.init();
     newDeck.shuffle();
     for ( int i = 0; i < 52; ++i )
     {
-        pCard = newDeck.drawCard();
-    std::cout << pCard->getRank() << " of " << pCard->getSuit() << std::endl;
+        std::cout <<  newDeck.draw().toString() << std::endl;
     }
 }
 

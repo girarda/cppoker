@@ -16,6 +16,7 @@
 
 #include "Card.h"
 #include <assert.h>
+#include <sstream>
 
 namespace pcore
 {
@@ -25,15 +26,50 @@ namespace pcore
         assert(mSuit <= pcore::MAX_SUIT && mSuit >= pcore::MIN_SUIT);
     }
     
-    int Card::getRank()
+    int Card::getRank() const
     {
         return mRank;
     } 
 
-    int Card::getSuit()
+    int Card::getSuit() const
     {
         return mSuit;
     }
 
+    std::string Card::toString() const
+    {
+        std::stringstream ss;
+        ss << mRank;
+        std::string retval;
+        if (mRank < 11)
+            retval = ss.str();
+        else if (mRank == 11)
+            retval = "J";
+        else if (mRank == 12)
+            retval = "Q";
+        else if (mRank == 13)
+            retval = "K";
+        else if (mRank == 14)
+            retval = "A";
+        
+        switch(mSuit)
+        {
+            case (DIAMOND):
+                retval += "D";
+                break;
+            case (HEART):
+                retval += "H";
+                break;
+            case (CLUB):
+                retval += "C";
+                break;
+            case (SPADE):
+                retval += "S";
+                break;
+            default:
+                retval+="Error";
+        }
 
+        return retval;
+    }
 }

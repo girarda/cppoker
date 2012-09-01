@@ -15,7 +15,7 @@
  *--------------------------\\\ Deck.h ///---------------------------*/
 
 #ifndef DECK_H
-#define CARD_H
+#define DECK_H
 
 #include "Card.h"
 #include <vector>
@@ -23,20 +23,21 @@
 namespace pcore
 {
 
-    const int DECK_SIZE_MAX(52);
+    const int DECK_SIZE(52);
 
     class Deck
     {
     public:
         Deck();
-        ~Deck();
-        void init();
         void burn();
+        void init();
         void shuffle();
-        Card *drawCard();
-        int getSize() const;
+        const Card& draw();
+
+        int getCount() const;
     private:
         std::vector<Card> mVCards;
+        int mPosition;
     };
 }
 
