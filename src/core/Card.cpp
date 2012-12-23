@@ -20,22 +20,40 @@
 
 namespace pcore
 {
+    /**
+     * \fn Card::Card(int rank, int suit): mRank(rank), mSuit(suit)
+     */
     Card::Card(int rank, int suit): mRank(rank), mSuit(suit)
     {
         assert(mRank <= pcore::MAX_RANK && mRank >= pcore::MIN_RANK);
         assert(mSuit <= pcore::MAX_SUIT && mSuit >= pcore::MIN_SUIT);
     }
     
+    /**
+     * \fn int Card::getRank() const
+     * 
+     * \return rank of the card
+     */
     int Card::getRank() const
     {
         return mRank;
     } 
 
+    /**
+     * \fn int Card::getSuit() const
+     *
+     * \return suit of the card
+     */
     int Card::getSuit() const
     {
         return mSuit;
     }
 
+    /**
+     * \fn std::string Card::toString() const
+     *
+     * \return string representing the card
+     */
     std::string Card::toString() const
     {
         std::stringstream ss;

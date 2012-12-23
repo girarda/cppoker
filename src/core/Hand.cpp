@@ -21,10 +21,16 @@
 
 namespace pcore
 {
+    /**
+     * \fn Hand::Hand()
+     */
     Hand::Hand(): mVCards(), mRanks(), mSuits(), mBestHand()
     {
     }
 
+    /**
+     * \fn void Hand::addCard(const Card &newCard)
+     */
     void Hand::addCard(const Card &newCard)
     {
         assert(mVCards.size() < HAND_MAX_CARDS);
@@ -32,17 +38,32 @@ namespace pcore
         calculateValue();
     }
 
+    /**
+     * \fn void Hand::empty()
+     */
     void Hand::empty()
     {
         mVCards.clear();
         calculateValue();
     }
 
+    /**
+     * \fn size_t Hand::getCount() const
+     *
+     * \return the number of cards in the hand
+     */
     size_t Hand::getCount() const
     {
         return mVCards.size();
     }
 
+    /**
+     * \fn bool Hand::operator<(const Hand& other) const
+     *
+     * \param[in] the hand to compare
+     *
+     * \return true if the hand is smaller, else, false
+     */
     bool Hand::operator<(const Hand& other) const
     {
         if (mBestHand.type != other.getValue().type)
@@ -59,44 +80,88 @@ namespace pcore
         }
     }
 
+    /**
+     * \fn bool Hand::hasStraightFlush()
+     *
+     * \return true if the hand is a straight flush
+     */
     bool Hand::hasStraightFlush()
     {
         //TODO
         return false;
     }
 
+    /**
+     * \fn bool Hand::hasFourOfAKind()
+     *
+     * \return true if the hand is a four of a kind
+     */
     bool Hand::hasFourOfAKind()
     {
         //TODO
         return false;
     }
     
+    /**
+     * \fn bool Hand::hasFullHouse()
+     *
+     * \return true if the hand is a full house
+     */
     bool Hand::hasFullHouse()
     {
         //TODO
         return false;
     }
 
+    /**
+     * \fn bool Hand::hasFlush()
+     *
+     * \return true if the hand is a flush
+     */
     bool Hand::hasFlush()
     {
         //TODO
         return false;
     }
+
+    /**
+     * \fn bool Hand::hasStraight
+     *
+     * \return true if the hand is a straight
+     */
     bool Hand::hasStraight()
     {
         //TODO
         return false;
     }
+
+    /**
+     * \fn bool Hand::hasThreeOfAKind()
+     *
+     * \return true if the hand is a three of a kind
+     */
     bool Hand::hasThreeOfAKind()
     {
         //TODO
         return false;
     }
+
+    /**
+     * \fn bool Hand::hasTwoPair()
+     *
+     * \return true if the hand has two pairs
+     */
     bool Hand::hasTwoPair()
     {
         //TODO
         return false;
     }
+
+    /**
+     * \fn bool Hand::hasPair()
+     *
+     * \return true if the hand has a pair
+     */
     bool Hand::hasPair()
     {
         bool pair(false);
