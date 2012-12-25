@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 get_filename_component(PROJECT_LOCATION ${CMAKE_SOURCE_DIR} NAME)
 
 #################################
@@ -18,6 +18,9 @@ set(CMAKE_CXX_FLAGS "-std=c++11")
 set(GTEST_DIR ext/gmock/gtest)
 set(GMOCK_DIR ext/gmock)
 
+### Set the boost location ###
+find_package(Boost 1.52 COMPONENTS system filesystem REQUIRED)
+
 set(USE_TESTS true)
 
 ########### EDIT HERE ###########
@@ -29,9 +32,11 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/inc ${CMAKE_CURRENT_SOURCE_DIR})
 
 file(GLOB files_INC
       "./src/core/*.h"
+      "./src/interface/*.h"
 )
 file(GLOB files_SRC
       "./src/core/*.cpp"
+      "./src/interface/*.cpp"
 )
 
 ####################
@@ -48,8 +53,10 @@ include_directories(
   ${GTEST_DIR}/include
   ${GTEST_DIR}
   ${GMOCK_DIR}/include
-  ${GMOCK_DIR})
-link_directories(${gtest_BINARY_DIR}/src)
+  ${GMOCK_DIR}
+  ${BOOST_INCLUDE_DIR})
+link_directories(   ${gtest_BINARY_DIR}/src
+                    ${BOOST_LIBRARY_DIRS})
 
 # Tell CMake about the libraries
 cxx_library(gtest "${cxx_strict}" ${GTEST_DIR}/src/gtest-all.cc)
@@ -65,10 +72,11 @@ file(GLOB tests_SRC
 #list(LENGTH files_INC number_of_includes)
 #if(number_of_includes GREATER 0)
 add_executable(unittests ${tests_SRC} ${files_SRC} ${files_INC}) 
-    target_link_libraries(unittests gtest_main)
+target_link_libraries(unittests gtest_main ${Boost_LIBRARIES})
       #   endif()
 
 endif(USE_TESTS)
 
 # Build the real deal
 add_executable(main src/main.cpp ${files_SRC})
+target_link_libraries(main ${Boost_LIBRARIES})
