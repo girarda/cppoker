@@ -12,11 +12,11 @@ project(PROJECT_LOCATION)
 
 ### Add or remove packages ###
 set(CMAKE_CXX_FLAGS "-g -Wall -lglut -lGLU -lGL")
-set(CMAKE_CXX_FLAGS "-std=c++0x")
+set(CMAKE_CXX_FLAGS "-std=c++11")
 
 ### Set the gtest location ###
-set(GTEST_DIR ../libs/gmock/gtest)
-set(GMOCK_DIR ../libs/gmock)
+set(GTEST_DIR ext/gmock/gtest)
+set(GMOCK_DIR ext/gmock)
 
 set(USE_TESTS true)
 
