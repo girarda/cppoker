@@ -91,77 +91,99 @@ namespace pinterface
     }
 
     /**
-     * \fn void ConsolePlayer::seeDealer(std::string dealer)
+     * \fn void ConsolePlayer::seeDealer(std::string dealer) const
      * 
      * \brief Announce who the dealer is.
      *
      * \param[in] The name of the dealer
      */
-    void ConsolePlayer::seeDealer(std::string dealer)
+    void ConsolePlayer::seeDealer(std::string dealer) const
     {
         std::cout << "The new dealer is " << dealer << "." << std::endl;
     }
 
     /**
-     * \fn void ConsolePlayer::seeBigBlind(std::string player, pcore::Money bigBlind)
+     * \fn void ConsolePlayer::seeBigBlind(std::string player, pcore::Money bigBlind) const
      *
      * \brief Announce who the big blind is and its value.
      *
      * \param[in] player The name of the player
      * \param[in] bigBlind the big blind's value
      */
-    void ConsolePlayer::seeBigBlind(std::string player, pcore::Money bigBlind)
+    void ConsolePlayer::seeBigBlind(std::string player, pcore::Money bigBlind) const
     {
         std::cout << "The big blind is " << bigBlind << " and the owned by " << player << "." << std::endl;
     }
 
     /**
-     * \fn void ConsolePlayer::seeSmallBlind(std::string player, pcore::Money smallBlind)
+     * \fn void ConsolePlayer::seeSmallBlind(std::string player, pcore::Money smallBlind) const
      *
      * \brief Announce who the small blind is and its value.
      *
      * \param[in] player The name of the player
      * \param[in] smallBlind The value of the small blind
      */
-    void ConsolePlayer::seeSmallBlind(std::string player, pcore::Money smallBlind)
+    void ConsolePlayer::seeSmallBlind(std::string player, pcore::Money smallBlind) const
     {
         std::cout << "The small blind is " << smallBlind << " and the owned by " << player << "." << std::endl;
     }
 
     /**
-     * \fn void ConsolePlayer::seeWinner(std::string winner)
+     * \fn void ConsolePlayer::seeWinner(std::string winner) const
      *
      * \brief Announce who the winner is.
      *
      * \param[in] winner The name of the winner
      */
-    void ConsolePlayer::seeWinner(std::string winner)
+    void ConsolePlayer::seeWinner(std::string winner) const
     {
         std::cout << "The winner is " << winner << "." << std::endl;
     }
 
     /**
-     * \fn void ConsolePlayer::seeOpponentCards(std::string opponent, const pcore::Hand& hand)
+     * \fn void ConsolePlayer::seeOpponentCards(std::string opponent, const pcore::Hand& hand) const
      *
      * \brief Announce the opponnent's cards.
      *
      * \param[in] opponent The name of the opponent
      * \param[in] hand The opponent's hand
      */
-    void ConsolePlayer::seeOpponentCards(std::string opponent, const pcore::Hand& hand)
+    void ConsolePlayer::seeOpponentCards(std::string opponent, const pcore::Hand& hand) const
     {
         //TODO
     }
 
     /**
-     * \fn void ConsolePlayer::seeOpponentMoney(std::string opponent, pcore::Money money)
+     * \fn void ConsolePlayer::seeOpponentMoney(std::string opponent, pcore::Money money) const
      *
      * \brief Announce the opponent's money.
      *
      * \param[in] opponent The opponent's name
      * \param[in] money The opponent's money
      */
-    void ConsolePlayer::seeOpponentMoney(std::string opponent, pcore::Money money)
+    void ConsolePlayer::seeOpponentMoney(std::string opponent, pcore::Money money) const
+    {
+        //TODO
+    }
+
+    /**
+     * \fn void ConsolePlayer::seeCards(pcore::Hand hand) const
+     * 
+     * \brief Announce the player's cards
+     *
+     * \param[in] the player's hand
+     */
+    void ConsolePlayer::seeCards(const pcore::Hand& hand) const
+    {
+        //TODO
+    }
+
+    /**
+     * \fn void ConsolePlayer::seeMoney() const
+     *
+     * \brief Announce the player's money
+     */
+    void ConsolePlayer::seeMoney() const
     {
         //TODO
     }
@@ -200,5 +222,27 @@ namespace pinterface
     std::string ConsolePlayer::getName() const
     {
         return mName;
+    }
+
+    /**
+     * \fn void ConsolePlayer::clearPot()
+     *
+     * \brief Reset the pot's amount of money to zero
+     */
+    void ConsolePlayer::clearPot()
+    {
+        mPot = 0;
+    }
+
+    /**
+     * \fn void ConsolePlayer::addToPot(pcore::Money m)
+     *
+     * \brief Add money to the player's pot
+     *
+     */
+    void ConsolePlayer::addToPot(pcore::Money m)
+    {
+        mMoney -= m;
+        mPot += m;
     }
 }

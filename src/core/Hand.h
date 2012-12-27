@@ -45,6 +45,7 @@ namespace pcore
         size_t getCount() const;
 
         bool operator<(const Hand& other) const;
+        bool operator>(const Hand& other) const;
 
     //private:
         void calculateValue();

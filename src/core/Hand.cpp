@@ -60,7 +60,7 @@ namespace pcore
     /**
      * \fn bool Hand::operator<(const Hand& other) const
      *
-     * \param[in] the hand to compare
+     * \param[in] other the hand to compare
      *
      * \return true if the hand is smaller, else, false
      */
@@ -75,7 +75,30 @@ namespace pcore
         {
             if (mBestHand.ranks[i] != other.getValue().ranks[i])
             {
-                return  mBestHand.ranks[i] != other.getValue().ranks[i];
+                return  mBestHand.ranks[i] < other.getValue().ranks[i];
+            }
+        }
+    }
+
+    /**
+     * \fn bool Hand::operator>(const Hand& other) const
+     *
+     * \param[in] other the hand to compare to
+     *
+     * \return true if the hand is higher
+     */
+    bool Hand::operator>(const Hand& other) const
+    {
+        if (mBestHand.type != other.getValue().type)
+        {
+            return mBestHand.type > other.getValue().type;
+        }
+
+        for( int i(0) ; i < pcore::HAND_SIZE ; i++ )
+        {
+            if (mBestHand.ranks[i] != other.getValue().ranks[i])
+            {
+                return  mBestHand.ranks[i] > other.getValue().ranks[i];
             }
         }
     }

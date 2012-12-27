@@ -32,16 +32,21 @@ namespace pcore
         virtual void setMoney(Money newValue) = 0;
         virtual void setName(std::string name) = 0;
         
-        virtual void seeDealer(std::string dealer) = 0;
-        virtual void seeBigBlind(std::string player, Money bigBlind) = 0;
-        virtual void seeSmallBlind(std::string player, Money smallBlind ) = 0;
-        virtual void seeWinner(std::string winner) = 0;
-        virtual void seeOpponentCards(std::string opponent, const Hand& hand) = 0;
-        virtual void seeOpponentMoney(std::string opponent, Money money) = 0;
+        virtual void seeDealer(std::string dealer) const = 0;
+        virtual void seeBigBlind(std::string player, Money bigBlind) const = 0;
+        virtual void seeSmallBlind(std::string player, Money smallBlind ) const = 0;
+        virtual void seeWinner(std::string winner) const = 0;
+        virtual void seeOpponentCards(std::string opponent, const Hand& hand) const = 0;
+        virtual void seeOpponentMoney(std::string opponent, Money money) const = 0;
+        virtual void seeCards(const Hand& hand) const = 0;
+        virtual void seeMoney() const = 0;
 
         virtual Money getPot() const = 0;
         virtual Money getMoney() const = 0;
         virtual std::string getName() const = 0;
+
+        virtual void clearPot() = 0;
+        virtual void addToPot(Money m) = 0;
     };
     
 }

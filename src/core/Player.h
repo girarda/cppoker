@@ -33,13 +33,28 @@ class Player
 
         void setMoney(Money newValue);
         void setName(std::string name);
+        void setFold(bool fold);
+        void clearPot();
 
-        void seeDealer(std::string dealer);
-        void seeBigBlind(std::string player, Money bigBlind);
-        void seeSmallBlind(std::string player, Money smallBlind);
-        void seeWinner(std::string winner);
-        void seeOpponentCards(std::string opponnent, const Hand& hand);
-        void seeOpponentMoney(std::string opponnent, Money money); 
+        Money getMoney() const;
+        std::string getName() const;
+        Hand getHand() const;
+        Money getPot() const;
+
+        bool isPlaying() const;
+        bool isFolded() const;
+
+        void addCard(const Card& card);
+        void addToPot(Money m);
+
+        void seeDealer(std::string dealer) const;
+        void seeBigBlind(std::string player, Money bigBlind) const;
+        void seeSmallBlind(std::string player, Money smallBlind) const;
+        void seeWinner(std::string winner) const;
+        void seeOpponentCards(std::string opponnent, const Hand& hand) const;
+        void seeOpponentMoney(std::string opponnent, Money money) const; 
+        void seeCards() const;
+        void seeMoney() const;
 
     private:
         Hand mHand;
@@ -49,6 +64,7 @@ class Player
         bool mBigBlind;
         bool mSmallBlind;
         bool mIsPlaying;
+        bool mIsFolded;
 
 };
 

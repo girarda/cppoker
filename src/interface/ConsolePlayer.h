@@ -29,16 +29,21 @@ namespace pinterface
         virtual void setMoney(pcore::Money newValue);
         virtual void setName(std::string name);
         
-        virtual void seeDealer(std::string dealer);
-        virtual void seeBigBlind(std::string player, pcore::Money bigBlind);
-        virtual void seeSmallBlind(std::string player, pcore::Money smallBlind);
-        virtual void seeWinner(std::string winner);
-        virtual void seeOpponentCards(std::string opponent, const pcore::Hand& hand);
-        virtual void seeOpponentMoney(std::string opponent, pcore::Money money);
+        virtual void seeDealer(std::string dealer) const;
+        virtual void seeBigBlind(std::string player, pcore::Money bigBlind) const;
+        virtual void seeSmallBlind(std::string player, pcore::Money smallBlind) const;
+        virtual void seeWinner(std::string winner) const;
+        virtual void seeOpponentCards(std::string opponent, const pcore::Hand& hand) const;
+        virtual void seeOpponentMoney(std::string opponent, pcore::Money money) const;
+        virtual void seeCards(const pcore::Hand& han) const;
+        virtual void seeMoney() const;
 
         virtual pcore::Money getMoney() const ;
         virtual pcore::Money getPot() const;
         virtual std::string getName() const;
+
+        virtual void clearPot();
+        virtual void addToPot(pcore::Money m);
     private:
         std::string mName;
         pcore::Money mMoney;
