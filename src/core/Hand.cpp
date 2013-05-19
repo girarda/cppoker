@@ -1,297 +1,285 @@
-/**-------------------------/// Hand.cpp \\\---------------------------
- *
- * <b>Hand.cpp</b>
- * @version : 1.0
- * @since : 2012 Aug 31
- *
- * @description :
- *     Implementation of the Hand class.
- * @usage :
- *
- * @author : Alexandre Girard | girarda.92@gmail.com
- * @copyright girarda
- * @TODO :
- *
- *--------------------------\\\ Hand.cpp ///---------------------------*/
-
 #include "Hand.h"
-#include <cmath>
-#include <assert.h>
 #include <algorithm>
 
 namespace pcore
 {
-    /**
-     * \fn Hand::Hand()
-     */
-    Hand::Hand(): mVCards(), mRanks(), mSuits(), mBestHand()
+    Hand::Hand(): size(0) ,cards(), bestHand(NO_HAND_VALUE)
+    {}
+
+    int Hand::getSize() const
     {
+        return cards.size();
     }
 
-    /**
-     * \fn void Hand::addCard(const Card &newCard)
-     */
-    void Hand::addCard(const Card &newCard)
+    void Hand::addCard(const pcore::Card &aCard)
     {
-        assert(mVCards.size() < HAND_MAX_CARDS);
-        mVCards.push_back(newCard);
-        calculateValue();
+        cards.push_back(aCard);
+        calculateBestHand();
     }
 
-    /**
-     * \fn void Hand::empty()
-     */
-    void Hand::empty()
+    HandValue Hand::getHandValue() const
     {
-        mVCards.clear();
-        calculateValue();
+        return bestHand;
     }
 
-    /**
-     * \fn size_t Hand::getCount() const
-     *
-     * \return the number of cards in the hand
-     */
-    size_t Hand::getCount() const
+    void Hand::calculateBestHand()
     {
-        return mVCards.size();
+        std::sort(cards.begin(), cards.end());
+        std::reverse(cards.begin(), cards.end());
+        bestHand = getStraightFlushValue();
+        if (bestHand.type == NO_HAND)
+            bestHand = getFullHouseValue();
+        if (bestHand.type == NO_HAND)
+            bestHand = getFlushValue();
+        if (bestHand.type == NO_HAND)
+            bestHand = getStraightValue();
+        if (bestHand.type == NO_HAND)
+            bestHand = getThreeOfAKindValue();
+        if (bestHand.type == NO_HAND)
+            bestHand = getTwoPairsValue();
+        if (bestHand.type == NO_HAND)
+            bestHand = getPairValue();
+        if (bestHand.type == NO_HAND)
+            bestHand = getHighCardValue(); 
     }
 
-    /**
-     * \fn bool Hand::operator<(const Hand& other) const
-     *
-     * \param[in] other the hand to compare
-     *
-     * \return true if the hand is smaller, else, false
-     */
-    bool Hand::operator<(const Hand& other) const
+    HandValue Hand::getStraightFlushValue() const
     {
-        if (mBestHand.type != other.getValue().type)
+        HandValue straightFlushValue = {NO_HAND, {0,0,0,0,0}};
+
+        if (getSize() < 5)
+            return straightFlushValue;
+
+        for (int i =0; i < getSize() - 4; i++)
         {
-            return mBestHand.type < other.getValue().type;
-        }
-
-        for( int i(0) ; i < pcore::HAND_SIZE ; i++ )
-        {
-            if (mBestHand.ranks[i] != other.getValue().ranks[i])
+            if (cards[i].getRank() == cards[i+1].getRank() + 1 &&
+                    cards[i].getRank() == cards[i+2].getRank() + 2 &&
+                    cards[i].getRank() == cards[i+3].getRank() + 3 &&
+                    cards[i].getRank() == cards[i+4].getRank() + 4 &&
+                    cards[i].getSuit() == cards[i+1].getSuit() &&
+                    cards[i].getSuit() == cards[i+2].getSuit() &&
+                    cards[i].getSuit() == cards[i+3].getSuit() &&
+                    cards[i].getSuit() == cards[i+4].getSuit())
             {
-                return  mBestHand.ranks[i] < other.getValue().ranks[i];
+                straightFlushValue.type = STRAIGHT_FLUSH;
+                straightFlushValue.ranks[0] = cards[i].getRank();
+                break;
             }
         }
+        return straightFlushValue;
     }
 
-    /**
-     * \fn bool Hand::operator>(const Hand& other) const
-     *
-     * \param[in] other the hand to compare to
-     *
-     * \return true if the hand is higher
-     */
-    bool Hand::operator>(const Hand& other) const
+    HandValue Hand::getFullHouseValue() const
     {
-        if (mBestHand.type != other.getValue().type)
+        HandValue fullHouseValue = {NO_HAND, {0,0,0,0,0}};
+        if (getSize() < 4)
+            return fullHouseValue;
+        for (int i = 0; i < getSize() -3; i++)
         {
-            return mBestHand.type > other.getValue().type;
-        }
-
-        for( int i(0) ; i < pcore::HAND_SIZE ; i++ )
-        {
-            if (mBestHand.ranks[i] != other.getValue().ranks[i])
+            if (cards[i].getRank() == cards[i+1].getRank() && cards[i].getRank() == cards[i+2].getRank() && cards[i].getRank() == cards[i+3].getRank() )
             {
-                return  mBestHand.ranks[i] > other.getValue().ranks[i];
+                fullHouseValue.type = FULL_HOUSE;
+                fullHouseValue.ranks[0] = cards[i].getRank();
+                break;
             }
         }
-    }
-
-    /**
-     * \fn bool Hand::hasStraightFlush()
-     *
-     * \return true if the hand is a straight flush
-     */
-    bool Hand::hasStraightFlush()
-    {
-        //TODO
-        return false;
-    }
-
-    /**
-     * \fn bool Hand::hasFourOfAKind()
-     *
-     * \return true if the hand is a four of a kind
-     */
-    bool Hand::hasFourOfAKind()
-    {
-        //TODO
-        return false;
-    }
-    
-    /**
-     * \fn bool Hand::hasFullHouse()
-     *
-     * \return true if the hand is a full house
-     */
-    bool Hand::hasFullHouse()
-    {
-        //TODO
-        return false;
-    }
-
-    /**
-     * \fn bool Hand::hasFlush()
-     *
-     * \return true if the hand is a flush
-     */
-    bool Hand::hasFlush()
-    {
-        //TODO
-        return false;
-    }
-
-    /**
-     * \fn bool Hand::hasStraight
-     *
-     * \return true if the hand is a straight
-     */
-    bool Hand::hasStraight()
-    {
-        //TODO
-        return false;
-    }
-
-    /**
-     * \fn bool Hand::hasThreeOfAKind()
-     *
-     * \return true if the hand is a three of a kind
-     */
-    bool Hand::hasThreeOfAKind()
-    {
-        //TODO
-        return false;
-    }
-
-    /**
-     * \fn bool Hand::hasTwoPair()
-     *
-     * \return true if the hand has two pairs
-     */
-    bool Hand::hasTwoPair()
-    {
-        //TODO
-        return false;
-    }
-
-    /**
-     * \fn bool Hand::hasPair()
-     *
-     * \return true if the hand has a pair
-     */
-    bool Hand::hasPair()
-    {
-        bool pair(false);
-        int highestPair(0);
-        for ( int rank = MIN_RANK; rank <= MAX_RANK ; rank++ )
+        if (fullHouseValue.type == FULL_HOUSE)
         {
-            if(mRanks[rank] == 2)
+            for (int i = 0; i < getSize(); i++)
             {
-                pair = true;
-                highestPair = rank;
-            }
-        }
-        if(pair)
-        {
-            mBestHand.type = PAIR;
-            mBestHand.ranks[0] = highestPair;
-            int i = 1;
-            for( int rank(MAX_RANK) ; rank >= MIN_RANK ; rank-- )
-            {
-                if (mRanks[rank] == 1 && rank != highestPair)
+                if (cards[i].getRank() != fullHouseValue.ranks[0])
                 {
-                    assert(i <= HAND_SIZE);
-                    mBestHand.ranks[i] = rank;
-                    i++;
+                    fullHouseValue.ranks[1] = cards[i].getRank();
+                    break;
                 }
-            } 
-        }
-        return pair;
-    }
-
-    void Hand::hasNoHand()
-    {
-        mBestHand.type = NO_HAND;
-        int i(0);
-        for ( int rank = MAX_RANK; rank >= MIN_RANK; --rank )
-        {
-            if(mRanks[rank] == 1 && i < HAND_SIZE)
-            {
-                mBestHand.ranks[i] = rank;
-                i++;
             }
         }
+        return fullHouseValue;
     }
 
-    void Hand::initRanks()
+    HandValue Hand::getFlushValue() const
     {
-        mRanks.clear();
-        for(std::vector<Card>::iterator it=(mVCards.begin()) ; it!=mVCards.end() ; it++ )
+        HandValue flushValue = {NO_HAND, {0,0,0,0,0}};
+
+        if (getSize() < 5)
+            return flushValue;
+        int nbSuits[4] = {0};
+
+        for (int i = 0; i < getSize(); i++)
         {
-           mRanks[it->getRank()]++;
+            nbSuits[cards[i].getSuit()]++;
         }
-    }
-    
-    void Hand::initSuits()
-    {
-        mSuits.clear();
-        for( std::vector<Card>::iterator it=(mVCards.begin()) ; it!=mVCards.end() ; it++ )
+        for (int i = MIN_SUIT; i <= MAX_SUIT; i++)
         {
-           mSuits[it->getSuit()]++;
-        }
-        
-    }
-    void Hand::calculateValue()
-    {
-        initRanks();
-        //initSuits();
-        initBestHand();
-        if (!hasStraightFlush())
-        {
-            if (!hasFourOfAKind())
+            if (nbSuits[i] >=5)
+            {
+                flushValue.type = FLUSH;
+                int j = 0;
+                for (int k = 0; k < getSize(); k++)
                 {
-                if(!hasFullHouse())
-                {
-                    if(!hasFlush())
-                    {
-                        if(!hasStraight())
+                    if (cards[k].getSuit() == i)
+                    { 
+                        flushValue.ranks[j] = cards[k].getRank();
+                        j++;
+                        if (j == 5)
                         {
-                            if(!hasThreeOfAKind())
-                            {
-                                if(!hasTwoPair())
-                                {
-                                    if(!hasPair())
-                                    {
-                                        hasNoHand();
-                                    }
-                                }
-                            }
+                            return flushValue;
                         }
                     }
                 }
-            }   
+            }
         }
+        return flushValue;
     }
 
-    const HandValue& Hand::getValue() const
+    HandValue Hand::getStraightValue() const
     {
-        return mBestHand;
-    }
+        HandValue straightValue = {NO_HAND, {0,0,0,0,0}};
 
-    void Hand::initBestHand()
-    {
-        mBestHand.type = NO_HAND;
-        for( int i(0) ; i < HAND_SIZE; i++)
+        if (getSize() < 5)
+            return straightValue;
+
+        for (int i =0; i < getSize() - 4; i++)
         {
-            mBestHand.ranks[i] = 0;
+            if (cards[i].getRank() == cards[i+1].getRank() + 1 &&
+                    cards[i].getRank() == cards[i+2].getRank() + 2 &&
+                    cards[i].getRank() == cards[i+3].getRank() + 3 &&
+                    cards[i].getRank() == cards[i+4].getRank() + 4)
+            {
+                straightValue.type = STRAIGHT;
+                straightValue.ranks[0] = cards[i].getRank();
+                break;
+            }
         }
-        
+        return straightValue;
     }
-    
+
+    HandValue Hand::getThreeOfAKindValue() const
+    {
+        HandValue threeOfAKindHandValue = {NO_HAND, {0,0,0,0,0}};
+        for (int i = 0; i < getSize() -2; i++)
+        {
+            if (cards[i].getRank() == cards[i+1].getRank() && cards[i].getRank() == cards[i+2].getRank())
+            {
+                threeOfAKindHandValue.type = THREE_OF_A_KIND;
+                threeOfAKindHandValue.ranks[0] = cards[i].getRank();
+                break;
+            }
+        }
+        if (threeOfAKindHandValue.type == THREE_OF_A_KIND)
+        {
+            int j = 0;
+            for (int i = 0; i < std::min(getSize(), 2); i++)
+            {
+                if (cards[i].getRank() != threeOfAKindHandValue.ranks[0])
+                {
+                    j++;
+                    threeOfAKindHandValue.ranks[j] = cards[i].getRank();
+                    if (j == 2)
+                        break;
+                }
+            }
+        }
+        return threeOfAKindHandValue;
+    }
+
+    HandValue Hand::getTwoPairsValue() const
+    {
+        std::vector<Card> cardsCopy(cards);
+        HandValue twoPairsHandValue = {NO_HAND, {0, 0, 0, 0, 0}};
+        int pairs[2];
+        int nbPairs = 0;
+        for(int i = 0; i < std::min(HAND_SIZE, getSize()) -1; i++)
+        {
+            if (cardsCopy[i].getRank() == cardsCopy[i+1].getRank())
+            {
+                pairs[nbPairs] = cardsCopy[i].getRank();
+                nbPairs++;
+                if (nbPairs == 2)
+                    break;
+            }
+        }
+        if (nbPairs != 2)
+            return twoPairsHandValue;
+        else
+        {
+            twoPairsHandValue.type = TWO_PAIRS;
+            for (int i = 0; i < 2; i++)
+                twoPairsHandValue.ranks[i] = pairs[i];
+            for (int i = 0; i < getSize(); i++)
+            {
+                if (cardsCopy[i].getRank() != pairs[0] && cardsCopy[i].getRank() != pairs[1])
+                {
+                    twoPairsHandValue.ranks[2] = cardsCopy[i].getRank(); 
+                    break;
+                }
+            }
+            return twoPairsHandValue;
+        }
+    }
+
+    HandValue Hand::getPairValue() const
+    {
+        std::vector<Card> cardsCopy(cards);
+        HandValue pairHandValue = {NO_HAND, {0, 0, 0, 0, 0}};
+        for(int i = 0; i < std::min(HAND_SIZE, getSize()) -1; i++)
+        {
+            if (cardsCopy[i].getRank() == cardsCopy[i+1].getRank())
+            {
+                pairHandValue.type = PAIR;
+                pairHandValue.ranks[0] = cardsCopy[i].getRank();
+                cardsCopy.erase(cardsCopy.begin()+i+1);
+                cardsCopy.erase(cardsCopy.begin()+i);
+                break;
+            }
+        }
+        for (int i = 0; i < std::min(4, (int)cardsCopy.size()); i++)
+        {
+            pairHandValue.ranks[i+1] = cardsCopy[i].getRank();
+        }
+        return pairHandValue;
+    }
+
+    HandValue Hand::getHighCardValue() const
+    {
+        HandValue highCardHandValue = {HIGH_CARD, {0, 0, 0, 0, 0}};
+        for(int i = 0; i < std::min(HAND_SIZE, getSize()); i++)
+        {
+            highCardHandValue.ranks[i] = cards[i].getRank();; 
+        }
+        return highCardHandValue;
+    }
+
+    bool Hand::operator<(const Hand& other) const
+    {
+        if (bestHand.type != other.getHandValue().type)
+        {
+            return bestHand.type < other.getHandValue().type;
+        }
+
+        for( int i(0) ; i < pcore::HAND_SIZE ; i++ )
+        {
+            if (bestHand.ranks[i] != other.getHandValue().ranks[i])
+            {
+                return  bestHand.ranks[i] < other.getHandValue().ranks[i];
+            }
+        }
+    }
+
+    bool Hand::operator>(const Hand& other) const
+    {
+        return other < *this;
+    }
+
+    bool operator==(const HandValue &h1, const HandValue &h2) 
+    {
+        if (h1.type != h2.type)
+            return false;
+        for (int i = 0; i < HAND_SIZE; i++)
+        {
+            if (h1.ranks[i] != h2.ranks[i])
+                return false;
+        }
+        return true;
+    }
 }

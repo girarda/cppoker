@@ -37,6 +37,9 @@ public:
     int getRank() const;
     int getSuit() const;
 
+    friend inline bool operator<(const Card &c1, const Card &c2) {return c1.getRank() < c2.getRank();}
+    friend inline bool operator==(const Card &c1, const Card &c2) { return c1.getRank() == c2.getRank(); }
+
     std::string toString() const;
 
 private:
