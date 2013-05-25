@@ -56,10 +56,10 @@ namespace pcore
                     cards[i].getRank() == cards[i+2].getRank() + 2 &&
                     cards[i].getRank() == cards[i+3].getRank() + 3 &&
                     cards[i].getRank() == cards[i+4].getRank() + 4 &&
-                    cards[i].getSuit() == cards[i+1].getSuit() &&
-                    cards[i].getSuit() == cards[i+2].getSuit() &&
-                    cards[i].getSuit() == cards[i+3].getSuit() &&
-                    cards[i].getSuit() == cards[i+4].getSuit())
+                    cards[i].isSameSuit(cards[i+1])&&
+                    cards[i].isSameSuit(cards[i+2])&&
+                    cards[i].isSameSuit(cards[i+3])&&
+                    cards[i].isSameSuit(cards[i+4]))
             {
                 straightFlushValue.type = STRAIGHT_FLUSH;
                 straightFlushValue.ranks[0] = cards[i].getRank();
@@ -76,7 +76,7 @@ namespace pcore
             return fullHouseValue;
         for (int i = 0; i < getSize() -3; i++)
         {
-            if (cards[i].getRank() == cards[i+1].getRank() && cards[i].getRank() == cards[i+2].getRank() && cards[i].getRank() == cards[i+3].getRank() )
+            if (cards[i] == cards[i+1] && cards[i] == cards[i+2] && cards[i] == cards[i+3])
             {
                 fullHouseValue.type = FULL_HOUSE;
                 fullHouseValue.ranks[0] = cards[i].getRank();
@@ -159,7 +159,7 @@ namespace pcore
         HandValue threeOfAKindHandValue = {NO_HAND, {0,0,0,0,0}};
         for (int i = 0; i < getSize() -2; i++)
         {
-            if (cards[i].getRank() == cards[i+1].getRank() && cards[i].getRank() == cards[i+2].getRank())
+            if (cards[i] == cards[i+1] && cards[i] == cards[i+2])
             {
                 threeOfAKindHandValue.type = THREE_OF_A_KIND;
                 threeOfAKindHandValue.ranks[0] = cards[i].getRank();
@@ -191,7 +191,7 @@ namespace pcore
         int nbPairs = 0;
         for(int i = 0; i < std::min(HAND_SIZE, getSize()) -1; i++)
         {
-            if (cardsCopy[i].getRank() == cardsCopy[i+1].getRank())
+            if (cardsCopy[i] == cardsCopy[i+1])
             {
                 pairs[nbPairs] = cardsCopy[i].getRank();
                 nbPairs++;
@@ -224,7 +224,7 @@ namespace pcore
         HandValue pairHandValue = {NO_HAND, {0, 0, 0, 0, 0}};
         for(int i = 0; i < std::min(HAND_SIZE, getSize()) -1; i++)
         {
-            if (cardsCopy[i].getRank() == cardsCopy[i+1].getRank())
+            if (cardsCopy[i] == cardsCopy[i+1])
             {
                 pairHandValue.type = PAIR;
                 pairHandValue.ranks[0] = cardsCopy[i].getRank();

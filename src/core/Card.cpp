@@ -49,6 +49,11 @@ namespace pcore
         return mSuit;
     }
 
+    bool Card::isSameSuit(const Card &other) const
+    {
+        return mSuit == other.mSuit;
+    }
+
     /**
      * \fn std::string Card::toString() const
      *
