@@ -25,12 +25,7 @@ namespace pcore
     {
     }
 
-    /**
-     * \fn void Player::setMoney(Money newValue)
-     *
-     * \brief Set the money value
-     */
-    void Player::setMoney(Money newValue)
+    void Player::setMoney(float newValue)
     {
         mMoney = newValue;
     }
@@ -87,14 +82,7 @@ namespace pcore
         return mHand > other.mHand;
     }
 
-    /**
-     * \fn Money getPot() const
-     *
-     * \brief Return the player's pot
-     *
-     * \return the player's pot
-     */
-    Money Player::getPot() const
+    float Player::getPot() const
     {
         return mPot;
     }
@@ -133,18 +121,18 @@ namespace pcore
         mHand.addCard(card);
     }
 
-    void Player::addToPot(Money moneyToAdd)
+    void Player::addToPot(float moneyToAdd)
     {
         mMoney -= moneyToAdd;
         mPot += moneyToAdd;
     }
 
-    void Player::winMoney(Money gainedMoney)
+    void Player::winMoney(float gainedMoney)
     {
         mMoney += gainedMoney;
     }
 
-    Decision Player::makeDecision(const Money& minBet)
+    Decision Player::makeDecision(float minBet)
     {
         Decision decision;
         bool decisionIsValid = false;
@@ -158,7 +146,7 @@ namespace pcore
             }
             else 
             {
-                Money diffToAdd;
+                float diffToAdd;
                 if (decision.choice == CHECK)
                     diffToAdd = minBet - mPot;
                 else
@@ -184,22 +172,12 @@ namespace pcore
         mPlayer->seeDealer(dealer.mName);
     }
 
-    /**
-     * \fn void Player::seeBigBlind(const Player& player, Money bigblind) const
-     *
-     * \brief Announce who the big blind is and its value.
-     */
-    void Player::seeBigBlind(const Player& player, Money bigBlind) const
+    void Player::seeBigBlind(const Player& player, float bigBlind) const
     {
         mPlayer->seeBigBlind(player.mName, bigBlind);
     }
 
-    /**
-     * \fn void Player::seeSmallBlind(const Player& player, Money smallblind) const
-     *
-     * \brief Announce who the small blind is and its value.
-     */
-    void Player::seeSmallBlind(const Player& player, Money smallBlind) const
+    void Player::seeSmallBlind(const Player& player, float smallBlind) const
     {
         mPlayer->seeSmallBlind(player.mName, smallBlind);
     }
@@ -258,7 +236,7 @@ namespace pcore
     {
     }
 
-    Money Player::getMoney() const
+    float Player::getMoney() const
     {
         return mMoney;
     }

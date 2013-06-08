@@ -18,7 +18,6 @@
 #define IPlayer_H
 
 #include "core/Hand.h"
-#include "core/Money.h"
 
 namespace pcore
 {
@@ -27,22 +26,22 @@ namespace pcore
     typedef struct Decision
     {
         Choice choice;
-        Money bet;
+        float bet;
     } Decision;
 
     class IPlayer
     {
     public:
-        virtual Decision makeDecision(const Money& minBet) = 0;
+        virtual Decision makeDecision(float minBet) = 0;
 
         virtual void seeDealer(std::string dealer) const = 0;
-        virtual void seeBigBlind(std::string player, Money bigBlind) const = 0;
-        virtual void seeSmallBlind(std::string player, Money smallBlind ) const = 0;
+        virtual void seeBigBlind(std::string player, float bigBlind) const = 0;
+        virtual void seeSmallBlind(std::string player, float smallBlind ) const = 0;
         virtual void seeWinner(std::string winner) const = 0;
         virtual void seeOpponentCards(std::string opponent, const Hand& hand) const = 0;
-        virtual void seeOpponentMoney(std::string opponent, Money money) const = 0;
+        virtual void seeOpponentMoney(std::string opponent, float money) const = 0;
         virtual void seeCards(const Hand& hand) const = 0;
-        virtual void seeMoney(const Money& money) const = 0;
+        virtual void seeMoney(float money) const = 0;
     };
     
 }

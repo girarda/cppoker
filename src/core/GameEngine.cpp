@@ -57,6 +57,8 @@ namespace pcore
     {
         initTableTurn();
 
+        betBlinds();
+
         preFlop();
         if (mPlayingPlayers > 1)
             flop();
@@ -150,12 +152,7 @@ namespace pcore
         announceWinner();
     }
 
-    /**
-     * \fn void GameEngine::playerTurn(Player& player, Money minBet)
-     *
-     * \brief Announce the information to a player and ask for his decision.
-     */
-    void GameEngine::playerTurn(Player* player, Money minBet)
+    void GameEngine::playerTurn(Player* player, float minBet)
     {
         announcements(player);
         if (player->isPlaying())
@@ -163,7 +160,7 @@ namespace pcore
             Decision d = player->makeDecision(mBet);
             if (d.choice == CALL)
             {
-                mBet = d.bet; //TODO a verifier
+                mBet = d.bet; 
             }
         }
     }
@@ -221,12 +218,7 @@ namespace pcore
         mPlayingPlayers++;
     }
 
-    /**
-     * \fn void GameEngine::playRound(Money minBet)
-     *
-     * \brief Every player on the table plays
-     */
-    void GameEngine::playRound(Money minBet)
+    void GameEngine::playRound(float minBet)
     {
 
         for (Player* p: mVPlayers)
@@ -250,9 +242,15 @@ namespace pcore
         }
     }
 
-    Money GameEngine::getTotalPot()
+    void GameEngine::betBlinds()
     {
-        Money totalPot = 0;
+        mBigBlindPlayer->addToPot(mBigBlind);
+        mSmallBlindPlayer->addToPot(mBigBlind/2);
+    }
+
+    float GameEngine::getTotalPot()
+    {
+        float totalPot = 0;
         for (Player* p: mVPlayers)
         {
             totalPot += p->getPot();
@@ -265,6 +263,4 @@ namespace pcore
         return mVPlayers.size();
     }
 }
-
-
 

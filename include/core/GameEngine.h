@@ -16,7 +16,6 @@
 
 #include "core/Player.h"
 #include "core/Deck.h"
-#include "core/Money.h"
 
 namespace pcore
 {
@@ -28,7 +27,7 @@ class GameEngine
 
         void start();
         void tableTurn();
-        void playerTurn(Player* player, pcore::Money minBet);
+        void playerTurn(Player* player, float minBet);
         void announcements(const Player* player);
 
         void preFlop();
@@ -38,12 +37,13 @@ class GameEngine
         void showdown();
 
         void addPlayer(Player* player);
-        void playRound(Money minBet);
+        void playRound(float minBet);
 
-        Money getTotalPot();
+        float getTotalPot();
 
         void announceWinner();
         void initTableTurn();
+        void betBlinds();
 
         int getNumberOfPlayers() const;
 
@@ -53,8 +53,8 @@ class GameEngine
         std::vector<Player*> mVPlayers;
         int mPlayingPlayers;
         int mTableTurns;
-        Money mBet;
-        Money mBigBlind;
+        float mBet;
+        float mBigBlind;
         Player* mBigBlindPlayer;
         Player* mSmallBlindPlayer;
         Player* mDealer;

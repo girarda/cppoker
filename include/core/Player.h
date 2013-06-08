@@ -20,7 +20,6 @@
 #include <string>
 #include "core/Hand.h"
 #include "core/IPlayer.h"
-#include "core/Money.h"
 
 namespace pcore
 {
@@ -31,9 +30,9 @@ class Player
 
         Player(IPlayer *playerImpl);
 
-        virtual Decision makeDecision(const Money &minBet);
+        virtual Decision makeDecision(float minBet);
 
-        virtual void setMoney(Money newValue);
+        virtual void setMoney(float newValue);
         virtual void setName(std::string name);
 
         virtual void start();
@@ -41,18 +40,18 @@ class Player
         virtual void setupForNewTableTurn();
 
         virtual bool hasBetterHand(const Player& other) const;
-        virtual Money getPot() const;
+        virtual float getPot() const;
 
         virtual bool isPlaying() const;
         virtual bool isFolded() const;
 
         virtual void addCard(const Card& card);
-        virtual void addToPot(Money moneyToAdd);
-        virtual void winMoney(Money gainedMoney);
+        virtual void addToPot(float moneyToAdd);
+        virtual void winMoney(float gainedMoney);
 
         virtual void seeDealer(const Player& dealer) const;
-        virtual void seeBigBlind(const Player& player, Money bigBlind) const;
-        virtual void seeSmallBlind(const Player& player, Money smallBlind) const;
+        virtual void seeBigBlind(const Player& player, float bigBlind) const;
+        virtual void seeSmallBlind(const Player& player, float smallBlind) const;
         virtual void seeWinner(const Player& winner) const;
         virtual void seeOpponentCards(const Player& opponent) const;
         virtual void seeOpponentMoney(const Player& opponnent) const; 
@@ -61,7 +60,7 @@ class Player
         
         // for testing purposes
         Player(IPlayer *playerImpl, Hand* hand);
-        Money getMoney() const;
+        float getMoney() const;
 
     private:
         enum State {
@@ -78,9 +77,8 @@ class Player
         State mCurrentState;
 
         std::string mName;
-        pcore::Money mMoney;
-        pcore::Money mPot;
-
+        float mMoney;
+        float mPot;
 };
 
 }

@@ -19,14 +19,6 @@
 
 namespace pinterface
 {
-    /**
-     * \fn ConsolePlayer::ConsolePlayer(std::string name, pcore::Money initMoney)
-     *
-     * \brief The ConsolePlayer constructor
-     *
-     * \param[in] name The name of the player
-     * \param[in] initMoney The player's initial money
-     */
     ConsolePlayer::ConsolePlayer()
     {
     }
@@ -38,7 +30,7 @@ namespace pinterface
      *
      * \return the player's Decision
      */
-    pcore::Decision ConsolePlayer::makeDecision(const pcore::Money& minBet)
+    pcore::Decision ConsolePlayer::makeDecision(float minBet)
     {
         
         std::string choice;
@@ -52,7 +44,7 @@ namespace pinterface
             if (choice == "CALL\n")
             {
                 decision.choice = pcore::CALL;
-                pcore::Money newBet;
+                float newBet;
                 do {
                     std::cin >> newBet;
                 } while (std::cin.fail());
@@ -85,28 +77,12 @@ namespace pinterface
         std::cout << "The new dealer is " << dealer << "." << std::endl;
     }
 
-    /**
-     * \fn void ConsolePlayer::seeBigBlind(std::string player, pcore::Money bigBlind) const
-     *
-     * \brief Announce who the big blind is and its value.
-     *
-     * \param[in] player The name of the player
-     * \param[in] bigBlind the big blind's value
-     */
-    void ConsolePlayer::seeBigBlind(std::string player, pcore::Money bigBlind) const
+    void ConsolePlayer::seeBigBlind(std::string player, float bigBlind) const
     {
         std::cout << "The big blind is " << bigBlind << " and the owned by " << player << "." << std::endl;
     }
 
-    /**
-     * \fn void ConsolePlayer::seeSmallBlind(std::string player, pcore::Money smallBlind) const
-     *
-     * \brief Announce who the small blind is and its value.
-     *
-     * \param[in] player The name of the player
-     * \param[in] smallBlind The value of the small blind
-     */
-    void ConsolePlayer::seeSmallBlind(std::string player, pcore::Money smallBlind) const
+    void ConsolePlayer::seeSmallBlind(std::string player, float smallBlind) const
     {
         std::cout << "The small blind is " << smallBlind << " and the owned by " << player << "." << std::endl;
     }
@@ -136,15 +112,7 @@ namespace pinterface
         //TODO
     }
 
-    /**
-     * \fn void ConsolePlayer::seeOpponentMoney(std::string opponent, pcore::Money money) const
-     *
-     * \brief Announce the opponent's money.
-     *
-     * \param[in] opponent The opponent's name
-     * \param[in] money The opponent's money
-     */
-    void ConsolePlayer::seeOpponentMoney(std::string opponent, pcore::Money money) const
+    void ConsolePlayer::seeOpponentMoney(std::string opponent, float money) const
     {
         //TODO
     }
@@ -166,7 +134,7 @@ namespace pinterface
      *
      * \brief Announce the player's money
      */
-    void ConsolePlayer::seeMoney(const pcore::Money& money) const
+    void ConsolePlayer::seeMoney(float money) const
     {
         //TODO
     }

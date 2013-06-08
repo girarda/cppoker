@@ -12,8 +12,8 @@ class PlayerTest : public ::testing::Test
         test::HandMock* aHand;
         pcore::Player* aPlayer;
 
-        static const pcore::Money NO_MONEY;
-        static const pcore::Money MONEY_WON;
+        static const float NO_MONEY;
+        static const float MONEY_WON;
 
         virtual void SetUp()
         {
@@ -29,8 +29,8 @@ class PlayerTest : public ::testing::Test
         }
 };
 
-const pcore::Money PlayerTest::NO_MONEY(0);
-const pcore::Money PlayerTest::MONEY_WON(5);
+const float PlayerTest::NO_MONEY(0);
+const float PlayerTest::MONEY_WON(5);
 
 TEST_F(PlayerTest, newPlayerIsNotPlaying)
 {
@@ -41,14 +41,14 @@ TEST_F(PlayerTest, newPlayerIsNotPlaying)
 
 TEST_F(PlayerTest, newPlayerHasNoMoney)
 {
-    pcore::Money initialMoney = aPlayer->getMoney();
+    float initialMoney = aPlayer->getMoney();
 
     ASSERT_EQ(NO_MONEY, initialMoney);
 }
 
 TEST_F(PlayerTest, newPlayerHasNoMoneyInPot)
 {
-    pcore::Money initialPot = aPlayer->getPot();
+    float initialPot = aPlayer->getPot();
 
     ASSERT_EQ(NO_MONEY, initialPot);
 }
@@ -90,7 +90,7 @@ TEST_F(PlayerTest, playerPotIsClearedWhenSettingForNewTableTurn)
     aPlayer->addToPot(5);
     aPlayer->setupForNewTableTurn();
 
-    pcore::Money moneyInPot = aPlayer->getPot();
+    float moneyInPot = aPlayer->getPot();
 
     ASSERT_EQ(PlayerTest::NO_MONEY, moneyInPot);
 }
@@ -99,7 +99,7 @@ TEST_F(PlayerTest, playerHasMoreMoneyWhenWinningMoney)
 {
     aPlayer->winMoney(PlayerTest::MONEY_WON);
 
-    pcore::Money playersMoney = aPlayer->getMoney();
+    float playersMoney = aPlayer->getMoney();
 
     ASSERT_EQ(PlayerTest::MONEY_WON, playersMoney);
 }
@@ -107,7 +107,7 @@ TEST_F(PlayerTest, playerHasMoreMoneyWhenWinningMoney)
 TEST_F(PlayerTest, makingADecisionCallsPlayerImplementationMakeDecision)
 {
     pcore::Decision aDecision = {pcore::CHECK, 0};
-    EXPECT_CALL(*aPlayerImpl, makeDecision(pcore::Money(0))).Times(1).WillOnce(Return(aDecision));
+    EXPECT_CALL(*aPlayerImpl, makeDecision(0)).Times(1).WillOnce(Return(aDecision));
 
-    aPlayer->makeDecision(pcore::Money(0));
+    aPlayer->makeDecision((0));
 }
