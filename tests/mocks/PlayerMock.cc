@@ -1,8 +1,7 @@
 #ifndef PLAYERMOCK_H_
 #define PLAYERMOCK_H_
 
-#include "src/core/Player.h"
-#include "IPlayerMock.cc"
+#include "core/Player.h"
 #include "gmock/gmock.h"
 
 namespace test

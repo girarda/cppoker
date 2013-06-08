@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "src/core/Hand.h"
+#include "core/Hand.h"
 #include <vector>
 
 class HandTest : public ::testing::Test

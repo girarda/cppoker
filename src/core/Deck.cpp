@@ -14,7 +14,7 @@
  *
  *--------------------------\\\ Deck.cpp ///---------------------------*/
 
-#include "Deck.h"
+#include "core/Deck.h"
 #include <assert.h>
 #include <algorithm>
 

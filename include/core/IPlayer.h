@@ -17,8 +17,8 @@
 #ifndef IPlayer_H
 #define IPlayer_H
 
-#include "src/core/Hand.h"
-#include "Money.h"
+#include "core/Hand.h"
+#include "core/Money.h"
 
 namespace pcore
 {

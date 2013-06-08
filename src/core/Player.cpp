@@ -14,7 +14,7 @@
  *
  *--------------------------\\\ Player.cpp ///---------------------------*/
 
-#include "src/core/Player.h"
+#include "core/Player.h"
 
 namespace pcore
 {

@@ -14,7 +14,7 @@
  *
  *--------------------------\\\ GameEngine.cpp ///---------------------------*/
 
-#include "src/core/GameEngine.h"
+#include "core/GameEngine.h"
 
 namespace pcore
 {

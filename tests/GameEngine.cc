@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "src/core/GameEngine.h"
+#include "core/GameEngine.h"
 #include "PlayerMock.cc"
 
 class GameEngineTest : public ::testing::Test

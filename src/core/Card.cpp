@@ -14,7 +14,7 @@
  *
  *--------------------------\\\ Card.cpp ///---------------------------*/
 
-#include "Card.h"
+#include "core/Card.h"
 #include <assert.h>
 #include <sstream>
 

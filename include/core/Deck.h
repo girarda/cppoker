@@ -17,7 +17,7 @@
 #ifndef DECK_H
 #define DECK_H
 
-#include "Card.h"
+#include "core/Card.h"
 #include <vector>
 
 namespace pcore

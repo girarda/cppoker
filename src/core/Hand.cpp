@@ -1,4 +1,4 @@
-#include "Hand.h"
+#include "core/Hand.h"
 #include <algorithm>
 
 namespace pcore

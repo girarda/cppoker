@@ -18,25 +18,18 @@ set(CMAKE_CXX_FLAGS "-std=c++11")
 set(GTEST_DIR ext/gmock/gtest)
 set(GMOCK_DIR ext/gmock)
 
-### Set the boost location ###
-find_package(Boost 1.52 COMPONENTS system filesystem REQUIRED)
-
 set(USE_TESTS true)
-
-########### EDIT HERE ###########
-#################################
 
 set(VERSION "${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}")
 # So we can build outside of the main directory
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/inc ${CMAKE_CURRENT_SOURCE_DIR})
 
-file(GLOB files_INC
-      "./src/core/*.h"
-      "./src/interface/*.h"
-)
-file(GLOB files_SRC
-      "./src/core/*.cpp"
-      "./src/interface/*.cpp"
+# Include files
+set (PROJECT_INCLUDE_DIR include)
+include_directories("${PROJECT_INCLUDE_DIR}")
+
+file(GLOB_RECURSE files_SRC
+      "./src/*.cpp"
 )
 
 ####################
@@ -64,6 +57,9 @@ cxx_library(gtest_main "${cxx_strict}" ${GTEST_DIR}/src/gtest_main.cc)
 cxx_library(gmock "${cxx_strict}" ${GMOCK_DIR}/src/gmock-all.cc)
 target_link_libraries(gtest_main gtest gmock)
 
+# Include mocks
+include_directories(tests/mocks)
+
 # Tell CMake about source files
 file(GLOB tests_SRC
  "tests/*.cc"
@@ -71,12 +67,12 @@ file(GLOB tests_SRC
 
 #list(LENGTH files_INC number_of_includes)
 #if(number_of_includes GREATER 0)
-add_executable(unittests ${tests_SRC} ${files_SRC} ${files_INC}) 
+add_executable(unittests ${tests_SRC} ${files_SRC} ${PROJECT_INCLUDE_DIR}) 
 target_link_libraries(unittests gtest_main ${Boost_LIBRARIES})
       #   endif()
 
 endif(USE_TESTS)
 
 # Build the real deal
-add_executable(main src/main.cpp ${files_SRC})
-target_link_libraries(main ${Boost_LIBRARIES})
+#add_executable(main src/main.cpp ${files_SRC})
+#target_link_libraries(main ${Boost_LIBRARIES})

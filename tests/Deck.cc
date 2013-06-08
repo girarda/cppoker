@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "src/core/Deck.h"
+#include "core/Deck.h"
 
 class DeckTest : public ::testing::Test
 {

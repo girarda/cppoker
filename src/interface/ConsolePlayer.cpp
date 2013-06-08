@@ -14,7 +14,7 @@
  *
  *--------------------------\\\ ConsolePlayer.cpp ///---------------------------*/
 
-#include "src/interface/ConsolePlayer.h"
+#include "interface/ConsolePlayer.h"
 #include <iostream>
 
 namespace pinterface

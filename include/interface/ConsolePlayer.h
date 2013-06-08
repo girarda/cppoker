@@ -14,7 +14,7 @@
  *
  *--------------------------\\\ ConsolePlayer.h ///---------------------------*/
 
-#include "src/core/IPlayer.h"
+#include "core/IPlayer.h"
 #include <string>
 
 namespace pinterface

@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "src/core/Card.h"
+#include "core/Card.h"
 
 TEST(Card, ConstructorRankTooLowError)
 {

@@ -18,9 +18,9 @@
 #define Player_H
 
 #include <string>
-#include "src/core/Hand.h"
-#include "src/core/IPlayer.h"
-#include "Money.h"
+#include "core/Hand.h"
+#include "core/IPlayer.h"
+#include "core/Money.h"
 
 namespace pcore
 {

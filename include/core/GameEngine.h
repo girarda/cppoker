@@ -14,9 +14,9 @@
  *
  *--------------------------\\\ GameEngine.h ///---------------------------*/
 
-#include "src/core/Player.h"
-#include "src/core/Deck.h"
-#include "Money.h"
+#include "core/Player.h"
+#include "core/Deck.h"
+#include "core/Money.h"
 
 namespace pcore
 {
