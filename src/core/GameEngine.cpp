@@ -23,7 +23,7 @@ namespace pcore
      *
      * \brief Default GameEngine constructor
      */
-    GameEngine::GameEngine(): mVPlayers(), mPlayingPlayers(0), mPot(0), mBigBlind(20),
+    GameEngine::GameEngine(): mVPlayers(), mPlayingPlayers(0), mBigBlind(20),
     mBigBlindPlayer(0), mSmallBlindPlayer(0), mDealer(0), mBet(0)
     {
     }
@@ -33,15 +33,19 @@ namespace pcore
      *
      * \brief starts a new poker game
      */
-    void GameEngine::startGame()
+    void GameEngine::start()
     {
-        while(mPlayingPlayers > 1)
+        for (Player* p: mVPlayers)
+        {
+            p->start();
+        }
+        /*while(mPlayingPlayers > 1)
         {
             tableTurn();
             if (mTableTurns % 2 == 0)
                 mBigBlind *= 2;
         }
-        announceWinner();
+        announceWinner();*/
     }
 
     /**
@@ -72,10 +76,10 @@ namespace pcore
      */
     void GameEngine::preFlop()
     {
-        for (Player p: mVPlayers)
+        for (Player* p: mVPlayers)
         {
-            p.addCard(mDeck.draw());
-            p.addCard(mDeck.draw());
+            p->addCard(mDeck.draw());
+            p->addCard(mDeck.draw());
         }
         playRound(mBigBlind);
     }
@@ -90,11 +94,11 @@ namespace pcore
         Card c1 = mDeck.draw();
         Card c2 = mDeck.draw();
         Card c3 = mDeck.draw();
-        for (Player p: mVPlayers)
+        for (Player* p: mVPlayers)
         {
-            p.addCard(c1);
-            p.addCard(c2);    
-            p.addCard(c3);    
+            p->addCard(c1);
+            p->addCard(c2);    
+            p->addCard(c3);    
         }
         playRound(mBigBlind);
     }
@@ -107,9 +111,9 @@ namespace pcore
     void GameEngine::turn()
     {
         Card c1 = mDeck.draw();
-        for (Player p: mVPlayers)
+        for (Player* p: mVPlayers)
         {
-            p.addCard(c1);
+            p->addCard(c1);
         }
         playRound(2*mBigBlind);
     }
@@ -122,9 +126,9 @@ namespace pcore
     void GameEngine::river()
     {
         Card c1 = mDeck.draw();
-        for (Player p: mVPlayers)
+        for (Player* p: mVPlayers)
         {
-            p.addCard(c1);
+            p->addCard(c1);
         }
         playRound(2*mBigBlind);
     }
@@ -136,13 +140,13 @@ namespace pcore
      */
     void GameEngine::showdown()
     {
-        Player* winner = &mVPlayers[0];
-        for (Player p: mVPlayers)
+        Player* winner = mVPlayers[0];
+        for (Player* p: mVPlayers)
         {
-            if (p.getHand() > winner->getHand())
-                winner = &p;
+            if (p->hasBetterHand(*winner))
+                winner = p;
         }
-        winner->setMoney(winner->getMoney() + mPot);
+        winner->winMoney(getTotalPot());
         announceWinner();
     }
 
@@ -151,32 +155,27 @@ namespace pcore
      *
      * \brief Announce the information to a player and ask for his decision.
      */
-    void GameEngine::playerTurn(Player& player, Money minBet)
+    void GameEngine::playerTurn(Player* player, Money minBet)
     {
         announcements(player);
-        if (player.isPlaying() && !player.isFolded())
+        if (player->isPlaying() && !player->isFolded())
         {
-            Decision d = player.makeDecision();
+            Decision d = player->makeDecision();
             if (d == CHECK)
             {
-                if (player.getPot() < mBet)
+                if (player->getPot() < mBet)
                 {
-                    Money m = mBet-player.getPot();
-                    player.addToPot(m);
-                    mPot += m;
-                    
+                    player->addToPot(mBet); 
                 }
             }
             else if (d == FOLD)
             {
-                player.setFold(true);
+                player->fold();
             }
             else
             {
-                Money m = mBet-player.getPot() + minBet;
-                player.addToPot(m);
-                mPot += m;
                 mBet += minBet;
+                player->addToPot(mBet);
             }
         }
     }
@@ -186,18 +185,18 @@ namespace pcore
      *
      * \brief Announce the game's information to the player
      */
-    void GameEngine::announcements(const Player& player)
+    void GameEngine::announcements(const Player* player)
     {
-        player.seeDealer(mDealer->getName());
-        player.seeBigBlind(mBigBlindPlayer->getName(), mBigBlind);
-        player.seeSmallBlind(mSmallBlindPlayer->getName(), mBigBlind/2);
-        player.seeCards();
-        player.seeMoney();
+        player->seeDealer(*mDealer);
+        player->seeBigBlind(*mBigBlindPlayer, mBigBlind);
+        player->seeSmallBlind(*mSmallBlindPlayer, mBigBlind/2);
+        player->seeCards();
+        player->seeMoney();
 
-        for (Player p : mVPlayers)
+        for (Player* p : mVPlayers)
         {
-            player.seeOpponentCards(p.getName(), p.getHand());
-            player.seeOpponentMoney(p.getName(), p.getMoney());
+            player->seeOpponentCards(*p);
+            player->seeOpponentMoney(*p);
         }
     }
 
@@ -208,25 +207,27 @@ namespace pcore
      */
     void GameEngine::announceWinner()
     {
-        std::string winner;
-        for (Player p: mVPlayers)
+        Player* winner;
+        for (Player* p: mVPlayers)
         {
-            if (p.isPlaying())
-                winner = p.getName();
-            break;
+            if (p->isPlaying())
+            {
+                winner = p;
+                break;
+            }
         }
-        for (Player p: mVPlayers)
+        for (Player* p: mVPlayers)
         {
-            p.seeWinner(winner);
+            p->seeWinner(*winner);
         }
     }
 
     /**
-     * \fn void GameEngine::addPlayer(const Player& player)
+     * \fn void GameEngine::addPlayer(const Player* player)
      * 
      * \brief Add a new player in the game
      */
-    void GameEngine::addPlayer(const Player& player)
+    void GameEngine::addPlayer(Player* player)
     {
         mVPlayers.push_back(player);
         mPlayingPlayers++;
@@ -240,7 +241,7 @@ namespace pcore
     void GameEngine::playRound(Money minBet)
     {
 
-        for (Player p: mVPlayers)
+        for (Player* p: mVPlayers)
         {
             playerTurn(p, minBet);
         }
@@ -253,13 +254,29 @@ namespace pcore
      */
     void GameEngine::initTableTurn()
     {
-        mPot = 0;
         mBet = 0;
         mDeck.shuffle();
-        for (Player p: mVPlayers)
+        for (Player* p: mVPlayers)
         {
-            p.setFold(false);
-            p.clearPot();
+            p->setupForNewTableTurn();
         }
     }
+
+    Money GameEngine::getTotalPot()
+    {
+        Money totalPot = 0;
+        for (Player* p: mVPlayers)
+        {
+            totalPot += p->getPot();
+        }
+        return totalPot;
+    }
+
+    int GameEngine::getNumberOfPlayers() const
+    {
+        return mVPlayers.size();
+    }
 }
+
+
+

@@ -20,6 +20,7 @@
 #include <string>
 #include "src/core/Hand.h"
 #include "src/core/IPlayer.h"
+#include "Money.h"
 
 namespace pcore
 {
@@ -29,32 +30,34 @@ class Player
     public:
         Player(IPlayer *playerImpl);
 
-        Decision makeDecision();
+        virtual Decision makeDecision();
 
-        void setMoney(Money newValue);
-        void setName(std::string name);
-        void setFold(bool fold);
-        void clearPot();
+        virtual void setMoney(Money newValue);
+        virtual void setName(std::string name);
 
-        Money getMoney() const;
-        std::string getName() const;
-        Hand getHand() const;
-        Money getPot() const;
+        virtual void start();
+        virtual void fold();
+        virtual void setupForNewTableTurn();
+        virtual void clearPot();
 
-        bool isPlaying() const;
-        bool isFolded() const;
+        virtual bool hasBetterHand(const Player& other) const;
+        virtual Money getPot() const;
 
-        void addCard(const Card& card);
-        void addToPot(Money m);
+        virtual bool isPlaying() const;
+        virtual bool isFolded() const;
 
-        void seeDealer(std::string dealer) const;
-        void seeBigBlind(std::string player, Money bigBlind) const;
-        void seeSmallBlind(std::string player, Money smallBlind) const;
-        void seeWinner(std::string winner) const;
-        void seeOpponentCards(std::string opponnent, const Hand& hand) const;
-        void seeOpponentMoney(std::string opponnent, Money money) const; 
-        void seeCards() const;
-        void seeMoney() const;
+        virtual void addCard(const Card& card);
+        virtual void addToPot(Money bet);
+        virtual void winMoney(Money gainedMoney);
+
+        virtual void seeDealer(const Player& dealer) const;
+        virtual void seeBigBlind(const Player& player, Money bigBlind) const;
+        virtual void seeSmallBlind(const Player& player, Money smallBlind) const;
+        virtual void seeWinner(const Player& winner) const;
+        virtual void seeOpponentCards(const Player& opponent) const;
+        virtual void seeOpponentMoney(const Player& opponnent) const; 
+        virtual void seeCards() const;
+        virtual void seeMoney() const;
 
     private:
         Hand mHand;
@@ -65,6 +68,9 @@ class Player
         bool mSmallBlind;
         bool mIsPlaying;
         bool mIsFolded;
+        std::string mName;
+        pcore::Money mMoney;
+        pcore::Money mPot;
 
 };
 

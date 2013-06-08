@@ -32,10 +32,8 @@ namespace pcore
      */
     void Player::setMoney(Money newValue)
     {
-        mPlayer->setMoney(newValue);
+        mMoney = newValue;
     }
-
-
 
     /**
      * \fn void Player::setName(std::string name)
@@ -44,7 +42,12 @@ namespace pcore
      */
     void Player::setName(std::string name)
     {
-        mPlayer->setName(name);
+        mName = name;
+    }
+
+    void Player::start()
+    {
+        mIsPlaying = true;
     }
 
     /**
@@ -52,9 +55,14 @@ namespace pcore
      *
      * \brief Fold or unfold
      */
-    void Player::setFold(bool fold)
+    void Player::fold()
     {
-        mIsFolded = fold;
+        mIsFolded = true;
+    }
+
+    void Player::setupForNewTableTurn() {
+        mIsFolded = false;
+        clearPot();
     }
 
     /**
@@ -64,31 +72,7 @@ namespace pcore
      */
     void Player::clearPot()
     {
-        mPlayer->clearPot();
-    }
-
-    /**
-     * \fn Money Player::getMoney() const
-     *
-     * \brief Return the player's amount of money.
-     *
-     * \return the player's amount of money
-     */
-    Money Player::getMoney() const
-    {
-        return mPlayer->getMoney();
-    }
-
-    /**
-     * \fn std::string Player::getName() const
-     *
-     * \brief Return the player's name
-     *
-     * \return the player's name
-     */
-    std::string Player::getName() const
-    {
-        return mPlayer->getName();
+        mPot = 0;
     }
 
     /**
@@ -98,9 +82,9 @@ namespace pcore
      *
      * \return the player's hand
      */
-    Hand Player::getHand() const
+    bool Player::hasBetterHand(const Player& other) const
     {
-        return mHand;
+        return mHand > other.mHand;
     }
 
     /**
@@ -112,7 +96,7 @@ namespace pcore
      */
     Money Player::getPot() const
     {
-        return mPlayer->getPot();
+        return mPot;
     }
 
     /**
@@ -154,9 +138,16 @@ namespace pcore
      *
      * \brief Add money to the pot
      */
-    void Player::addToPot(Money m)
+    void Player::addToPot(Money bet)
     {
-        mPlayer->addToPot(m);
+        Money diffToAdd = bet - mPot;
+        mMoney -= diffToAdd;
+        mPot += diffToAdd;
+    }
+
+    void Player::winMoney(Money gainedMoney)
+    {
+        mMoney += gainedMoney;
     }
 
     /**
@@ -176,59 +167,59 @@ namespace pcore
      *
      * \brief Announce the dealer 
      */
-    void Player::seeDealer(std::string dealer) const
+    void Player::seeDealer(const Player& dealer) const
     {
-        mPlayer->seeDealer(dealer);
+        mPlayer->seeDealer(dealer.mName);
     }
 
     /**
-     * \fn void Player::seeBigBlind(std::string player, Money bigblind) const
+     * \fn void Player::seeBigBlind(const Player& player, Money bigblind) const
      *
-     * \brief Announce whoe the big blind is and its value.
+     * \brief Announce who the big blind is and its value.
      */
-    void Player::seeBigBlind(std::string player, Money bigBlind) const
+    void Player::seeBigBlind(const Player& player, Money bigBlind) const
     {
-        mPlayer->seeBigBlind(player, bigBlind);
+        mPlayer->seeBigBlind(player.mName, bigBlind);
     }
 
     /**
-     * \fn void Player::seeSmallBlind(std::string player, Money smallblind) const
+     * \fn void Player::seeSmallBlind(const Player& player, Money smallblind) const
      *
      * \brief Announce who the small blind is and its value.
      */
-    void Player::seeSmallBlind(std::string player, Money smallBlind) const
+    void Player::seeSmallBlind(const Player& player, Money smallBlind) const
     {
-        mPlayer->seeSmallBlind(player, smallBlind);
+        mPlayer->seeSmallBlind(player.mName, smallBlind);
     }
 
     /**
-     * \fn void Player::seeWinner(std::string winner) const
+     * \fn void Player::seeWinner(const Player& winner) const
      *
      * \brief Announce the winner
      */
-    void Player::seeWinner(std::string winner) const
+    void Player::seeWinner(const Player& winner) const
     {
-        mPlayer->seeWinner(winner);
+        mPlayer->seeWinner(winner.mName);
     }
 
     /**
-     * \fn void Player::seeOpponentCards(std::string opponent, const Hand& money) const
+     * \fn void Player::seeOpponentCards(const Player& opponent) const
      *
      * \brief Announce the opponent's cards
      */
-    void Player::seeOpponentCards(std::string opponent, const Hand& hand) const
+    void Player::seeOpponentCards(const Player& opponent) const
     {
-        mPlayer->seeOpponentCards(opponent, hand);
+        mPlayer->seeOpponentCards(opponent.mName, opponent.mHand);
     }
 
     /**
-     * \fn void Player::seeOpponentMoney(std::string opponent, Money money) const
+     * \fn void Player::seeOpponentMoney(const Player& opponent) const
      *
      * \brief Announce the opponent's money
      */
-    void Player::seeOpponentMoney(std::string opponent, Money money) const
+    void Player::seeOpponentMoney(const Player& opponent) const
     {
-        mPlayer->seeOpponentMoney(opponent, money);
+        mPlayer->seeOpponentMoney(opponent.mName, opponent.mMoney);
     }
 
     /**

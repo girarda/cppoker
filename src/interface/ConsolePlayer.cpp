@@ -27,7 +27,7 @@ namespace pinterface
      * \param[in] name The name of the player
      * \param[in] initMoney The player's initial money
      */
-    ConsolePlayer::ConsolePlayer(std::string name, pcore::Money initMoney): mName(name), mMoney(initMoney), mPot(0)
+    ConsolePlayer::ConsolePlayer()
     {
     }
 
@@ -64,30 +64,6 @@ namespace pinterface
                 return pcore::FOLD;
             }
         }
-    }
-
-    /**
-     * \fn void ConsolePlayer::setMoney(pcore::Money newValue)
-     *
-     * \brief Sets the new amount of money the player has.
-     *
-     * \param[in] newValue The new amount of money
-     */
-    void ConsolePlayer::setMoney(pcore::Money newValue)
-    {
-        mMoney = newValue;
-    }
-
-    /**
-     * \fn void ConsolePlayer::setName(std::string name)
-     *
-     * \brief Sets the new player's name.
-     *
-     * \param[in] The new name
-     */
-    void ConsolePlayer::setName(std::string name)
-    {
-        mName = name;
     }
 
     /**
@@ -186,63 +162,5 @@ namespace pinterface
     void ConsolePlayer::seeMoney() const
     {
         //TODO
-    }
-
-    /**
-     * \fn pcore::Money ConsolePlayer::getMoney() const
-     * 
-     * \brief Return the player's amount of money.
-     *
-     * \return the player's amount of money
-     */
-    pcore::Money ConsolePlayer::getMoney() const
-    {
-        return mMoney;
-    }
-
-    /**
-     * \fn pcore::Money ConsolePlayer::getPot() const
-     *
-     * \brief Return the player's pot.
-     *
-     * \return the player's pot
-     */
-    pcore::Money ConsolePlayer::getPot() const
-    {
-        return mPot;
-    }
-
-    /**
-     * \fn std::string ConsolePlayer::getName() const
-     *
-     * \brief Return the player's name.
-     *
-     * \return the player's name
-     */
-    std::string ConsolePlayer::getName() const
-    {
-        return mName;
-    }
-
-    /**
-     * \fn void ConsolePlayer::clearPot()
-     *
-     * \brief Reset the pot's amount of money to zero
-     */
-    void ConsolePlayer::clearPot()
-    {
-        mPot = 0;
-    }
-
-    /**
-     * \fn void ConsolePlayer::addToPot(pcore::Money m)
-     *
-     * \brief Add money to the player's pot
-     *
-     */
-    void ConsolePlayer::addToPot(pcore::Money m)
-    {
-        mMoney -= m;
-        mPot += m;
     }
 }

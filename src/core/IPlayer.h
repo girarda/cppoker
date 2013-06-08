@@ -18,10 +18,10 @@
 #define IPlayer_H
 
 #include "src/core/Hand.h"
+#include "Money.h"
 
 namespace pcore
 {
-    typedef float Money;
     enum Decision {FOLD, CHECK, CALL};
 
     class IPlayer
@@ -29,9 +29,6 @@ namespace pcore
     public:
         virtual Decision makeDecision() = 0;
 
-        virtual void setMoney(Money newValue) = 0;
-        virtual void setName(std::string name) = 0;
-        
         virtual void seeDealer(std::string dealer) const = 0;
         virtual void seeBigBlind(std::string player, Money bigBlind) const = 0;
         virtual void seeSmallBlind(std::string player, Money smallBlind ) const = 0;
@@ -40,13 +37,6 @@ namespace pcore
         virtual void seeOpponentMoney(std::string opponent, Money money) const = 0;
         virtual void seeCards(const Hand& hand) const = 0;
         virtual void seeMoney() const = 0;
-
-        virtual Money getPot() const = 0;
-        virtual Money getMoney() const = 0;
-        virtual std::string getName() const = 0;
-
-        virtual void clearPot() = 0;
-        virtual void addToPot(Money m) = 0;
     };
     
 }
