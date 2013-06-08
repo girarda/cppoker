@@ -28,9 +28,10 @@ namespace pcore
 class Player
 {
     public:
+
         Player(IPlayer *playerImpl);
 
-        virtual Decision makeDecision();
+        virtual Decision makeDecision(const Money &minBet);
 
         virtual void setMoney(Money newValue);
         virtual void setName(std::string name);
@@ -38,7 +39,6 @@ class Player
         virtual void start();
         virtual void fold();
         virtual void setupForNewTableTurn();
-        virtual void clearPot();
 
         virtual bool hasBetterHand(const Player& other) const;
         virtual Money getPot() const;
@@ -47,7 +47,7 @@ class Player
         virtual bool isFolded() const;
 
         virtual void addCard(const Card& card);
-        virtual void addToPot(Money bet);
+        virtual void addToPot(Money moneyToAdd);
         virtual void winMoney(Money gainedMoney);
 
         virtual void seeDealer(const Player& dealer) const;
@@ -58,16 +58,25 @@ class Player
         virtual void seeOpponentMoney(const Player& opponnent) const; 
         virtual void seeCards() const;
         virtual void seeMoney() const;
+        
+        // for testing purposes
+        Player(IPlayer *playerImpl, Hand* hand);
+        Money getMoney() const;
 
     private:
+        enum State {
+            PLAYING,
+            FOLDED,
+            NOT_PLAYING
+        };
+        void clearPot();
+
         Hand mHand;
 
         IPlayer *mPlayer;
 
-        bool mBigBlind;
-        bool mSmallBlind;
-        bool mIsPlaying;
-        bool mIsFolded;
+        State mCurrentState;
+
         std::string mName;
         pcore::Money mMoney;
         pcore::Money mPot;

@@ -19,7 +19,6 @@ namespace test
         MOCK_METHOD0(start, void());
         MOCK_METHOD0(fold, void());
         MOCK_METHOD0(setupForNewTableTurn, void());
-        MOCK_METHOD0(clearPot, void());
 
         MOCK_CONST_METHOD0(isPlaying, bool());
         MOCK_CONST_METHOD0(isFolded, bool());

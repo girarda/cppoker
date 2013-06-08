@@ -21,7 +21,7 @@ namespace pcore
     /**
      * \fn Player::Player(IPlayer playerImpl)
      */
-    Player::Player(IPlayer *playerImpl): mPlayer(playerImpl), mHand(), mBigBlind(false), mSmallBlind(false), mIsPlaying(false)
+    Player::Player(IPlayer *playerImpl): mPlayer(playerImpl), mHand(), mCurrentState(NOT_PLAYING), mMoney(0), mPot(0), mName("")
     {
     }
 
@@ -47,21 +47,21 @@ namespace pcore
 
     void Player::start()
     {
-        mIsPlaying = true;
+        mCurrentState = PLAYING;
     }
 
     /**
-     * \fn void Player::setFold(bool fold)
+     * \fn void Player::fold(bool fold)
      *
      * \brief Fold or unfold
      */
     void Player::fold()
     {
-        mIsFolded = true;
+        mCurrentState =  FOLDED;
     }
 
     void Player::setupForNewTableTurn() {
-        mIsFolded = false;
+        mCurrentState = PLAYING;
         clearPot();
     }
 
@@ -108,7 +108,7 @@ namespace pcore
      */
     bool Player::isPlaying() const
     {
-        return mIsPlaying;
+        return mCurrentState == PLAYING;
     }
 
     /**
@@ -120,7 +120,7 @@ namespace pcore
      */
     bool Player::isFolded() const
     {
-        return mIsFolded;
+        return mCurrentState == FOLDED;
     }
 
     /**
@@ -133,16 +133,10 @@ namespace pcore
         mHand.addCard(card);
     }
 
-    /**
-     * \fn void Player::addToPot(Money m)
-     *
-     * \brief Add money to the pot
-     */
-    void Player::addToPot(Money bet)
+    void Player::addToPot(Money moneyToAdd)
     {
-        Money diffToAdd = bet - mPot;
-        mMoney -= diffToAdd;
-        mPot += diffToAdd;
+        mMoney -= moneyToAdd;
+        mPot += moneyToAdd;
     }
 
     void Player::winMoney(Money gainedMoney)
@@ -150,16 +144,34 @@ namespace pcore
         mMoney += gainedMoney;
     }
 
-    /**
-     * \fn Decision Player::makeDecision()
-     *
-     * \brief Ask the player to make a decision
-     *
-     * \return the player's decision
-     */
-    Decision Player::makeDecision()
+    Decision Player::makeDecision(const Money& minBet)
     {
-        return mPlayer->makeDecision();
+        Decision decision;
+        bool decisionIsValid = false;
+        while(!decisionIsValid)
+        {
+            decision = mPlayer->makeDecision(minBet);
+            if (decision.choice == FOLD)
+            {
+                fold();
+                decisionIsValid = true;
+            }
+            else 
+            {
+                Money diffToAdd;
+                if (decision.choice == CHECK)
+                    diffToAdd = minBet - mPot;
+                else
+                    diffToAdd = decision.bet - mPot;
+                if (mMoney >= diffToAdd)
+                {
+                    addToPot(diffToAdd);
+                    decisionIsValid = true;
+                }
+
+            }
+        }
+        return decision;
     }
 
     /**
@@ -239,6 +251,15 @@ namespace pcore
      */
     void Player::seeMoney() const
     {
-        mPlayer->seeMoney();
+        mPlayer->seeMoney(mMoney);
+    }
+
+    Player::Player(IPlayer *playerImpl, Hand* hand): mPlayer(playerImpl), mHand(*hand), mCurrentState(NOT_PLAYING), mMoney(0), mPot(0), mName("")
+    {
+    }
+
+    Money Player::getMoney() const
+    {
+        return mMoney;
     }
 }

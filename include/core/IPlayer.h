@@ -22,12 +22,18 @@
 
 namespace pcore
 {
-    enum Decision {FOLD, CHECK, CALL};
+    enum Choice {FOLD, CHECK, CALL};
+
+    typedef struct Decision
+    {
+        Choice choice;
+        Money bet;
+    } Decision;
 
     class IPlayer
     {
     public:
-        virtual Decision makeDecision() = 0;
+        virtual Decision makeDecision(const Money& minBet) = 0;
 
         virtual void seeDealer(std::string dealer) const = 0;
         virtual void seeBigBlind(std::string player, Money bigBlind) const = 0;
@@ -36,7 +42,7 @@ namespace pcore
         virtual void seeOpponentCards(std::string opponent, const Hand& hand) const = 0;
         virtual void seeOpponentMoney(std::string opponent, Money money) const = 0;
         virtual void seeCards(const Hand& hand) const = 0;
-        virtual void seeMoney() const = 0;
+        virtual void seeMoney(const Money& money) const = 0;
     };
     
 }

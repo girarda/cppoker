@@ -38,10 +38,11 @@ namespace pinterface
      *
      * \return the player's Decision
      */
-    pcore::Decision ConsolePlayer::makeDecision()
+    pcore::Decision ConsolePlayer::makeDecision(const pcore::Money& minBet)
     {
         
         std::string choice;
+        pcore::Decision decision;
         
         while (true)
         {
@@ -50,20 +51,26 @@ namespace pinterface
             std::cin >> choice;
             if (choice == "CALL\n")
             {
-                //TODO call
-                return pcore::CALL;
-            }
+                decision.choice = pcore::CALL;
+                pcore::Money newBet;
+                do {
+                    std::cin >> newBet;
+                } while (std::cin.fail());
+                decision.bet = newBet;
+             }
+            
             else if (choice == "CHECK\n")
             {
-                //TODO check
-                return pcore::CHECK;
+                decision.choice = pcore::CHECK;
+                decision.bet = 0;
             }
             else if (choice == "FOLD\n")
             {
-                //TODO fold
-                return pcore::FOLD;
+                decision.choice = pcore::FOLD;
+                decision.bet = 0;
             }
         }
+        return decision;
     }
 
     /**
@@ -159,7 +166,7 @@ namespace pinterface
      *
      * \brief Announce the player's money
      */
-    void ConsolePlayer::seeMoney() const
+    void ConsolePlayer::seeMoney(const pcore::Money& money) const
     {
         //TODO
     }

@@ -81,7 +81,7 @@ namespace pcore
             p->addCard(mDeck.draw());
             p->addCard(mDeck.draw());
         }
-        playRound(mBigBlind);
+        playRound(mBet);
     }
 
     /**
@@ -100,7 +100,7 @@ namespace pcore
             p->addCard(c2);    
             p->addCard(c3);    
         }
-        playRound(mBigBlind);
+        playRound(mBet);
     }
 
     /**
@@ -115,7 +115,7 @@ namespace pcore
         {
             p->addCard(c1);
         }
-        playRound(2*mBigBlind);
+        playRound(mBet);
     }
 
     /**
@@ -130,7 +130,7 @@ namespace pcore
         {
             p->addCard(c1);
         }
-        playRound(2*mBigBlind);
+        playRound(mBet);
     }
 
     /**
@@ -158,24 +158,12 @@ namespace pcore
     void GameEngine::playerTurn(Player* player, Money minBet)
     {
         announcements(player);
-        if (player->isPlaying() && !player->isFolded())
+        if (player->isPlaying())
         {
-            Decision d = player->makeDecision();
-            if (d == CHECK)
+            Decision d = player->makeDecision(mBet);
+            if (d.choice == CALL)
             {
-                if (player->getPot() < mBet)
-                {
-                    player->addToPot(mBet); 
-                }
-            }
-            else if (d == FOLD)
-            {
-                player->fold();
-            }
-            else
-            {
-                mBet += minBet;
-                player->addToPot(mBet);
+                mBet = d.bet; //TODO a verifier
             }
         }
     }
@@ -254,7 +242,7 @@ namespace pcore
      */
     void GameEngine::initTableTurn()
     {
-        mBet = 0;
+        mBet = mBigBlind;
         mDeck.shuffle();
         for (Player* p: mVPlayers)
         {
