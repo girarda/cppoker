@@ -2,6 +2,8 @@
 #include "core/GameEngine.h"
 #include "PlayerMock.cc"
 
+using ::testing::Return;
+
 class GameEngineTest : public ::testing::Test
 {
     protected:
@@ -51,10 +53,9 @@ TEST_F(GameEngineTest, initatingATableTurnSetsThePlayerForATableTurn)
 
 TEST_F(GameEngineTest, startingANewGameMakesEveryPlayersStart)
 {
-    EXPECT_CALL(*anotherPlayer, start()).Times(1);
+    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
     EXPECT_CALL(*aPlayer, start()).Times(1);
     game.addPlayer(aPlayer);
-    game.addPlayer(anotherPlayer);
 
     game.start();
 }

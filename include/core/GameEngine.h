@@ -46,12 +46,12 @@ class GameEngine
         void betBlinds();
 
         int getNumberOfPlayers() const;
+        int getNumberOfPlayingPlayers() const;
 
     private:
 
         Deck mDeck;
         std::vector<Player*> mVPlayers;
-        int mPlayingPlayers;
         int mTableTurns;
         float mBet;
         float mBigBlind;

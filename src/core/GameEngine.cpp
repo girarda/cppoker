@@ -23,7 +23,7 @@ namespace pcore
      *
      * \brief Default GameEngine constructor
      */
-    GameEngine::GameEngine(): mVPlayers(), mPlayingPlayers(0), mBigBlind(20),
+    GameEngine::GameEngine(): mVPlayers(), mBigBlind(20),
     mBigBlindPlayer(0), mSmallBlindPlayer(0), mDealer(0), mBet(0)
     {
     }
@@ -39,13 +39,13 @@ namespace pcore
         {
             p->start();
         }
-        /*while(mPlayingPlayers > 1)
+        while(getNumberOfPlayingPlayers() > 1)
         {
             tableTurn();
             if (mTableTurns % 2 == 0)
                 mBigBlind *= 2;
         }
-        announceWinner();*/
+        announceWinner();
     }
 
     /**
@@ -60,11 +60,11 @@ namespace pcore
         betBlinds();
 
         preFlop();
-        if (mPlayingPlayers > 1)
+        if (getNumberOfPlayingPlayers() > 1)
             flop();
-        if (mPlayingPlayers > 1)
+        if (getNumberOfPlayingPlayers() > 1)
             turn();
-        if (mPlayingPlayers > 1)
+        if (getNumberOfPlayingPlayers() > 1)
             river();
         showdown();
 
@@ -215,7 +215,6 @@ namespace pcore
     void GameEngine::addPlayer(Player* player)
     {
         mVPlayers.push_back(player);
-        mPlayingPlayers++;
     }
 
     void GameEngine::playRound(float minBet)
@@ -261,6 +260,17 @@ namespace pcore
     int GameEngine::getNumberOfPlayers() const
     {
         return mVPlayers.size();
+    }
+
+    int GameEngine::getNumberOfPlayingPlayers() const
+    {
+        int nbPlayingPlayers = 0;
+        for (Player* p: mVPlayers)
+        {
+            if (p->isPlaying())
+                nbPlayingPlayers++;
+        }
+        return nbPlayingPlayers;
     }
 }
 
