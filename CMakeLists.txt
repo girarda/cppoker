@@ -20,6 +20,11 @@ set(GMOCK_DIR ext/gmock)
 
 set(USE_TESTS true)
 
+set(Boost_USE_STATIC_LIBS   ON)
+set(Boost_USE_MULTITHREADED ON)
+find_package(Boost REQUIRED system thread )
+find_package(Threads REQUIRED)
+
 set(VERSION "${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}")
 # So we can build outside of the main directory
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/inc ${CMAKE_CURRENT_SOURCE_DIR})
@@ -30,6 +35,7 @@ include_directories("${PROJECT_INCLUDE_DIR}")
 
 file(GLOB_RECURSE files_SRC
       "./src/*.cpp"
+      "./include/*.h"
 )
 
 ####################
@@ -74,5 +80,5 @@ target_link_libraries(unittests gtest_main ${Boost_LIBRARIES})
 endif(USE_TESTS)
 
 # Build the real deal
-#add_executable(main src/main.cpp ${files_SRC})
-#target_link_libraries(main ${Boost_LIBRARIES})
+add_executable(main main.cpp ${files_SRC})
+target_link_libraries(main ${Boost_LIBRARIES})
