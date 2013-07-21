@@ -47,6 +47,7 @@ namespace pcore
         HandValue getStraightValue() const;
         HandValue getFlushValue() const;
         HandValue getFullHouseValue() const;
+        HandValue getFourOfAKindValue() const;
         HandValue getStraightFlushValue() const;
 
         int size;

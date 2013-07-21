@@ -171,7 +171,6 @@ TEST_F(HandTest, handValueStoresTwoHighestCardsNotInToaKWhenContainsThreeOfAKind
     pcore::HandValue handValue = h.getHandValue();
 
     ASSERT_EQ(threeOfAKindHandValue, handValue);
-    
 }
 
 TEST_F(HandTest, serieOf4CardsIsNotAStraight)
@@ -300,29 +299,51 @@ TEST_F(HandTest, handValueIsFullHouseWhenHandContainsFullHouse)
 {
     h.addCard(pcore::Card(7, pcore::SPADE));
     h.addCard(pcore::Card(7, pcore::HEART));
-    h.addCard(pcore::Card(7, pcore::DIAMOND));
-    h.addCard(pcore::Card(7, pcore::CLUB));
+    h.addCard(pcore::Card(2, pcore::DIAMOND));
+    h.addCard(pcore::Card(2, pcore::CLUB));
+    h.addCard(pcore::Card(2, pcore::HEART));
 
-    pcore::HandValue fullHouseValue = {pcore::FULL_HOUSE, {7, 0, 0, 0, 0}};
+    pcore::HandValue fullHouseValue = {pcore::FULL_HOUSE, {2, 7, 0, 0, 0}};
 
     pcore::HandValue handValue = h.getHandValue();
 
     ASSERT_EQ(fullHouseValue, handValue);
 }
 
-TEST_F(HandTest, handValueStoresHighestCardNotInFullHouseWhenContainsFullHouse)
+TEST_F(HandTest, handValueIsFourOfAKindWhenHandContainsFourOfAKind)
 {
-    h.addCard(pcore::Card(7, pcore::SPADE));
-    h.addCard(pcore::Card(7, pcore::HEART));
-    h.addCard(pcore::Card(7, pcore::DIAMOND));
-    h.addCard(pcore::Card(7, pcore::CLUB));
-    h.addCard(pcore::Card(4, pcore::SPADE));
+    int A_RANK = 8;
+    h.addCard(pcore::Card(A_RANK, pcore::SPADE));
+    h.addCard(pcore::Card(A_RANK, pcore::HEART));
+    h.addCard(pcore::Card(A_RANK, pcore::DIAMOND));
+    h.addCard(pcore::Card(A_RANK, pcore::CLUB));
 
-    pcore::HandValue fullHouseValue = {pcore::FULL_HOUSE, {7, 4, 0, 0, 0}};
+    pcore::HandValue fourOfAKindHandValue = {pcore::FOUR_OF_A_KIND, {A_RANK, 0, 0, 0, 0}};
 
     pcore::HandValue handValue = h.getHandValue();
 
-    ASSERT_EQ(fullHouseValue, handValue);
+    ASSERT_EQ(fourOfAKindHandValue, handValue);
+}
+
+TEST_F(HandTest, handValueStoresHighestCardsNotInFoaKWhenContainsFoutOfAKind)
+{
+    int A_RANK = 8;
+    int HIGHEST_RANK_NOT_IN_TOAK = pcore::KING;
+    int SECOND_HIGHEST_RANK_NOT_IN_TOAK = 10;
+    int RANK_LOWER_THAN_TOAK = 5;
+    h.addCard(pcore::Card(A_RANK, pcore::SPADE));
+    h.addCard(pcore::Card(A_RANK, pcore::HEART));
+    h.addCard(pcore::Card(A_RANK, pcore::DIAMOND));
+    h.addCard(pcore::Card(A_RANK, pcore::CLUB));
+    h.addCard(pcore::Card(RANK_LOWER_THAN_TOAK, pcore::SPADE));
+    h.addCard(pcore::Card(SECOND_HIGHEST_RANK_NOT_IN_TOAK, pcore::HEART));
+    h.addCard(pcore::Card(HIGHEST_RANK_NOT_IN_TOAK, pcore::DIAMOND));
+
+    pcore::HandValue fourOfAKindHandValue = {pcore::FOUR_OF_A_KIND, {A_RANK, HIGHEST_RANK_NOT_IN_TOAK, 0, 0, 0}};
+
+    pcore::HandValue handValue = h.getHandValue();
+
+    ASSERT_EQ(fourOfAKindHandValue, handValue);
 }
 
 TEST_F(HandTest, handValueIsStraightFlushWhenContainsStraightFlush)
