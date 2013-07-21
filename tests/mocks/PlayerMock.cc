@@ -16,7 +16,7 @@ namespace test
         MOCK_METHOD1(setMoney, void(float newValue));
         MOCK_METHOD1(setName, void(std::string name));
 
-        MOCK_METHOD0(start, void());
+        MOCK_METHOD0(startPlaying, void());
         MOCK_METHOD0(fold, void());
         MOCK_METHOD0(setupForNewTableTurn, void());
 

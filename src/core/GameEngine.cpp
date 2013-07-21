@@ -15,6 +15,8 @@
  *--------------------------\\\ GameEngine.cpp ///---------------------------*/
 
 #include "core/GameEngine.h"
+#include <algorithm>
+#include "boost/bind.hpp"
 
 namespace pcore
 {
@@ -37,7 +39,7 @@ namespace pcore
     {
         for (Player* p: mVPlayers)
         {
-            p->start();
+            p->startPlaying();
         }
         while(getNumberOfPlayingPlayers() > 1)
         {
@@ -271,6 +273,24 @@ namespace pcore
                 nbPlayingPlayers++;
         }
         return nbPlayingPlayers;
+    }
+
+    void GameEngine::join(IPlayer* player)
+    {
+        Player* newPlayer = new Player(player);
+        mVPlayers.push_back(newPlayer);
+        deliver("A new player joined!");
+    }
+
+    void GameEngine::leave(IPlayer* player)
+    {
+      //mVPlayers.erase(player);
+    }
+
+    void GameEngine::deliver(const std::string& msg)
+    {
+      std::for_each(mVPlayers.begin(), mVPlayers.end(),
+          boost::bind(&Player::deliver, _1, boost::ref(msg)));
     }
 }
 

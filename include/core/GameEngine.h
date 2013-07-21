@@ -16,11 +16,12 @@
 
 #include "core/Player.h"
 #include "core/Deck.h"
+#include "network/OnlineRoom.h"
 
 namespace pcore
 {
 
-class GameEngine
+class GameEngine : public network::OnlineRoom
 {
     public:
         GameEngine();
@@ -47,6 +48,10 @@ class GameEngine
 
         int getNumberOfPlayers() const;
         int getNumberOfPlayingPlayers() const;
+
+        virtual void join(IPlayer* player);
+        virtual void leave(IPlayer* player);
+        virtual void deliver(const std::string& mesage);
 
     private:
 

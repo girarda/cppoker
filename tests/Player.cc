@@ -55,7 +55,7 @@ TEST_F(PlayerTest, newPlayerHasNoMoneyInPot)
 
 TEST_F(PlayerTest, playerIsPlayingAfterStarting)
 {
-    aPlayer->start();
+    aPlayer->startPlaying();
 
     bool playerIsPlaying = aPlayer->isPlaying();
 
@@ -64,7 +64,7 @@ TEST_F(PlayerTest, playerIsPlayingAfterStarting)
 
 TEST_F(PlayerTest, playerIsNotFoldedAfterSetupingANewTableTurn)
 {
-    aPlayer->start();
+    aPlayer->startPlaying();
     aPlayer->setupForNewTableTurn();
 
     bool playerIsFolded = aPlayer->isFolded();
@@ -74,7 +74,7 @@ TEST_F(PlayerTest, playerIsNotFoldedAfterSetupingANewTableTurn)
 
 TEST_F(PlayerTest, playerIsFoldedWhenFoldingAfterSetupingAnewTableTurn)
 {
-    aPlayer->start();
+    aPlayer->startPlaying();
     aPlayer->setupForNewTableTurn();
     aPlayer->fold();
 
@@ -86,7 +86,7 @@ TEST_F(PlayerTest, playerIsFoldedWhenFoldingAfterSetupingAnewTableTurn)
 TEST_F(PlayerTest, playerPotIsClearedWhenSettingForNewTableTurn)
 {
     aPlayer->setMoney(5);
-    aPlayer->start();
+    aPlayer->startPlaying();
     aPlayer->addToPot(5);
     aPlayer->setupForNewTableTurn();
 

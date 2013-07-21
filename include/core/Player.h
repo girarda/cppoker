@@ -35,7 +35,7 @@ class Player
         virtual void setMoney(float newValue);
         virtual void setName(std::string name);
 
-        virtual void start();
+        virtual void startPlaying();
         virtual void fold();
         virtual void setupForNewTableTurn();
 
@@ -57,6 +57,8 @@ class Player
         virtual void seeOpponentMoney(const Player& opponnent) const; 
         virtual void seeCards() const;
         virtual void seeMoney() const;
+
+        virtual void deliver(const std::string& msg);
         
         // for testing purposes
         Player(IPlayer *playerImpl, Hand* hand);

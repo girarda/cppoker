@@ -19,6 +19,7 @@ namespace test
         MOCK_CONST_METHOD2(seeOpponentMoney, void(std::string opponent, float));
         MOCK_CONST_METHOD1(seeCards, void(const pcore::Hand& hand));
         MOCK_CONST_METHOD1(seeMoney, void(const float money));
+        MOCK_METHOD1(deliver, void(const std::string& msg));
     };
 }
 

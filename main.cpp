@@ -1,32 +1,32 @@
-#include "communication/Server.h"
+/*
+* main.cpp
+*
+*/
 
-int main(int argc, char* argv[])
-{
-  try
-  {
-    if (argc < 2)
-    {
-      std::cerr << "Usage: chat_server <port> [<port> ...]\n";
-      return 1;
-    }
+#include <iostream>
+#include <ctime>
+#include <exception>
+#include "network/Server.h"
+#include "network/OnlineRoom.h"
+#include "core/GameEngine.h"
 
-    boost::asio::io_service io_service;
+using namespace std;
 
-    ChatServerList servers;
-    for (int i = 1; i < argc; ++i)
-    {
-      using namespace std; // For atoi.
-      tcp::endpoint endpoint(tcp::v4(), atoi(argv[i]));
-      ChatServerPtr server(new ChatServer(io_service, endpoint));
-      servers.push_back(server);
-    }
+void init();
 
-    io_service.run();
-  }
-  catch (std::exception& e)
-  {
-    std::cerr << "Exception: " << e.what() << "\n";
-  }
+int main(int argc, char** argv) {
 
-  return 0;
+init();
+
+network::OnlineRoom* room = new pcore::GameEngine();
+network::Server ts(room);
+ts.InitialiseService(); //function does not return.
+
+return 0;
 }
+
+/* This function is critical for RNG */
+void init() {;
+srand(time(nullptr));
+}
+

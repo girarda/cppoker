@@ -54,7 +54,7 @@ TEST_F(GameEngineTest, initatingATableTurnSetsThePlayerForATableTurn)
 TEST_F(GameEngineTest, startingANewGameMakesEveryPlayersStart)
 {
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
-    EXPECT_CALL(*aPlayer, start()).Times(1);
+    EXPECT_CALL(*aPlayer, startPlaying()).Times(1);
     game.addPlayer(aPlayer);
 
     game.start();

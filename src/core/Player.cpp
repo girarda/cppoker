@@ -40,7 +40,7 @@ namespace pcore
         mName = name;
     }
 
-    void Player::start()
+    void Player::startPlaying()
     {
         mCurrentState = PLAYING;
     }
@@ -239,5 +239,10 @@ namespace pcore
     float Player::getMoney() const
     {
         return mMoney;
+    }
+
+    void Player::deliver(const std::string& msg)
+    {
+        mPlayer->deliver(msg);
     }
 }

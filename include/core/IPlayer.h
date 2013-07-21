@@ -34,6 +34,8 @@ namespace pcore
     public:
         virtual Decision makeDecision(float minBet) = 0;
 
+        virtual void deliver(const std::string& msg) = 0;
+
         virtual void seeDealer(std::string dealer) const = 0;
         virtual void seeBigBlind(std::string player, float bigBlind) const = 0;
         virtual void seeSmallBlind(std::string player, float smallBlind ) const = 0;
