@@ -1,17 +1,17 @@
 #ifndef PLAYERMOCK_H_
 #define PLAYERMOCK_H_
 
-#include "core/Player.h"
+#include "pokerGame/Player.h"
 #include "gmock/gmock.h"
 
 namespace test
 {
-    class PlayerMock : public pcore::Player
+    class PlayerMock : public pokerGame::Player
     {
         public:
         PlayerMock(): Player(NULL){};
 
-        MOCK_METHOD0(makeDecision, pcore::Decision());
+        MOCK_METHOD0(makeDecision, pokerGame::Decision());
 
         MOCK_METHOD1(setMoney, void(float newValue));
         MOCK_METHOD1(setName, void(std::string name));
@@ -24,7 +24,7 @@ namespace test
         MOCK_CONST_METHOD0(isFolded, bool());
         MOCK_CONST_METHOD1(hasBetterHand, bool(const Player& other));
 
-        MOCK_METHOD1(addCard, void(const pcore::Card& card));
+        MOCK_METHOD1(addCard, void(const pokerGame::Card& card));
         MOCK_METHOD1(addToPot, void(float bet));
         MOCK_METHOD1(winMoney, void(float gainedMoney));
 

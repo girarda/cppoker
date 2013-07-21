@@ -1,7 +1,7 @@
-#include "core/Hand.h"
+#include "pokerGame/Hand.h"
 #include <algorithm>
 
-namespace pcore
+namespace pokerGame
 {
 Hand::Hand(): size(0) ,cards(), bestHand(NO_HAND_VALUE)
 {}
@@ -11,7 +11,7 @@ int Hand::getSize() const
     return cards.size();
 }
 
-void Hand::addCard(const pcore::Card &aCard)
+void Hand::addCard(const pokerGame::Card &aCard)
 {
     cards.push_back(aCard);
     calculateBestHand();
@@ -291,7 +291,7 @@ bool Hand::operator<(const Hand& other) const
         return bestHand.type < other.getHandValue().type;
     }
 
-    for( int i(0) ; i < pcore::HAND_SIZE ; i++ )
+    for( int i(0) ; i < pokerGame::HAND_SIZE ; i++ )
     {
         if (bestHand.ranks[i] != other.getHandValue().ranks[i])
         {

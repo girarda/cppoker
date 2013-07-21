@@ -7,41 +7,41 @@ namespace network
 {
 
 Server::Server(OnlineRoom* onlineRoom) :
-io_service(),
-  room(onlineRoom),
-connection_acceptor(io_service, tcp::endpoint(tcp::v4(), TELNET_PORT_NUMBER))
+    ioServer(),
+    room(onlineRoom),
+    connectionAcceptor(ioServer, tcp::endpoint(tcp::v4(), TELNET_PORT_NUMBER))
 { }
 
-void Server::InitialiseService() {
+void Server::initService() {
 
-StartAccept();
-io_service.run();
-
-}
-
-void Server::StartAccept() {
-
-TelnetPlayer *new_player = new TelnetPlayer(io_service, room);
-
-connection_acceptor.async_accept(
-new_player->GetSocket(),
-boost::bind(
-&Server::HandleAccept,
-this,
-new_player,
-boost::asio::placeholders::error
-)
-);
+    startAccept();
+    ioServer.run();
 
 }
 
-void Server::HandleAccept(OnlineUser* newUser, const boost::system::error_code& error) {
+void Server::startAccept() {
 
-if (!error) {
-newUser->start();
+    TelnetPlayer *newPlayer = new TelnetPlayer(ioServer, room);
+
+    connectionAcceptor.async_accept(
+                newPlayer->getSocket(),
+                boost::bind(
+                    &Server::handleAccept,
+                    this,
+                    newPlayer,
+                    boost::asio::placeholders::error
+                    )
+                );
+
 }
 
-StartAccept();
+void Server::handleAccept(OnlineUser* newUser, const boost::system::error_code& error) {
+
+    if (!error) {
+        newUser->start();
+    }
+
+    startAccept();
 }
 
 }

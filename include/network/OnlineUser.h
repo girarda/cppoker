@@ -3,14 +3,18 @@
 
 #include "boost/asio.hpp"
 
+namespace network
+{
+
 using boost::asio::ip::tcp;
 
 class OnlineUser
 {
 public:
     virtual void start() = 0;
-    virtual tcp::socket& GetSocket() = 0;
-
+    virtual tcp::socket& getSocket() = 0;
 };
 
-#endif // ONLINEUSER_H
+}
+
+#endif

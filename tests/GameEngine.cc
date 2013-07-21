@@ -1,27 +1,27 @@
 #include "gtest/gtest.h"
-#include "core/GameEngine.h"
+#include "pokerGame/GameEngine.h"
 #include "PlayerMock.cc"
 
 using ::testing::Return;
 
 class GameEngineTest : public ::testing::Test
 {
-    protected:
-        pcore::GameEngine game;
+protected:
+    pokerGame::GameEngine game;
 
-        test::PlayerMock* aPlayer;
-        test::PlayerMock* anotherPlayer;
+    test::PlayerMock* aPlayer;
+    test::PlayerMock* anotherPlayer;
 
-        virtual void SetUp()
-        {
-            aPlayer = new test::PlayerMock();
-            anotherPlayer = new test::PlayerMock();
-        }
-        virtual void TearDown()
-        {
-            delete aPlayer;
-            delete anotherPlayer;
-        }
+    virtual void SetUp()
+    {
+        aPlayer = new test::PlayerMock();
+        anotherPlayer = new test::PlayerMock();
+    }
+    virtual void TearDown()
+    {
+        delete aPlayer;
+        delete anotherPlayer;
+    }
 
 };
 
