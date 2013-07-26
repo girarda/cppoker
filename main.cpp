@@ -15,6 +15,8 @@ int main(int argc, char** argv) {
     network::Server ts(room);
     ts.initService(); //function does not return.
 
+    delete room;
+
     return 0;
 }
 

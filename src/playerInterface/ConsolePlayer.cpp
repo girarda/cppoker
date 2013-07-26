@@ -1,4 +1,5 @@
 #include "playerInterface/ConsolePlayer.h"
+#include "utils/Utils.h"
 #include <iostream>
 
 namespace playerInterface
@@ -42,44 +43,53 @@ pokerGame::Decision ConsolePlayer::makeDecision(float minBet)
     return decision;
 }
 
-void ConsolePlayer::seeDealer(std::string dealer) const
+void ConsolePlayer::seeDealer(std::string dealer)
 {
-    std::cout << "The new dealer is " << dealer << "." << std::endl;
+    std::string message = "The new dealer is " + dealer + ".";
+    deliver(message);
 }
 
-void ConsolePlayer::seeBigBlind(std::string player, float bigBlind) const
+void ConsolePlayer::seeBigBlind(std::string player, float bigBlind)
 {
-    std::cout << "The big blind is " << bigBlind << " and the owned by " << player << "." << std::endl;
+    std::string message = "The big blind is " + utils::autoToString(bigBlind) + " and the owned by " + player + ".";
+    deliver(message);
 }
 
-void ConsolePlayer::seeSmallBlind(std::string player, float smallBlind) const
+void ConsolePlayer::seeSmallBlind(std::string player, float smallBlind)
 {
-    std::cout << "The small blind is " << smallBlind << " and the owned by " << player << "." << std::endl;
+    std::string message = "The small blind is " + utils::autoToString(smallBlind) + " and the owned by " + player + ".";
+    deliver(message);
 }
 
-void ConsolePlayer::seeWinner(std::string winner) const
+void ConsolePlayer::seeWinner(std::string winner)
 {
-    std::cout << "The winner is " << winner << "." << std::endl;
+    std::string message = "The winner is " + winner + ".";
+    deliver(message);
 }
 
-void ConsolePlayer::seeOpponentCards(std::string opponent, const pokerGame::Hand& hand) const
+void ConsolePlayer::seeOpponentCards(std::string opponent, const pokerGame::Hand& hand)
 {
     //TODO
 }
 
-void ConsolePlayer::seeOpponentMoney(std::string opponent, float money) const
+void ConsolePlayer::seeOpponentMoney(std::string opponent, float money)
 {
     //TODO
 }
 
-void ConsolePlayer::seeCards(const pokerGame::Hand& hand) const
+void ConsolePlayer::seeCards(const pokerGame::Hand& hand)
 {
     //TODO
 }
 
-void ConsolePlayer::seeMoney(float money) const
+void ConsolePlayer::seeMoney(float money)
 {
     //TODO
+}
+
+void ConsolePlayer::deliver(const std::string &msg)
+{
+    std::cout << msg << std::endl;
 }
 
 }

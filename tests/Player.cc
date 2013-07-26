@@ -15,18 +15,18 @@ protected:
     static const float NO_MONEY;
     static const float MONEY_WON;
 
-    virtual void SetUp()
-    {
-        aPlayerImpl = new test::IPlayerMock;
-        aHand = new test::HandMock;
-        aPlayer = new pokerGame::Player(aPlayerImpl, aHand);
-    }
-    virtual void TearDown()
-    {
-        delete aPlayer;
-        delete aHand;
-        delete aPlayerImpl;
-    }
+//    virtual void SetUp()
+//    {
+//        aPlayerImpl = new test::IPlayerMock;
+//        aHand = new test::HandMock;
+//        aPlayer = new pokerGame::Player(aPlayerImpl, aHand);
+//    }
+//    virtual void TearDown()
+//    {
+//        delete aPlayer;
+//        delete aHand;
+//        delete aPlayerImpl;
+//    }
 };
 
 const float PlayerTest::NO_MONEY(0);

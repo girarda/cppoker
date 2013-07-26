@@ -11,14 +11,16 @@ public:
 
     virtual pokerGame::Decision makeDecision(float minBet);
 
-    virtual void seeDealer(std::string dealer) const;
-    virtual void seeBigBlind(std::string player, float bigBlind) const;
-    virtual void seeSmallBlind(std::string player, float smallBlind) const;
-    virtual void seeWinner(std::string winner) const;
-    virtual void seeOpponentCards(std::string opponent, const pokerGame::Hand& hand) const;
-    virtual void seeOpponentMoney(std::string opponent, float money) const;
-    virtual void seeCards(const pokerGame::Hand& hand) const;
-    virtual void seeMoney(float money) const;
+    virtual void deliver(const std::string &msg);
+
+    virtual void seeDealer(std::string dealer);
+    virtual void seeBigBlind(std::string player, float bigBlind);
+    virtual void seeSmallBlind(std::string player, float smallBlind);
+    virtual void seeWinner(std::string winner);
+    virtual void seeOpponentCards(std::string opponent, const pokerGame::Hand& hand);
+    virtual void seeOpponentMoney(std::string opponent, float money);
+    virtual void seeCards(const pokerGame::Hand& hand);
+    virtual void seeMoney(float money);
 };
 
 }

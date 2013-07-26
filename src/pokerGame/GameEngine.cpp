@@ -10,6 +10,14 @@ GameEngine::GameEngine(): players(), bigBlind(20),
 {
 }
 
+GameEngine::~GameEngine()
+{
+    for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++)
+    {
+        delete *it;
+    }
+}
+
 void GameEngine::start()
 {
     for (Player* p: players)
@@ -112,7 +120,7 @@ void GameEngine::playerTurn(Player* player, float minBet)
     }
 }
 
-void GameEngine::announcements(const Player* player)
+void GameEngine::announcements(Player* player)
 {
     player->seeDealer(*dealer);
     player->seeBigBlind(*bigBlindPlayer, bigBlind);
@@ -168,6 +176,19 @@ void GameEngine::initTableTurn()
     }
 }
 
+void GameEngine::chooseNextDealer()
+{
+    if (!dealer)
+    {
+        dealer = players[0];
+        bigBlindPlayer = players[1];
+        smallBlindPlayer = players[2 % players.size()];
+    }
+    else
+    {
+    }
+}
+
 void GameEngine::betBlinds()
 {
     bigBlindPlayer->addToPot(bigBlind);
@@ -204,7 +225,11 @@ void GameEngine::join(IPlayer* player)
 {
     Player* newPlayer = new Player(player);
     players.push_back(newPlayer);
-    deliver("A new player joined!");
+    sendChatMessage("A new player joined!");
+    if (players.size() == 2)
+    {
+        start();
+    }
 }
 
 void GameEngine::leave(IPlayer* player)
@@ -212,10 +237,11 @@ void GameEngine::leave(IPlayer* player)
     //mVPlayers.erase(player);
 }
 
-void GameEngine::deliver(const std::string& msg)
+void GameEngine::sendChatMessage(const std::string& msg)
 {
     std::for_each(players.begin(), players.end(),
                   boost::bind(&Player::deliver, _1, boost::ref(msg)));
 }
+
 }
 

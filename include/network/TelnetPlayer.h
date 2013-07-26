@@ -2,6 +2,7 @@
 #define TELNETPLAYER_H_
 
 #include <boost/asio.hpp>
+#include <boost/lexical_cast.hpp>
 #include "network/OnlineRoom.h"
 #include "network/OnlineUser.h"
 #include "pokerGame/Hand.h"
@@ -31,20 +32,20 @@ public:
     float getTotalBalance();
     void setTotalBalance(float new_value);
 
-    virtual void seeDealer(std::string dealer) const;
-    virtual void seeBigBlind(std::string player, float bigBlind) const;
-    virtual void seeSmallBlind(std::string player, float smallBlind ) const;
-    virtual void seeWinner(std::string winner) const;
-    virtual void seeOpponentCards(std::string opponent, const pokerGame::Hand& hand) const;
-    virtual void seeOpponentMoney(std::string opponent, float money) const;
-    virtual void seeCards(const pokerGame::Hand& hand) const;
-    virtual void seeMoney(float money) const;
+    virtual void seeDealer(std::string dealer);
+    virtual void seeBigBlind(std::string player, float bigBlind);
+    virtual void seeSmallBlind(std::string player, float smallBlind );
+    virtual void seeWinner(std::string winner);
+    virtual void seeOpponentCards(std::string opponent, const pokerGame::Hand& hand);
+    virtual void seeOpponentMoney(std::string opponent, float money);
+    virtual void seeCards(const pokerGame::Hand& hand);
+    virtual void seeMoney(float money);
 
     void sendChatMessage(std::string sender, std::string message);
     void seeCardDealt(const pokerGame::Hand& hand, const pokerGame::Card& new_card);
     pokerGame::Decision makeDecision(float minimum_bid);
 
-    virtual void deliver(const std::string& msg);
+    virtual void deliver(const std::string& message);
 
 private:
     tcp::socket socket;
@@ -54,11 +55,13 @@ private:
     std::string name;
     float total_balance;
 
+    std::string choice;
+    pokerGame::Decision decision;
+
     OnlineRoom* room;
 
     void setName(const std::string& name);
 
-    void write(const std::string& message);
     void handleRead(const boost::system::error_code& error);
     void handleWrite(const boost::system::error_code& error);
 

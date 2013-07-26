@@ -2,74 +2,79 @@
 
 namespace pokerGame
 {
-Player::Player(IPlayer *playerImpl): mPlayer(playerImpl), mHand(), mCurrentState(NOT_PLAYING), mMoney(0), mPot(0), mName("")
+Player::Player(IPlayer *playerImpl): playerImpl(playerImpl), hand(), currentState(NOT_PLAYING), money(0), pot(0), name("")
 {
+}
+
+Player::~Player()
+{
+    delete playerImpl;
 }
 
 void Player::setMoney(float newValue)
 {
-    mMoney = newValue;
+    money = newValue;
 }
 
 void Player::setName(std::string name)
 {
-    mName = name;
+    name = name;
 }
 
 void Player::startPlaying()
 {
-    mCurrentState = PLAYING;
+    currentState = PLAYING;
 }
 
 void Player::fold()
 {
-    mCurrentState =  FOLDED;
+    currentState =  FOLDED;
 }
 
 void Player::setupForNewTableTurn() {
-    mCurrentState = PLAYING;
+    currentState = PLAYING;
     clearPot();
 }
 
 void Player::clearPot()
 {
-    mPot = 0;
+    pot = 0;
 }
 
 bool Player::hasBetterHand(const Player& other) const
 {
-    return mHand > other.mHand;
+    return hand > other.hand;
 }
 
 float Player::getPot() const
 {
-    return mPot;
+    return pot;
 }
 
 bool Player::isPlaying() const
 {
-    return mCurrentState == PLAYING;
+    return currentState == PLAYING;
 }
 
 bool Player::isFolded() const
 {
-    return mCurrentState == FOLDED;
+    return currentState == FOLDED;
 }
 
 void Player::addCard(const Card& card)
 {
-    mHand.addCard(card);
+    hand.addCard(card);
 }
 
 void Player::addToPot(float moneyToAdd)
 {
-    mMoney -= moneyToAdd;
-    mPot += moneyToAdd;
+    money -= moneyToAdd;
+    pot += moneyToAdd;
 }
 
 void Player::winMoney(float gainedMoney)
 {
-    mMoney += gainedMoney;
+    money += gainedMoney;
 }
 
 Decision Player::makeDecision(float minBet)
@@ -78,7 +83,7 @@ Decision Player::makeDecision(float minBet)
     bool decisionIsValid = false;
     while(!decisionIsValid)
     {
-        decision = mPlayer->makeDecision(minBet);
+        decision = playerImpl->makeDecision(minBet);
         if (decision.choice == FOLD)
         {
             fold();
@@ -88,10 +93,10 @@ Decision Player::makeDecision(float minBet)
         {
             float diffToAdd;
             if (decision.choice == CHECK)
-                diffToAdd = minBet - mPot;
+                diffToAdd = minBet - pot;
             else
-                diffToAdd = decision.bet - mPot;
-            if (mMoney >= diffToAdd)
+                diffToAdd = decision.bet - pot;
+            if (money >= diffToAdd)
             {
                 addToPot(diffToAdd);
                 decisionIsValid = true;
@@ -102,57 +107,57 @@ Decision Player::makeDecision(float minBet)
     return decision;
 }
 
-void Player::seeDealer(const Player& dealer) const
+void Player::seeDealer(const Player& dealer)
 {
-    mPlayer->seeDealer(dealer.mName);
+    playerImpl->seeDealer(dealer.name);
 }
 
-void Player::seeBigBlind(const Player& player, float bigBlind) const
+void Player::seeBigBlind(const Player& player, float bigBlind)
 {
-    mPlayer->seeBigBlind(player.mName, bigBlind);
+    playerImpl->seeBigBlind(player.name, bigBlind);
 }
 
-void Player::seeSmallBlind(const Player& player, float smallBlind) const
+void Player::seeSmallBlind(const Player& player, float smallBlind)
 {
-    mPlayer->seeSmallBlind(player.mName, smallBlind);
+    playerImpl->seeSmallBlind(player.name, smallBlind);
 }
 
-void Player::seeWinner(const Player& winner) const
+void Player::seeWinner(const Player& winner)
 {
-    mPlayer->seeWinner(winner.mName);
+    playerImpl->seeWinner(winner.name);
 }
 
-void Player::seeOpponentCards(const Player& opponent) const
+void Player::seeOpponentCards(const Player& opponent)
 {
-    mPlayer->seeOpponentCards(opponent.mName, opponent.mHand);
+    playerImpl->seeOpponentCards(opponent.name, opponent.hand);
 }
 
-void Player::seeOpponentMoney(const Player& opponent) const
+void Player::seeOpponentMoney(const Player& opponent)
 {
-    mPlayer->seeOpponentMoney(opponent.mName, opponent.mMoney);
+    playerImpl->seeOpponentMoney(opponent.name, opponent.money);
 }
 
-void Player::seeCards() const
+void Player::seeCards()
 {
-    mPlayer->seeCards(mHand);
+    playerImpl->seeCards(hand);
 }
 
-void Player::seeMoney() const
+void Player::seeMoney()
 {
-    mPlayer->seeMoney(mMoney);
+    playerImpl->seeMoney(money);
 }
 
-Player::Player(IPlayer *playerImpl, Hand* hand): mPlayer(playerImpl), mHand(*hand), mCurrentState(NOT_PLAYING), mMoney(0), mPot(0), mName("")
+Player::Player(IPlayer *playerImpl, Hand* hand): playerImpl(playerImpl), hand(*hand), currentState(NOT_PLAYING), money(0), pot(0), name("")
 {
 }
 
 float Player::getMoney() const
 {
-    return mMoney;
+    return money;
 }
 
 void Player::deliver(const std::string& msg)
 {
-    mPlayer->deliver(msg);
+    playerImpl->deliver(msg);
 }
 }

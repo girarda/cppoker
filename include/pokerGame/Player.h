@@ -13,6 +13,7 @@ class Player
 public:
 
     Player(IPlayer *playerImpl);
+    ~Player();
 
     virtual Decision makeDecision(float minBet);
 
@@ -33,14 +34,14 @@ public:
     virtual void addToPot(float moneyToAdd);
     virtual void winMoney(float gainedMoney);
 
-    virtual void seeDealer(const Player& dealer) const;
-    virtual void seeBigBlind(const Player& player, float bigBlind) const;
-    virtual void seeSmallBlind(const Player& player, float smallBlind) const;
-    virtual void seeWinner(const Player& winner) const;
-    virtual void seeOpponentCards(const Player& opponent) const;
-    virtual void seeOpponentMoney(const Player& opponnent) const;
-    virtual void seeCards() const;
-    virtual void seeMoney() const;
+    virtual void seeDealer(const Player& dealer);
+    virtual void seeBigBlind(const Player& player, float bigBlind);
+    virtual void seeSmallBlind(const Player& player, float smallBlind);
+    virtual void seeWinner(const Player& winner);
+    virtual void seeOpponentCards(const Player& opponent);
+    virtual void seeOpponentMoney(const Player& opponnent);
+    virtual void seeCards();
+    virtual void seeMoney();
 
     virtual void deliver(const std::string& msg);
 
@@ -56,15 +57,15 @@ private:
     };
     void clearPot();
 
-    Hand mHand;
+    Hand hand;
 
-    IPlayer *mPlayer;
+    IPlayer *playerImpl;
 
-    State mCurrentState;
+    State currentState;
 
-    std::string mName;
-    float mMoney;
-    float mPot;
+    std::string name;
+    float money;
+    float pot;
 };
 
 }

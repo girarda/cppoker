@@ -9,11 +9,12 @@ class GameEngine : public network::OnlineRoom
 {
 public:
     GameEngine();
+    virtual ~GameEngine();
 
     void start();
     void tableTurn();
     void playerTurn(Player* player, float minBet);
-    void announcements(const Player* player);
+    void announcements(Player* player);
 
     void preFlop();
     void flop();
@@ -35,9 +36,11 @@ public:
 
     virtual void join(IPlayer* player);
     virtual void leave(IPlayer* player);
-    virtual void deliver(const std::string& mesage);
+    virtual void sendChatMessage(const std::string& mesage);
 
 private:
+
+    void chooseNextDealer();
 
     Deck deck;
     std::vector<Player*> players;

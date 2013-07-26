@@ -20,14 +20,14 @@ public:
 
     virtual void deliver(const std::string& msg) = 0;
 
-    virtual void seeDealer(std::string dealer) const = 0;
-    virtual void seeBigBlind(std::string player, float bigBlind) const = 0;
-    virtual void seeSmallBlind(std::string player, float smallBlind ) const = 0;
-    virtual void seeWinner(std::string winner) const = 0;
-    virtual void seeOpponentCards(std::string opponent, const Hand& hand) const = 0;
-    virtual void seeOpponentMoney(std::string opponent, float money) const = 0;
-    virtual void seeCards(const Hand& hand) const = 0;
-    virtual void seeMoney(float money) const = 0;
+    virtual void seeDealer(std::string dealer) = 0;
+    virtual void seeBigBlind(std::string player, float bigBlind) = 0;
+    virtual void seeSmallBlind(std::string player, float smallBlind ) = 0;
+    virtual void seeWinner(std::string winner) = 0;
+    virtual void seeOpponentCards(std::string opponent, const Hand& hand) = 0;
+    virtual void seeOpponentMoney(std::string opponent, float money) = 0;
+    virtual void seeCards(const Hand& hand) = 0;
+    virtual void seeMoney(float money) = 0;
 };
 
 }
