@@ -2,7 +2,13 @@
 
 namespace pokerGame
 {
-Player::Player(IPlayer *playerImpl): playerImpl(playerImpl), hand(), currentState(NOT_PLAYING), money(0), pot(0), name("")
+Player::Player(IPlayer *playerImpl, float initialMoney):
+    playerImpl(playerImpl),
+    hand(),
+    currentState(NOT_PLAYING),
+    money(initialMoney),
+    pot(0),
+    name("")
 {
 }
 
@@ -147,7 +153,7 @@ void Player::seeMoney()
     playerImpl->seeMoney(money);
 }
 
-Player::Player(IPlayer *playerImpl, Hand* hand): playerImpl(playerImpl), hand(*hand), currentState(NOT_PLAYING), money(0), pot(0), name("")
+Player::Player(IPlayer *playerImpl, float initialMoney, Hand* hand): playerImpl(playerImpl), hand(*hand), currentState(NOT_PLAYING), money(initialMoney), pot(0), name("")
 {
 }
 

@@ -5,8 +5,14 @@
 namespace pokerGame
 {
 
-GameEngine::GameEngine(): players(), bigBlind(20),
-    bigBlindPlayer(0), smallBlindPlayer(0), dealer(0), bet(0)
+GameEngine::GameEngine():
+    players(),
+    bigBlind(20),
+    bigBlindPlayerIndex(-1),
+    smallBlindPlayerIndex(-1),
+    dealerIndex(-1),
+    bet(0),
+    INITIAL_AMOUNT_OF_MONEY(10)
 {
 }
 
@@ -122,9 +128,9 @@ void GameEngine::playerTurn(Player* player, float minBet)
 
 void GameEngine::announcements(Player* player)
 {
-    player->seeDealer(*dealer);
-    player->seeBigBlind(*bigBlindPlayer, bigBlind);
-    player->seeSmallBlind(*smallBlindPlayer, bigBlind/2);
+    player->seeDealer(*players[dealerIndex]);
+    player->seeBigBlind(*players[bigBlindPlayerIndex], bigBlind);
+    player->seeSmallBlind(*players[smallBlindPlayerIndex], bigBlind/2);
     player->seeCards();
     player->seeMoney();
 
@@ -168,6 +174,7 @@ void GameEngine::playRound(float minBet)
 
 void GameEngine::initTableTurn()
 {
+    chooseNextDealer();
     bet = bigBlind;
     deck.shuffle();
     for (Player* p: players)
@@ -178,21 +185,15 @@ void GameEngine::initTableTurn()
 
 void GameEngine::chooseNextDealer()
 {
-    if (!dealer)
-    {
-        dealer = players[0];
-        bigBlindPlayer = players[1];
-        smallBlindPlayer = players[2 % players.size()];
-    }
-    else
-    {
-    }
+    dealerIndex = 0;
+    bigBlindPlayerIndex = 0;
+    smallBlindPlayerIndex = 0;
 }
 
 void GameEngine::betBlinds()
 {
-    bigBlindPlayer->addToPot(bigBlind);
-    smallBlindPlayer->addToPot(bigBlind/2);
+    players[bigBlindPlayerIndex]->addToPot(bigBlind);
+    players[smallBlindPlayerIndex]->addToPot(bigBlind/2);
 }
 
 float GameEngine::getTotalPot()
@@ -223,7 +224,7 @@ int GameEngine::getNumberOfPlayingPlayers() const
 
 void GameEngine::join(IPlayer* player)
 {
-    Player* newPlayer = new Player(player);
+    Player* newPlayer = new Player(player, INITIAL_AMOUNT_OF_MONEY);
     players.push_back(newPlayer);
     sendChatMessage("A new player joined!");
     if (players.size() == 2)

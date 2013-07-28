@@ -2,6 +2,7 @@
 #define TELNETSERVER_H_
 
 #include <boost/asio.hpp>
+#include <boost/thread.hpp>
 #include "network/OnlineRoom.h"
 #include "network/OnlineUser.h"
 #include "pokerGame/IPlayer.h"
@@ -16,15 +17,18 @@ const short TELNET_PORT_NUMBER = 13305;
 class Server {
 public:
     Server(OnlineRoom* onlineRoom);
+    ~Server();
+
     void initService();
 private:
-    boost::asio::io_service ioServer;
-    tcp::acceptor connectionAcceptor;
-
-    OnlineRoom* room;
-
     void startAccept();
     void handleAccept(OnlineUser* newUser, const boost::system::error_code& error);
+
+    boost::asio::io_service ioService;
+    tcp::acceptor connectionAcceptor;
+    boost::thread_group threads;
+
+    OnlineRoom* room;
 };
 
 }

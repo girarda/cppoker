@@ -5,7 +5,7 @@
 
 namespace pokerGame
 {
-enum Choice {FOLD, CHECK, CALL};
+enum Choice {WAITING, FOLD, CHECK, CALL};
 
 typedef struct Decision
 {

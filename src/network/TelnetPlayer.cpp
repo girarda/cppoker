@@ -1,4 +1,5 @@
 #include <boost/bind.hpp>
+#include <boost/thread.hpp>
 #include <string>
 #include "utils/Utils.h"
 #include "network/TelnetPlayer.h"
@@ -13,7 +14,8 @@ TelnetPlayer::TelnetPlayer(boost::asio::io_service& io_service, OnlineRoom* game
     buffer(),
     read_state(RS_NOT_WAITING),
     name(),
-    room(gameRoom)
+    room(gameRoom),
+    choice("")
 {
 }
 
@@ -53,6 +55,7 @@ void TelnetPlayer::handleRead(const boost::system::error_code& error)
     std::string message = utils::autoToString(&buffer/*is*/);
 
     buffer.consume(buffer.size()); //clear buffer
+    utils::trimString(message, telnetEndOfLine);
 
     switch (read_state)
     {
@@ -157,11 +160,15 @@ void TelnetPlayer::seeCards(const pokerGame::Hand& hand)
 pokerGame::Decision TelnetPlayer::makeDecision(float minimumBid)
 {
     read_state = RS_WAITING_FOR_PLAY;
-    while (true)
+    decision.choice = pokerGame::WAITING;
+    while (decision.choice == pokerGame::WAITING)
     {
         deliver("To make a choice, enter:\n\"\"CALL\", \"CHECK\", or \"FOLD\"\n");
-        // TODO: wait for answer
-        if (choice == "CALL\n")
+        while (choice == "");
+//        {
+//            boost::this_thread::sleep(boost::posix_time::milliseconds(500));
+//        }
+        if (choice == "CALL")
         {
             decision.choice = pokerGame::CALL;
             float newBet;
@@ -171,12 +178,12 @@ pokerGame::Decision TelnetPlayer::makeDecision(float minimumBid)
             decision.bet = newBet;
         }
 
-        else if (choice == "CHECK\n")
+        else if (choice == "CHECK")
         {
             decision.choice = pokerGame::CHECK;
             decision.bet = 0;
         }
-        else if (choice == "FOLD\n")
+        else if (choice == "FOLD")
         {
             decision.choice = pokerGame::FOLD;
             decision.bet = 0;
@@ -184,5 +191,7 @@ pokerGame::Decision TelnetPlayer::makeDecision(float minimumBid)
     }
     return decision;
 }
+
+const std::string TelnetPlayer::telnetEndOfLine = "\r\n";
 
 }

@@ -7,21 +7,36 @@ namespace network
 {
 
 Server::Server(OnlineRoom* onlineRoom) :
-    ioServer(),
+    ioService(),
     room(onlineRoom),
-    connectionAcceptor(ioServer, tcp::endpoint(tcp::v4(), TELNET_PORT_NUMBER))
-{ }
+    connectionAcceptor(ioService, tcp::endpoint(tcp::v4(), TELNET_PORT_NUMBER)),
+    threads()
+{
+}
 
-void Server::initService() {
+Server::~Server()
+{
+    ioService.stop();
+    threads.join_all();
+}
 
+void Server::initService()
+{
     startAccept();
-    ioServer.run();
-
+    for (int i = 0; i < 2; i++)
+    {
+        threads.create_thread(
+                    [&]()
+        {
+            ioService.run();
+        });
+    }
+    ioService.run();
 }
 
 void Server::startAccept() {
 
-    TelnetPlayer *newPlayer = new TelnetPlayer(ioServer, room);
+    TelnetPlayer *newPlayer = new TelnetPlayer(ioService, room);
 
     connectionAcceptor.async_accept(
                 newPlayer->getSocket(),

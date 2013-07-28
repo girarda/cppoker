@@ -39,7 +39,6 @@ public:
     virtual void sendChatMessage(const std::string& mesage);
 
 private:
-
     void chooseNextDealer();
 
     Deck deck;
@@ -47,9 +46,11 @@ private:
     int numberTableTurns;
     float bet;
     float bigBlind;
-    Player* bigBlindPlayer;
-    Player* smallBlindPlayer;
-    Player* dealer;
+    int bigBlindPlayerIndex;
+    int smallBlindPlayerIndex;
+    int dealerIndex;
+
+    const float INITIAL_AMOUNT_OF_MONEY;
 };
 }
 

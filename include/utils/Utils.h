@@ -14,6 +14,8 @@ ss << obj;
 return ss.str();
 }
 
+void trimString(std::string &str, const std::string &subStringToRemove);
+
 }
 
 #endif

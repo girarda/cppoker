@@ -9,7 +9,7 @@ namespace test
     class PlayerMock : public pokerGame::Player
     {
         public:
-        PlayerMock(): Player(NULL){};
+        PlayerMock(): Player(NULL, 0){};
 
         MOCK_METHOD0(makeDecision, pokerGame::Decision());
 

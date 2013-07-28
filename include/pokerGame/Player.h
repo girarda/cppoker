@@ -12,7 +12,7 @@ class Player
 {
 public:
 
-    Player(IPlayer *playerImpl);
+    Player(IPlayer *playerImpl, float initialMoney);
     ~Player();
 
     virtual Decision makeDecision(float minBet);
@@ -46,7 +46,7 @@ public:
     virtual void deliver(const std::string& msg);
 
     // for testing purposes
-    Player(IPlayer *playerImpl, Hand* hand);
+    Player(IPlayer *playerImpl, float initialMoney ,Hand* hand);
     float getMoney() const;
 
 private:
