@@ -51,13 +51,13 @@ void ConsolePlayer::seeDealer(std::string dealer)
 
 void ConsolePlayer::seeBigBlind(std::string player, float bigBlind)
 {
-    std::string message = "The big blind is " + utils::autoToString(bigBlind) + " and the owned by " + player + ".";
+    std::string message = "The big blind is " + utils::toString(bigBlind) + " and the owned by " + player + ".";
     deliver(message);
 }
 
 void ConsolePlayer::seeSmallBlind(std::string player, float smallBlind)
 {
-    std::string message = "The small blind is " + utils::autoToString(smallBlind) + " and the owned by " + player + ".";
+    std::string message = "The small blind is " + utils::toString(smallBlind) + " and the owned by " + player + ".";
     deliver(message);
 }
 

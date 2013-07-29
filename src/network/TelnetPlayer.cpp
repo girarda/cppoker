@@ -52,7 +52,7 @@ void TelnetPlayer::deliver(const std::string& message)
 
 void TelnetPlayer::handleRead(const boost::system::error_code& error)
 {
-    std::string message = utils::autoToString(&buffer/*is*/);
+    std::string message = utils::toString(&buffer/*is*/);
 
     buffer.consume(buffer.size()); //clear buffer
     utils::trimString(message, TELNET_NEWLINE);
@@ -98,63 +98,50 @@ std::string TelnetPlayer::getName()
     return name;
 }
 
-float TelnetPlayer::getTotalBalance()
-{
-    return total_balance;
-}
-
 void TelnetPlayer::seeMoney(float new_value)
 {
-    //    total_balance = new_value;
 }
 
 void TelnetPlayer::seeDealer(std::string dealer)
 {
-    //string msg = "Dealer is" + dealer;
-    //Write(msg);
+    std::string msg = "Dealer is" + dealer;
+    deliver(msg);
 }
 
 void TelnetPlayer::seeSmallBlind(std::string payer, float amount)
 {
-    //string msg = "Small Blind is" + payer + " with amount " + AutoToString(amount);
-    //Write(msg);
+    std::string msg = "Small Blind is" + payer + " with amount " + utils::toString(amount);
+    deliver(msg);
 }
 
 void TelnetPlayer::seeBigBlind(std::string payer, float amount)
 {
-    //string msg = "Big Blind is" + payer + " with amount " + AutoToString(amount);
-    //Write(msg);
+    std::string msg = "Big Blind is" + payer + " with amount " + utils::toString(amount);
+    deliver(msg);
 }
 
 void TelnetPlayer::seeOpponentMoney(std::string player, float pot)
 {
-    //string msg = "player " + player + " now has " + AutoToString(bank);
-    //Write(msg);
 }
 
 void TelnetPlayer::seeOpponentCards(std::string player, const pokerGame::Hand& playersHand)
 {
-    //string msg = "player " + player + " holds " + players_hand.GetHandTextualDescription();
-    //Write(msg);
 }
 
 void TelnetPlayer::seeWinner(std::string player)
 {
-    //string msg = "player " + player + " won " + AutoToString(winnings);
-    //Write(msg);
+    std::string msg = "player " + player + " won.";
+    deliver(msg);
 }
 
 void TelnetPlayer::sendChatMessage(std::string sender, std::string message)
 {
     std::string msg = "Chat: " + sender + ": " + message;
-    //Write(msg);
     room->sendChatMessage(msg);
 }
 
 void TelnetPlayer::seeCards(const pokerGame::Hand& hand)
 {
-    //string msg = "You have been dealt: " + new_card.ToLongString();
-    //Write(msg);
 }
 
 pokerGame::Decision TelnetPlayer::makeDecision(float minimumBid)

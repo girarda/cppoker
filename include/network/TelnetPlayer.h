@@ -29,8 +29,6 @@ public:
 
     bool isPlaying();
     std::string getName();
-    float getTotalBalance();
-    void setTotalBalance(float new_value);
 
     virtual void seeDealer(std::string dealer);
     virtual void seeBigBlind(std::string player, float bigBlind);
@@ -53,7 +51,6 @@ private:
     SOCKET_READ_STATE read_state;
 
     std::string name;
-    float total_balance;
 
     std::string choice;
     pokerGame::Decision decision;
