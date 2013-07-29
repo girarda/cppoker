@@ -1,4 +1,4 @@
-Cppoker
+cppoker
 =========
 
 ## Requires
