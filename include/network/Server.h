@@ -25,6 +25,7 @@ private:
     void handleAccept(OnlineUser* newUser, const boost::system::error_code& error);
 
     boost::asio::io_service ioService;
+    boost::asio::io_service::work work;
     tcp::acceptor connectionAcceptor;
     boost::thread_group threads;
 

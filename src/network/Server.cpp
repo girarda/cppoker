@@ -1,13 +1,15 @@
 #include <boost/bind.hpp>
-
 #include "network/Server.h"
 #include "network/TelnetPlayer.h"
+
+#include <iostream>
 
 namespace network
 {
 
 Server::Server(OnlineRoom* onlineRoom) :
     ioService(),
+    work(ioService),
     room(onlineRoom),
     connectionAcceptor(ioService, tcp::endpoint(tcp::v4(), TELNET_PORT_NUMBER)),
     threads()
@@ -23,7 +25,7 @@ Server::~Server()
 void Server::initService()
 {
     startAccept();
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 4; i++)
     {
         threads.create_thread(
                     [&]()
@@ -31,7 +33,7 @@ void Server::initService()
             ioService.run();
         });
     }
-    ioService.run();
+    //ioService.run();
 }
 
 void Server::startAccept() {

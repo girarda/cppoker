@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 get_filename_component(PROJECT_LOCATION ${CMAKE_SOURCE_DIR} NAME)
 
-#################################
-########### EDIT HERE ###########
-
 ### Project information ###
 set(VER_MAJOR "0")
 set(VER_MINOR "0")

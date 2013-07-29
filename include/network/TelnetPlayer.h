@@ -65,7 +65,7 @@ private:
     void handleRead(const boost::system::error_code& error);
     void handleWrite(const boost::system::error_code& error);
 
-    static const std::string telnetEndOfLine;
+    static const std::string TELNET_NEWLINE;
 
     ~TelnetPlayer();
 };

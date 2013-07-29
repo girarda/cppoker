@@ -7,7 +7,7 @@
 namespace network
 {
 
-const std::string TELNET_NEWLINE = "\n";
+const std::string TelnetPlayer::TELNET_NEWLINE = "\r\n";
 
 TelnetPlayer::TelnetPlayer(boost::asio::io_service& io_service, OnlineRoom* gameRoom) :
     socket(io_service),
@@ -55,7 +55,7 @@ void TelnetPlayer::handleRead(const boost::system::error_code& error)
     std::string message = utils::autoToString(&buffer/*is*/);
 
     buffer.consume(buffer.size()); //clear buffer
-    utils::trimString(message, telnetEndOfLine);
+    utils::trimString(message, TELNET_NEWLINE);
 
     switch (read_state)
     {
@@ -64,7 +64,7 @@ void TelnetPlayer::handleRead(const boost::system::error_code& error)
         room->join((IPlayer*)this);
         break;
     case (RS_NOT_WAITING):
-        sendChatMessage(name, message);
+        sendChatMessage(name, message + TELNET_NEWLINE);
         break;
     case (RS_WAITING_FOR_PLAY):
         choice = message;
@@ -164,10 +164,10 @@ pokerGame::Decision TelnetPlayer::makeDecision(float minimumBid)
     while (decision.choice == pokerGame::WAITING)
     {
         deliver("To make a choice, enter:\n\"\"CALL\", \"CHECK\", or \"FOLD\"\n");
-        while (choice == "");
-//        {
-//            boost::this_thread::sleep(boost::posix_time::milliseconds(500));
-//        }
+        while (choice == "")
+        {
+            boost::this_thread::sleep(boost::posix_time::milliseconds(100));
+        }
         if (choice == "CALL")
         {
             decision.choice = pokerGame::CALL;
@@ -188,10 +188,9 @@ pokerGame::Decision TelnetPlayer::makeDecision(float minimumBid)
             decision.choice = pokerGame::FOLD;
             decision.bet = 0;
         }
+        choice = "";
     }
     return decision;
 }
-
-const std::string TelnetPlayer::telnetEndOfLine = "\r\n";
 
 }

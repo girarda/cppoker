@@ -1,13 +1,14 @@
 #include "pokerGame/GameEngine.h"
 #include <algorithm>
 #include "boost/bind.hpp"
+#include "boost/thread.hpp"
 
 namespace pokerGame
 {
 
 GameEngine::GameEngine():
     players(),
-    bigBlind(20),
+    bigBlind(2),
     bigBlindPlayerIndex(-1),
     smallBlindPlayerIndex(-1),
     dealerIndex(-1),
@@ -54,7 +55,7 @@ void GameEngine::tableTurn()
         river();
     showdown();
 
-    numberTableTurns++;
+//    numberTableTurns++;
 }
 
 void GameEngine::preFlop()
@@ -165,7 +166,6 @@ void GameEngine::addPlayer(Player* player)
 
 void GameEngine::playRound(float minBet)
 {
-
     for (Player* p: players)
     {
         playerTurn(p, minBet);
@@ -206,7 +206,7 @@ float GameEngine::getTotalPot()
     return totalPot;
 }
 
-int GameEngine::getNumberOfPlayers() const
+int GameEngine::    getNumberOfPlayers() const
 {
     return players.size();
 }
@@ -227,10 +227,8 @@ void GameEngine::join(IPlayer* player)
     Player* newPlayer = new Player(player, INITIAL_AMOUNT_OF_MONEY);
     players.push_back(newPlayer);
     sendChatMessage("A new player joined!");
-    if (players.size() == 2)
-    {
-        start();
-    }
+    //if (players.size() == 2)
+    //    start();
 }
 
 void GameEngine::leave(IPlayer* player)
@@ -242,6 +240,8 @@ void GameEngine::sendChatMessage(const std::string& msg)
 {
     std::for_each(players.begin(), players.end(),
                   boost::bind(&Player::deliver, _1, boost::ref(msg)));
+//    if (msg == "Chat: alex: play\r\n")
+//        start();
 }
 
 }
