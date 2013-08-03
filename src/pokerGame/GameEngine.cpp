@@ -125,7 +125,7 @@ void GameEngine::playerTurn(Player* player, float minBet)
         Decision d = player->makeDecision(bet);
         if (d.choice == CALL)
         {
-            bet += d.bet;
+            bet = d.bet;
         }
     }
 }
@@ -169,9 +169,13 @@ void GameEngine::addPlayer(Player* player)
 
 void GameEngine::playRound(float minBet)
 {
-    for (Player* p: players)
+    for (int i = bigBlindPlayerIndex; i < players.size(); i++)
     {
         playerTurn(p, minBet);
+    }
+    for (int i = 0; i < bigBlindPlayerIndex; i++)
+    {
+        playerTurn(p, binBet);
     }
 }
 
@@ -188,9 +192,14 @@ void GameEngine::initTableTurn()
 
 void GameEngine::chooseNextDealer()
 {
-    dealerIndex = 0;
-    bigBlindPlayerIndex = 0;
-    smallBlindPlayerIndex = 0;
+    dealerIndex++;
+    dealerIndex %= players.size();
+
+    bigBlindPlayerIndex = dealerIndex+1;
+    bigBlindPlayerIndex %= players.size();
+
+    smallBlindPlayerIndex = dealerIndex+2;
+    smallBlindPlayerIndex %= players.size();
 }
 
 void GameEngine::betBlinds()
@@ -230,8 +239,6 @@ void GameEngine::join(IPlayer* player)
     Player* newPlayer = new Player(player, INITIAL_AMOUNT_OF_MONEY);
     players.push_back(newPlayer);
     sendChatMessage("A new player joined!");
-    //if (players.size() == 2)
-    //    start();
 }
 
 void GameEngine::leave(IPlayer* player)
@@ -243,8 +250,6 @@ void GameEngine::sendChatMessage(const std::string& msg)
 {
     std::for_each(players.begin(), players.end(),
                   boost::bind(&Player::deliver, _1, boost::ref(msg)));
-//    if (msg == "Chat: alex: play\r\n")
-//        start();
 }
 
 }
