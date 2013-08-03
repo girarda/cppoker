@@ -34,6 +34,7 @@ void Player::fold()
 void Player::setupForNewTableTurn() {
     currentState = PLAYING;
     clearPot();
+    hand.empty();
 }
 
 void Player::clearPot()

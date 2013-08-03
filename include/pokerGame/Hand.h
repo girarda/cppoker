@@ -33,6 +33,8 @@ public:
     void addCard(const pokerGame::Card &aCard);
     HandValue getHandValue() const;
 
+    void empty();
+
     bool operator<(const Hand& other) const;
     bool operator>(const Hand& other) const;
 

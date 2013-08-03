@@ -18,6 +18,12 @@ void Hand::addCard(const pokerGame::Card &aCard)
     calculateBestHand();
 }
 
+void Hand::empty()
+{
+    cards.clear();
+    bestHand = NO_HAND_VALUE;
+}
+
 HandValue Hand::getHandValue() const
 {
     return bestHand;
@@ -25,8 +31,8 @@ HandValue Hand::getHandValue() const
 
 void Hand::calculateBestHand()
 {
-    std::sort(cards.begin(), cards.end());
-    std::reverse(cards.begin(), cards.end());
+    std::sort(cards.begin(), cards.end(), std::greater<Card>());
+//    std::reverse(cards.begin(), cards.end());
 
     typedef HandValue(Hand::*HandValueFunctionPointer)() const;
     HandValueFunctionPointer handValueFunctions[]= {
