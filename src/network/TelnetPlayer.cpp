@@ -70,6 +70,9 @@ void TelnetPlayer::handleRead(const boost::system::error_code& error)
     case (RS_WAITING_FOR_PLAY):
         choice = message;
         break;
+    case (RS_WAITING_FOR_CALL_BET):
+        choice = message;
+        break;
     }
     read_state = RS_NOT_WAITING;
     boost::asio::async_read_until(
@@ -148,18 +151,26 @@ pokerGame::Decision TelnetPlayer::makeDecision(float minimumBid)
     decision.choice = pokerGame::WAITING;
     while (decision.choice == pokerGame::WAITING)
     {
-        deliver("To make a choice, enter:\n\"\"CALL\", \"CHECK\", or \"FOLD\"\n");
+        std::stringstream ss;
+        ss << "The minimum bet is " << minimumBid << "." << TELNET_NEWLINE
+              << "To make a choice, enter:\n\"\"CALL\", \"CHECK\", or \"FOLD\"\n";
+        deliver(ss.str());
         while (choice == "")
         {
             boost::this_thread::sleep(boost::posix_time::milliseconds(100));
         }
         if (choice == "CALL")
         {
+            read_state = RS_WAITING_FOR_CALL_BET;
             decision.choice = pokerGame::CALL;
-            float newBet;
+            float newBet(-1);
+            deliver("How much do you want to call?");
+            choice = "";
             do {
-                // TODO: get answer
-            } while (0 /*TODO: while the answer is a number*/);
+                boost::this_thread::sleep(boost::posix_time::milliseconds(100));
+                std::istringstream ss(choice);
+                ss >> newBet;
+            } while (newBet == -1);
             decision.bet = newBet;
         }
 

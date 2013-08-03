@@ -125,7 +125,7 @@ void GameEngine::playerTurn(Player* player, float minBet)
         Decision d = player->makeDecision(bet);
         if (d.choice == CALL)
         {
-            bet = d.bet;
+            bet += d.bet;
         }
     }
 }

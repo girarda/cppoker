@@ -16,6 +16,7 @@ using boost::asio::ip::tcp;
 enum SOCKET_READ_STATE {
     RS_WAITING_FOR_NAME,
     RS_WAITING_FOR_PLAY,
+    RS_WAITING_FOR_CALL_BET,
     RS_NOT_WAITING
 };
 
