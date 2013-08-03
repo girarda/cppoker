@@ -13,7 +13,7 @@ class Player
 public:
 
     Player(IPlayer *playerImpl, float initialMoney);
-    ~Player();
+    virtual ~Player();
 
     virtual Decision makeDecision(float minBet);
 

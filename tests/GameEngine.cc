@@ -19,8 +19,6 @@ protected:
     }
     virtual void TearDown()
     {
-        delete aPlayer;
-        delete anotherPlayer;
     }
 
 };

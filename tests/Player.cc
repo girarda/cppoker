@@ -14,23 +14,26 @@ protected:
 
     static const float NO_MONEY;
     static const float MONEY_WON;
+    static const float INITIAL_AMOUNT_MONEY;
+    static const float TOO_MUCH_MONEY;
 
-//    virtual void SetUp()
-//    {
-//        aPlayerImpl = new test::IPlayerMock;
-//        aHand = new test::HandMock;
-//        aPlayer = new pokerGame::Player(aPlayerImpl, aHand);
-//    }
-//    virtual void TearDown()
-//    {
-//        delete aPlayer;
-//        delete aHand;
-//        delete aPlayerImpl;
-//    }
+    virtual void SetUp()
+    {
+        aPlayerImpl = new test::IPlayerMock();
+        aHand = new test::HandMock();
+        aPlayer = new pokerGame::Player(aPlayerImpl, INITIAL_AMOUNT_MONEY);
+    }
+    virtual void TearDown()
+    {
+        delete aPlayer;
+        delete aHand;
+    }
 };
 
 const float PlayerTest::NO_MONEY(0);
-const float PlayerTest::MONEY_WON(5);
+const float PlayerTest::MONEY_WON(10);
+const float PlayerTest::INITIAL_AMOUNT_MONEY(5);
+const float PlayerTest::TOO_MUCH_MONEY(10);
 
 TEST_F(PlayerTest, newPlayerIsNotPlaying)
 {
@@ -39,11 +42,11 @@ TEST_F(PlayerTest, newPlayerIsNotPlaying)
     ASSERT_FALSE(playerIsPlaying);
 }
 
-TEST_F(PlayerTest, newPlayerHasNoMoney)
+TEST_F(PlayerTest, newPlayerHasInitialAmountOfMoney)
 {
     float initialMoney = aPlayer->getMoney();
 
-    ASSERT_EQ(NO_MONEY, initialMoney);
+    ASSERT_EQ(INITIAL_AMOUNT_MONEY, initialMoney);
 }
 
 TEST_F(PlayerTest, newPlayerHasNoMoneyInPot)
@@ -85,9 +88,8 @@ TEST_F(PlayerTest, playerIsFoldedWhenFoldingAfterSetupingAnewTableTurn)
 
 TEST_F(PlayerTest, playerPotIsClearedWhenSettingForNewTableTurn)
 {
-    aPlayer->setMoney(5);
     aPlayer->startPlaying();
-    aPlayer->addToPot(5);
+    aPlayer->addToPot(INITIAL_AMOUNT_MONEY);
     aPlayer->setupForNewTableTurn();
 
     float moneyInPot = aPlayer->getPot();
@@ -101,7 +103,7 @@ TEST_F(PlayerTest, playerHasMoreMoneyWhenWinningMoney)
 
     float playersMoney = aPlayer->getMoney();
 
-    ASSERT_EQ(PlayerTest::MONEY_WON, playersMoney);
+    ASSERT_EQ(PlayerTest::MONEY_WON + PlayerTest::INITIAL_AMOUNT_MONEY, playersMoney);
 }
 
 TEST_F(PlayerTest, makingDecisionReturnsCheckWhenPlayerChecks)
@@ -110,19 +112,19 @@ TEST_F(PlayerTest, makingDecisionReturnsCheckWhenPlayerChecks)
     EXPECT_CALL(*aPlayerImpl, makeDecision(0)).Times(1).WillOnce(Return(aDecision));
 
     pokerGame::Decision returnedDecision = aPlayer->makeDecision((0));
-    
+
     ASSERT_EQ(aDecision.choice, returnedDecision.choice);
     ASSERT_EQ(aDecision.bet, returnedDecision.bet);
 }
 
 TEST_F(PlayerTest, makingDecisionAsksUserASecondTimesIfItDoesNotHaveEnoughMoneyForHisDecision)
 {
-    pokerGame::Decision callDecision = {pokerGame::CALL, 5};
+    pokerGame::Decision callDecision = {pokerGame::CALL, TOO_MUCH_MONEY};
     pokerGame::Decision checkDecision = {pokerGame::CHECK, 0};
     EXPECT_CALL(*aPlayerImpl, makeDecision(0)).Times(2).WillOnce(Return(callDecision)).WillOnce(Return(checkDecision));
 
     pokerGame::Decision returnedDecision = aPlayer->makeDecision((0));
-    
+
     ASSERT_EQ(checkDecision.choice, returnedDecision.choice);
     ASSERT_EQ(checkDecision.bet, returnedDecision.bet);
 }
@@ -134,7 +136,7 @@ TEST_F(PlayerTest, makingDecisionReturnsCallWhenPlayerCallsAndHasEnoughMoney)
     EXPECT_CALL(*aPlayerImpl, makeDecision(0)).Times(1).WillOnce(Return(callDecision));
 
     pokerGame::Decision returnedDecision = aPlayer->makeDecision((0));
-    
+
     ASSERT_EQ(callDecision.choice, returnedDecision.choice);
     ASSERT_EQ(callDecision.bet, returnedDecision.bet);
 }
@@ -146,7 +148,7 @@ TEST_F(PlayerTest, playerFoldsWhenDecisionIsToFold)
 
     pokerGame::Decision returnedDecision = aPlayer->makeDecision((0));
     bool playerFolded = aPlayer->isFolded();
-    
+
     ASSERT_EQ(foldDecision.choice, returnedDecision.choice);
     ASSERT_EQ(foldDecision.bet, returnedDecision.bet);
     ASSERT_TRUE(playerFolded);

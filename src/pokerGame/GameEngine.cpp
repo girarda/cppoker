@@ -21,7 +21,10 @@ GameEngine::~GameEngine()
 {
     for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++)
     {
-        delete *it;
+        if (*it)
+        {
+            delete *it;
+        }
     }
 }
 

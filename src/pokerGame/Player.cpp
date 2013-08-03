@@ -13,7 +13,10 @@ Player::Player(IPlayer *playerImpl, float initialMoney):
 
 Player::~Player()
 {
-    delete playerImpl;
+    if (playerImpl)
+    {
+        delete playerImpl;
+    }
 }
 
 void Player::setMoney(float newValue)

@@ -28,14 +28,14 @@ namespace test
         MOCK_METHOD1(addToPot, void(float bet));
         MOCK_METHOD1(winMoney, void(float gainedMoney));
 
-        MOCK_CONST_METHOD1(seeDealer, void(const Player& dealer));
-        MOCK_CONST_METHOD2(seeBigBlind, void(const Player& player, float bigBlind));
-        MOCK_CONST_METHOD2(seeSmallBlind, void(const Player& player, float smallBlind));
-        MOCK_CONST_METHOD1(seeWinner, void(const Player& winner));
-        MOCK_CONST_METHOD1(seeOpponentCards, void(const Player& opponent));
-        MOCK_CONST_METHOD1(seeOpponentMoney, void(const Player& opponent));
-        MOCK_CONST_METHOD0(seeCards, void());
-        MOCK_CONST_METHOD0(seeMoney, void());
+        MOCK_METHOD1(seeDealer, void(const Player& dealer));
+        MOCK_METHOD2(seeBigBlind, void(const Player& player, float bigBlind));
+        MOCK_METHOD2(seeSmallBlind, void(const Player& player, float smallBlind));
+        MOCK_METHOD1(seeWinner, void(const Player& winner));
+        MOCK_METHOD1(seeOpponentCards, void(const Player& opponent));
+        MOCK_METHOD1(seeOpponentMoney, void(const Player& opponent));
+        MOCK_METHOD0(seeCards, void());
+        MOCK_METHOD0(seeMoney, void());
     };
 }
 

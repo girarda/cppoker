@@ -11,15 +11,16 @@ namespace test
         public:
         MOCK_METHOD1(makeDecision, pokerGame::Decision(const float minBet));
 
-        MOCK_CONST_METHOD1(seeDealer, void(const std::string dealer));
-        MOCK_CONST_METHOD2(seeBigBlind, void(const std::string player, float bigBlind));
-        MOCK_CONST_METHOD2(seeSmallBlind, void(std::string player, float smallBlind));
-        MOCK_CONST_METHOD1(seeWinner, void(const std::string winner));
-        MOCK_CONST_METHOD2(seeOpponentCards, void(std::string opponent, const pokerGame:: Hand&));
-        MOCK_CONST_METHOD2(seeOpponentMoney, void(std::string opponent, float));
-        MOCK_CONST_METHOD1(seeCards, void(const pokerGame::Hand& hand));
-        MOCK_CONST_METHOD1(seeMoney, void(const float money));
         MOCK_METHOD1(deliver, void(const std::string& msg));
+
+        MOCK_METHOD1(seeDealer, void(const std::string dealer));
+        MOCK_METHOD2(seeBigBlind, void(const std::string player, float bigBlind));
+        MOCK_METHOD2(seeSmallBlind, void(std::string player, float smallBlind));
+        MOCK_METHOD1(seeWinner, void(const std::string winner));
+        MOCK_METHOD2(seeOpponentCards, void(std::string opponent, const pokerGame:: Hand&));
+        MOCK_METHOD2(seeOpponentMoney, void(std::string opponent, float));
+        MOCK_METHOD1(seeCards, void(const pokerGame::Hand& hand));
+        MOCK_METHOD1(seeMoney, void(const float money));
     };
 }
 
