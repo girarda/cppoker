@@ -7,8 +7,7 @@ Player::Player(IPlayer *playerImpl, float initialMoney):
     hand(),
     currentState(NOT_PLAYING),
     money(initialMoney),
-    pot(0),
-    name("")
+    pot(0)
 {
 }
 
@@ -20,11 +19,6 @@ Player::~Player()
 void Player::setMoney(float newValue)
 {
     money = newValue;
-}
-
-void Player::setName(std::string name)
-{
-    name = name;
 }
 
 void Player::startPlaying()
@@ -115,32 +109,32 @@ Decision Player::makeDecision(float minBet)
 
 void Player::seeDealer(const Player& dealer)
 {
-    playerImpl->seeDealer(dealer.name);
+    playerImpl->seeDealer(dealer.getName());
 }
 
 void Player::seeBigBlind(const Player& player, float bigBlind)
 {
-    playerImpl->seeBigBlind(player.name, bigBlind);
+    playerImpl->seeBigBlind(player.getName(), bigBlind);
 }
 
 void Player::seeSmallBlind(const Player& player, float smallBlind)
 {
-    playerImpl->seeSmallBlind(player.name, smallBlind);
+    playerImpl->seeSmallBlind(player.getName(), smallBlind);
 }
 
 void Player::seeWinner(const Player& winner)
 {
-    playerImpl->seeWinner(winner.name);
+    playerImpl->seeWinner(winner.getName());
 }
 
 void Player::seeOpponentCards(const Player& opponent)
 {
-    playerImpl->seeOpponentCards(opponent.name, opponent.hand);
+    playerImpl->seeOpponentCards(opponent.getName(), opponent.hand);
 }
 
 void Player::seeOpponentMoney(const Player& opponent)
 {
-    playerImpl->seeOpponentMoney(opponent.name, opponent.money);
+    playerImpl->seeOpponentMoney(opponent.getName(), opponent.money);
 }
 
 void Player::seeCards()
@@ -153,7 +147,17 @@ void Player::seeMoney()
     playerImpl->seeMoney(money);
 }
 
-Player::Player(IPlayer *playerImpl, float initialMoney, Hand* hand): playerImpl(playerImpl), hand(*hand), currentState(NOT_PLAYING), money(initialMoney), pot(0), name("")
+std::string Player::getName() const
+{
+    return playerImpl->getName();
+}
+
+void Player::deliver(const std::string& msg)
+{
+    playerImpl->deliver(msg);
+}
+
+Player::Player(IPlayer *playerImpl, float initialMoney, Hand* hand): playerImpl(playerImpl), hand(*hand), currentState(NOT_PLAYING), money(initialMoney), pot(0)
 {
 }
 
@@ -162,8 +166,4 @@ float Player::getMoney() const
     return money;
 }
 
-void Player::deliver(const std::string& msg)
-{
-    playerImpl->deliver(msg);
-}
 }

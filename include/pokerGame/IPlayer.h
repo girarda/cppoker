@@ -16,6 +16,9 @@ typedef struct Decision
 class IPlayer
 {
 public:
+    IPlayer();
+    virtual ~IPlayer();
+
     virtual Decision makeDecision(float minBet) = 0;
 
     virtual void deliver(const std::string& msg) = 0;
@@ -28,6 +31,12 @@ public:
     virtual void seeOpponentMoney(std::string opponent, float money) = 0;
     virtual void seeCards(const Hand& hand) = 0;
     virtual void seeMoney(float money) = 0;
+
+    virtual std::string getName() const;
+    virtual void setName(std::string newName);
+
+protected:
+    std::string name;
 };
 
 }

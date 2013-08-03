@@ -1,5 +1,6 @@
 #include "pokerGame/Hand.h"
 #include <algorithm>
+#include <boost/algorithm/string.hpp>
 
 namespace pokerGame
 {
@@ -316,4 +317,16 @@ bool operator==(const HandValue &h1, const HandValue &h2)
     }
     return true;
 }
+
+std::string Hand::toString() const
+{
+    std::string str("");
+    for (std::vector<Card>::const_iterator it = cards.begin(); it != cards.end(); it++)
+    {
+        str += (it->toString() + " ");
+    }
+    boost::algorithm::trim(str);
+    return str;
+}
+
 }

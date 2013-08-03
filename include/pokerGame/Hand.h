@@ -36,6 +36,8 @@ public:
     bool operator<(const Hand& other) const;
     bool operator>(const Hand& other) const;
 
+    std::string toString() const;
+
 private:
     void calculateBestHand();
     HandValue getHighCardValue() const;

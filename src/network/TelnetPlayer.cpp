@@ -3,6 +3,7 @@
 #include <string>
 #include "utils/Utils.h"
 #include "network/TelnetPlayer.h"
+#include <sstream>
 
 namespace network
 {
@@ -13,7 +14,6 @@ TelnetPlayer::TelnetPlayer(boost::asio::io_service& io_service, OnlineRoom* game
     socket(io_service),
     buffer(),
     read_state(RS_NOT_WAITING),
-    name(),
     room(gameRoom),
     choice("")
 {
@@ -43,16 +43,17 @@ tcp::socket& TelnetPlayer::getSocket()
 
 void TelnetPlayer::deliver(const std::string& message)
 {
+    std::string msg = message + TELNET_NEWLINE;
     boost::asio::async_write(
                 socket,
-                boost::asio::buffer(message.c_str(), message.length()),
+                boost::asio::buffer(msg.c_str(), msg.length()),
                 boost::bind(&TelnetPlayer::handleWrite, this, boost::asio::placeholders::error)
                 );
 }
 
 void TelnetPlayer::handleRead(const boost::system::error_code& error)
 {
-    std::string message = utils::toString(&buffer/*is*/);
+    std::string message = utils::toString(&buffer);
 
     buffer.consume(buffer.size()); //clear buffer
     utils::trimString(message, TELNET_NEWLINE);
@@ -64,7 +65,7 @@ void TelnetPlayer::handleRead(const boost::system::error_code& error)
         room->join((IPlayer*)this);
         break;
     case (RS_NOT_WAITING):
-        sendChatMessage(name, message + TELNET_NEWLINE);
+        sendChatMessage(name, message);
         break;
     case (RS_WAITING_FOR_PLAY):
         choice = message;
@@ -83,49 +84,44 @@ void TelnetPlayer::handleWrite(const boost::system::error_code& error)
 {
 }
 
-bool TelnetPlayer::isPlaying()
+void TelnetPlayer::seeMoney(float money)
 {
-    return true;
-}
-
-void TelnetPlayer::setName(const std::string& name)
-{
-    this->name = name;
-}
-
-std::string TelnetPlayer::getName()
-{
-    return name;
-}
-
-void TelnetPlayer::seeMoney(float new_value)
-{
+    std::stringstream ss;
+    ss <<  "You currently have " << money << "$.";
+    deliver(ss.str());
 }
 
 void TelnetPlayer::seeDealer(std::string dealer)
 {
-    std::string msg = "Dealer is" + dealer;
+    std::string msg = "Dealer is " + dealer;
     deliver(msg);
 }
 
 void TelnetPlayer::seeSmallBlind(std::string payer, float amount)
 {
-    std::string msg = "Small Blind is" + payer + " with amount " + utils::toString(amount);
-    deliver(msg);
+    std::stringstream ss;
+    ss << "Small Blind is " << payer << " with amount " << utils::toString(amount);
+    deliver(ss.str());
 }
 
 void TelnetPlayer::seeBigBlind(std::string payer, float amount)
 {
-    std::string msg = "Big Blind is" + payer + " with amount " + utils::toString(amount);
-    deliver(msg);
+    std::stringstream ss;
+    ss << "Big Blind is " << payer + " with amount " << utils::toString(amount);
+    deliver(ss.str());
 }
 
-void TelnetPlayer::seeOpponentMoney(std::string player, float pot)
+void TelnetPlayer::seeOpponentMoney(std::string player, float money)
 {
+    std::stringstream ss;
+    ss << "Player " << player << " has " << money << "$.";
+    deliver(ss.str());
 }
 
 void TelnetPlayer::seeOpponentCards(std::string player, const pokerGame::Hand& playersHand)
 {
+    std::string msg = "Player " + player + " has " + playersHand.toString() + ".";
+    deliver(msg);
 }
 
 void TelnetPlayer::seeWinner(std::string player)
@@ -142,6 +138,8 @@ void TelnetPlayer::sendChatMessage(std::string sender, std::string message)
 
 void TelnetPlayer::seeCards(const pokerGame::Hand& hand)
 {
+    std::string msg = "You cards are: " + hand.toString();
+    deliver(msg);
 }
 
 pokerGame::Decision TelnetPlayer::makeDecision(float minimumBid)

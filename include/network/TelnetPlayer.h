@@ -23,12 +23,13 @@ class TelnetPlayer : public pokerGame::IPlayer, public OnlineUser {
 
 public:
     TelnetPlayer(boost::asio::io_service& io_service, OnlineRoom* room);
+    ~TelnetPlayer();
+
     virtual void start();
     //void ReadyForInput();
     virtual tcp::socket& getSocket();
 
-    bool isPlaying();
-    std::string getName();
+    bool isPlaying() const;
 
     virtual void seeDealer(std::string dealer);
     virtual void seeBigBlind(std::string player, float bigBlind);
@@ -41,7 +42,7 @@ public:
 
     void sendChatMessage(std::string sender, std::string message);
     void seeCardDealt(const pokerGame::Hand& hand, const pokerGame::Card& new_card);
-    pokerGame::Decision makeDecision(float minimum_bid);
+    pokerGame::Decision makeDecision(float minimumBid);
 
     virtual void deliver(const std::string& message);
 
@@ -50,21 +51,16 @@ private:
     boost::asio::streambuf buffer;
     SOCKET_READ_STATE read_state;
 
-    std::string name;
-
     std::string choice;
     pokerGame::Decision decision;
 
     OnlineRoom* room;
-
-    void setName(const std::string& name);
 
     void handleRead(const boost::system::error_code& error);
     void handleWrite(const boost::system::error_code& error);
 
     static const std::string TELNET_NEWLINE;
 
-    ~TelnetPlayer();
 };
 
 }

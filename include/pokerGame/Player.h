@@ -18,7 +18,6 @@ public:
     virtual Decision makeDecision(float minBet);
 
     virtual void setMoney(float newValue);
-    virtual void setName(std::string name);
 
     virtual void startPlaying();
     virtual void fold();
@@ -43,6 +42,8 @@ public:
     virtual void seeCards();
     virtual void seeMoney();
 
+    virtual std::string getName() const;
+
     virtual void deliver(const std::string& msg);
 
     // for testing purposes
@@ -63,7 +64,6 @@ private:
 
     State currentState;
 
-    std::string name;
     float money;
     float pot;
 };
