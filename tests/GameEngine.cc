@@ -46,7 +46,7 @@ TEST_F(GameEngineTest, initatingATableTurnSetsThePlayerForATableTurn)
     game.addPlayer(aPlayer);
     game.addPlayer(anotherPlayer);
 
-    game.initTableTurn();
+    game.initRound();
 }
 
 TEST_F(GameEngineTest, startingANewGameMakesEveryPlayersStart)

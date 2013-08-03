@@ -12,7 +12,7 @@ public:
     virtual ~GameEngine();
 
     void start();
-    void tableTurn();
+    void playRound();
     void playerTurn(Player* player, float minBet);
     void announcements(Player* player);
 
@@ -23,12 +23,12 @@ public:
     void showdown();
 
     void addPlayer(Player* player);
-    void playRound(float minBet);
+    void tableTurn(float minBet);
 
-    float getTotalPot();
+    float getTotalPot() const;
 
     void announceWinner();
-    void initTableTurn();
+    void initRound();
     void betBlinds();
 
     int getNumberOfPlayers() const;
@@ -40,10 +40,12 @@ public:
 
 private:
     void chooseNextDealer();
+    void distributeOneCard();
+    void addOneCardToBoard();
 
     Deck deck;
     std::vector<Player*> players;
-    int numberTableTurns;
+    int numberOfRounds;
     float bet;
     float bigBlind;
     int bigBlindPlayerIndex;

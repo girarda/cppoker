@@ -36,16 +36,16 @@ void GameEngine::start()
     }
     while(getNumberOfPlayingPlayers() > 1)
     {
-        tableTurn();
-        if (numberTableTurns % 2 == 0)
+        playRound();
+        if (numberOfRounds % 2 == 0)
             bigBlind *= 2;
     }
     announceWinner();
 }
 
-void GameEngine::tableTurn()
+void GameEngine::playRound()
 {
-    initTableTurn();
+    initRound();
 
     betBlinds();
 
@@ -58,51 +58,34 @@ void GameEngine::tableTurn()
         river();
     showdown();
 
-//    numberTableTurns++;
+    numberOfRounds++;
 }
 
 void GameEngine::preFlop()
 {
-    for (Player* p: players)
-    {
-        p->addCard(deck.draw());
-        p->addCard(deck.draw());
-    }
-    playRound(bet);
+    distributeOneCard();
+    distributeOneCard();
+    tableTurn(bet);
 }
 
 void GameEngine::flop()
 {
-    Card c1 = deck.draw();
-    Card c2 = deck.draw();
-    Card c3 = deck.draw();
-    for (Player* p: players)
-    {
-        p->addCard(c1);
-        p->addCard(c2);
-        p->addCard(c3);
-    }
-    playRound(bet);
+    addOneCardToBoard();
+    addOneCardToBoard();
+    addOneCardToBoard();
+    tableTurn(bet);
 }
 
 void GameEngine::turn()
 {
-    Card c1 = deck.draw();
-    for (Player* p: players)
-    {
-        p->addCard(c1);
-    }
-    playRound(bet);
+    addOneCardToBoard();
+    tableTurn(bet);
 }
 
 void GameEngine::river()
 {
-    Card c1 = deck.draw();
-    for (Player* p: players)
-    {
-        p->addCard(c1);
-    }
-    playRound(bet);
+    addOneCardToBoard();
+    tableTurn(bet);
 }
 
 void GameEngine::showdown()
@@ -125,8 +108,35 @@ void GameEngine::playerTurn(Player* player, float minBet)
         Decision d = player->makeDecision(bet);
         if (d.choice == CALL)
         {
-            bet = d.bet;
+            bet += d.bet;
         }
+    }
+}
+
+void GameEngine::distributeOneCard()
+{
+    for (int i = bigBlindPlayerIndex; i < players.size(); i++)
+    {
+        Card card = deck.draw();
+        players[i]->addCard(card);
+    }
+    for (int i = 0; i < bigBlindPlayerIndex; i++)
+    {
+        Card card = deck.draw();
+        players[i]->addCard(card);
+    }
+}
+
+void GameEngine::addOneCardToBoard()
+{
+    Card card = deck.draw();
+    for (int i = bigBlindPlayerIndex; i < players.size(); i++)
+    {
+        players[i]->addCard(card);
+    }
+    for (int i = 0; i < bigBlindPlayerIndex; i++)
+    {
+        players[i]->addCard(card);
     }
 }
 
@@ -167,19 +177,23 @@ void GameEngine::addPlayer(Player* player)
     players.push_back(player);
 }
 
-void GameEngine::playRound(float minBet)
+void GameEngine::tableTurn(float minBet)
 {
-    for (int i = bigBlindPlayerIndex; i < players.size(); i++)
-    {
-        playerTurn(p, minBet);
-    }
-    for (int i = 0; i < bigBlindPlayerIndex; i++)
-    {
-        playerTurn(p, binBet);
-    }
+    float currentBet;
+    do {
+        currentBet = bet;
+        for (int i = bigBlindPlayerIndex; i < players.size(); i++)
+        {
+            playerTurn(players[i], minBet);
+        }
+        for (int i = 0; i < bigBlindPlayerIndex; i++)
+        {
+            playerTurn(players[i], minBet);
+        }
+    } while (bet != currentBet);
 }
 
-void GameEngine::initTableTurn()
+void GameEngine::initRound()
 {
     chooseNextDealer();
     bet = bigBlind;
@@ -208,7 +222,7 @@ void GameEngine::betBlinds()
     players[smallBlindPlayerIndex]->addToPot(bigBlind/2);
 }
 
-float GameEngine::getTotalPot()
+float GameEngine::getTotalPot() const
 {
     float totalPot = 0;
     for (Player* p: players)
@@ -218,7 +232,7 @@ float GameEngine::getTotalPot()
     return totalPot;
 }
 
-int GameEngine::    getNumberOfPlayers() const
+int GameEngine::getNumberOfPlayers() const
 {
     return players.size();
 }
