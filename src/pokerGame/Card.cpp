@@ -4,7 +4,7 @@
 
 namespace pokerGame
 {
-Card::Card(int rank, int suit): rank(rank), suit(suit)
+Card::Card(int rank, int suit): rank(rank), suit(suit), visible(true)
 {
     assert(rank <= pokerGame::MAX_RANK && rank >= pokerGame::MIN_RANK);
     assert(suit <= pokerGame::MAX_SUIT && suit >= pokerGame::MIN_SUIT);
@@ -23,6 +23,21 @@ int Card::getSuit() const
 bool Card::isSameSuit(const Card &other) const
 {
     return suit == other.suit;
+}
+
+bool Card::isVisible() const
+{
+    return visible;
+}
+
+void Card::show()
+{
+    visible = true;
+}
+
+void Card::hide()
+{
+    visible = false;
 }
 
 std::string Card::toString() const

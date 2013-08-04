@@ -99,6 +99,19 @@ void GameEngine::river()
 
 void GameEngine::showdown()
 {
+    for (int i = bigBlindPlayerIndex; i < players.size(); i++)
+    {
+        players[i]->showCards();
+    }
+    for (int i = 0; i < bigBlindPlayerIndex; i++)
+    {
+        players[i]->showCards();
+    }
+    for (Player* p : players)
+    {
+        p->seeOpponentCards(*p);
+        p->seeOpponentMoney(*p);
+    }
     Player* winner = players[0];
     for (Player* p: players)
     {
@@ -106,7 +119,7 @@ void GameEngine::showdown()
             winner = p;
     }
     winner->winMoney(getTotalPot());
-    announceWinner();
+    announceRoundWinner(winner);
 }
 
 void GameEngine::playerTurn(Player* player, float minBet)
@@ -161,6 +174,14 @@ void GameEngine::announcements(Player* player)
     {
         player->seeOpponentCards(*p);
         player->seeOpponentMoney(*p);
+    }
+}
+
+void GameEngine::announceRoundWinner(Player* winner)
+{
+    for (Player* p: players)
+    {
+        p->seeRoundWinner(*winner);
     }
 }
 

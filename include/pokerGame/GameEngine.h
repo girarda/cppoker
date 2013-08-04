@@ -13,6 +13,7 @@ public:
 
     void start();
     void endGame();
+    void exit();
 
     void playRound();
     void playerTurn(Player* player, float minBet);
@@ -29,7 +30,9 @@ public:
 
     float getTotalPot() const;
 
+    void announceRoundWinner(Player* winner);
     void announceWinner();
+
     void initRound();
     void betBlinds();
 

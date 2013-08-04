@@ -119,6 +119,11 @@ Decision Player::makeDecision(float minBet)
     return decision;
 }
 
+void Player::showCards()
+{
+    hand.showCards();
+}
+
 void Player::seeDealer(const Player& dealer)
 {
     playerImpl->seeDealer(dealer.getName());
@@ -134,6 +139,11 @@ void Player::seeSmallBlind(const Player& player, float smallBlind)
     playerImpl->seeSmallBlind(player.getName(), smallBlind);
 }
 
+void Player::seeRoundWinner(const Player& winner)
+{
+    playerImpl->seeRoundWinner(winner.getName());
+}
+
 void Player::seeWinner(const Player& winner)
 {
     playerImpl->seeWinner(winner.getName());
@@ -141,7 +151,7 @@ void Player::seeWinner(const Player& winner)
 
 void Player::seeOpponentCards(const Player& opponent)
 {
-    playerImpl->seeOpponentCards(opponent.getName(), opponent.hand);
+    playerImpl->seeOpponentCards(opponent.getName(), opponent.hand.getVisibleHand());
 }
 
 void Player::seeOpponentMoney(const Player& opponent)

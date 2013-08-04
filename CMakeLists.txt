@@ -64,13 +64,13 @@ target_link_libraries(gtest_main gtest gmock)
 include_directories(tests/mocks)
 
 # Tell CMake about source files
-file(GLOB tests_SRC
- "tests/*.cc"
+file(GLOB_RECURSE tests_SRC
+ "tests/*"
 )
 
 #list(LENGTH files_INC number_of_includes)
 #if(number_of_includes GREATER 0)
-add_executable(unittests ${tests_SRC} ${files_SRC} ${PROJECT_INCLUDE_DIR}) 
+add_executable(unittests ${tests_SRC} ${files_SRC} ${PROJECT_INCLUDE_DIR})
 target_link_libraries(unittests gtest_main ${Boost_LIBRARIES})
       #   endif()
 

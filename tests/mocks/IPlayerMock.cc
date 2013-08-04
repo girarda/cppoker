@@ -17,6 +17,7 @@ namespace test
         MOCK_METHOD2(seeBigBlind, void(const std::string player, float bigBlind));
         MOCK_METHOD2(seeSmallBlind, void(std::string player, float smallBlind));
         MOCK_METHOD1(seeWinner, void(const std::string winner));
+        MOCK_METHOD1(seeRoundWinner, void(const std::string winner));
         MOCK_METHOD2(seeOpponentCards, void(std::string opponent, const pokerGame:: Hand&));
         MOCK_METHOD2(seeOpponentMoney, void(std::string opponent, float));
         MOCK_METHOD1(seeCards, void(const pokerGame::Hand& hand));

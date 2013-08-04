@@ -21,6 +21,10 @@ public:
     int getSuit() const;
 
     bool isSameSuit(const Card &other) const;
+    bool isVisible() const;
+
+    void show();
+    void hide();
 
     friend inline bool operator<(const Card &c1, const Card &c2) {return c1.getRank() < c2.getRank();}
     friend inline bool operator>(const Card &c1, const Card &c2) {return c2 < c1;}
@@ -31,6 +35,7 @@ public:
 private:
     int rank;
     int suit;
+    bool visible;
 };
 
 }

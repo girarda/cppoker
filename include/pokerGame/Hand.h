@@ -32,8 +32,10 @@ public:
     int getSize() const;
     void addCard(const pokerGame::Card &aCard);
     HandValue getHandValue() const;
+    Hand getVisibleHand() const;
 
     void empty();
+    void showCards();
 
     bool operator<(const Hand& other) const;
     bool operator>(const Hand& other) const;

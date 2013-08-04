@@ -16,6 +16,10 @@ void Hand::addCard(const pokerGame::Card &aCard)
 {
     cards.push_back(aCard);
     calculateBestHand();
+    if (cards.size() == 1)
+    {
+        cards[0].hide();
+    }
 }
 
 void Hand::empty()
@@ -24,15 +28,36 @@ void Hand::empty()
     bestHand = NO_HAND_VALUE;
 }
 
+void Hand::showCards()
+{
+    for (std::vector<Card>::iterator it = cards.begin(); it != cards.end(); it++)
+    {
+        it->show();
+    }
+}
+
 HandValue Hand::getHandValue() const
 {
     return bestHand;
 }
 
+Hand Hand::getVisibleHand() const
+{
+    Hand visibleHand;
+    for (Card c: cards)
+    {
+        if (c.isVisible())
+        {
+            visibleHand.addCard(c);
+        }
+    }
+    visibleHand.showCards();
+    return visibleHand;
+}
+
 void Hand::calculateBestHand()
 {
     std::sort(cards.begin(), cards.end(), std::greater<Card>());
-//    std::reverse(cards.begin(), cards.end());
 
     typedef HandValue(Hand::*HandValueFunctionPointer)() const;
     HandValueFunctionPointer handValueFunctions[]= {

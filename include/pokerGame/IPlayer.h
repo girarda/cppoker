@@ -26,6 +26,7 @@ public:
     virtual void seeDealer(std::string dealer) = 0;
     virtual void seeBigBlind(std::string player, float bigBlind) = 0;
     virtual void seeSmallBlind(std::string player, float smallBlind ) = 0;
+    virtual void seeRoundWinner(std::string winner) = 0;
     virtual void seeWinner(std::string winner) = 0;
     virtual void seeOpponentCards(std::string opponent, const Hand& hand) = 0;
     virtual void seeOpponentMoney(std::string opponent, float money) = 0;
