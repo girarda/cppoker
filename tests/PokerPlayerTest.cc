@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
-#include "pokerGame/Player.h"
-#include "IPlayerMock.cc"
-#include "HandMock.cc"
+#include "pokerGame/PokerPlayer.h"
+#include "PlayerMock.h"
+#include "HandMock.h"
 
 using ::testing::Return;
 
@@ -10,7 +10,7 @@ class PlayerTest : public ::testing::Test
 protected:
     test::IPlayerMock* aPlayerImpl;
     test::HandMock* aHand;
-    pokerGame::Player* aPlayer;
+    pokerGame::PokerPlayer* aPlayer;
 
     static const float NO_MONEY;
     static const float MONEY_WON;
@@ -21,7 +21,7 @@ protected:
     {
         aPlayerImpl = new test::IPlayerMock();
         aHand = new test::HandMock();
-        aPlayer = new pokerGame::Player(aPlayerImpl, INITIAL_AMOUNT_MONEY);
+        aPlayer = new pokerGame::PokerPlayer(aPlayerImpl, INITIAL_AMOUNT_MONEY);
     }
     virtual void TearDown()
     {

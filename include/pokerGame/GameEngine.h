@@ -1,4 +1,4 @@
-#include "pokerGame/Player.h"
+#include "pokerGame/PokerPlayer.h"
 #include "pokerGame/Deck.h"
 #include "network/OnlineRoom.h"
 
@@ -16,8 +16,8 @@ public:
     void exit();
 
     void playRound();
-    void playerTurn(Player* player, float minBet);
-    void announcements(Player* player);
+    void playerTurn(PokerPlayer* player, float minBet);
+    void announcements(PokerPlayer* player);
 
     void preFlop();
     void flop();
@@ -25,12 +25,12 @@ public:
     void river();
     void showdown();
 
-    void addPlayer(Player* player);
+    void addPlayer(PokerPlayer* player);
     void tableTurn(float minBet);
 
     float getTotalPot() const;
 
-    void announceRoundWinner(Player* winner, float moneyWon);
+    void announceRoundWinner(PokerPlayer* winner, float moneyWon);
     void announceWinner();
 
     void initRound();
@@ -39,8 +39,8 @@ public:
     int getNumberOfPlayers() const;
     int getNumberOfPlayingPlayers() const;
 
-    virtual void join(IPlayer* player);
-    virtual void leave(IPlayer* player);
+    virtual void join(Player* player);
+    virtual void leave(Player* player);
     virtual void sendChatMessage(const std::string& mesage);
 
 private:
@@ -49,7 +49,7 @@ private:
     void addOneCardToBoard();
 
     Deck deck;
-    std::vector<Player*> players;
+    std::vector<PokerPlayer*> players;
     int numberOfRounds;
     float bet;
     float bigBlind;

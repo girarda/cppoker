@@ -1,80 +1,44 @@
-#ifndef Player_H
-#define Player_H
+#ifndef IPlayer_H
+#define IPlayer_H
 
-#include <string>
 #include "pokerGame/Hand.h"
-#include "pokerGame/IPlayer.h"
 
 namespace pokerGame
 {
+enum Choice {WAITING, FOLD, CHECK, CALL};
+
+typedef struct Decision
+{
+    Choice choice;
+    float bet;
+} Decision;
 
 class Player
 {
 public:
-
-    Player(IPlayer *playerImpl, float initialMoney);
+    Player();
     virtual ~Player();
 
-    virtual Decision makeDecision(float minBet);
+    virtual Decision makeDecision(float minBet) = 0;
 
-    virtual void setMoney(float newValue);
+    virtual void deliver(const std::string& msg) = 0;
 
-    virtual void startPlaying();
-    virtual void fold();
-    virtual void setupForNewTableTurn();
-    virtual void stopPlaying();
-
-    virtual bool hasBetterHand(const Player& other) const;
-    virtual float getPot() const;
-
-    virtual bool isPlaying() const;
-    virtual bool isFolded() const;
-
-    virtual void showCards();
-
-    virtual void addCard(const Card& card);
-    virtual void addToPot(float moneyToAdd);
-    virtual void winMoney(float gainedMoney);
-
-    virtual void seeDealer(const Player& dealer);
-    virtual void seeBigBlind(const Player& player, float bigBlind);
-    virtual void seeSmallBlind(const Player& player, float smallBlind);
-    virtual void seeRoundWinner(const Player& winner, float moneyWon);
-    virtual void seeWinner(const Player& winner);
-    virtual void seeOpponentCards(const Player& opponent);
-    virtual void seeOpponentMoney(const Player& opponnent);
-    virtual void seeCards();
-    virtual void seeMoney();
-
+    virtual void seeDealer(std::string dealer) = 0;
+    virtual void seeBigBlind(std::string player, float bigBlind) = 0;
+    virtual void seeSmallBlind(std::string player, float smallBlind ) = 0;
+    virtual void seeRoundWinner(std::string winner, float moneyWon) = 0;
+    virtual void seeWinner(std::string winner) = 0;
+    virtual void seeOpponentCards(std::string opponent, const Hand& hand) = 0;
+    virtual void seeOpponentMoney(std::string opponent, float money) = 0;
+    virtual void seeCards(const Hand& hand) = 0;
+    virtual void seeMoney(float money) = 0;
 
     virtual std::string getName() const;
+    virtual void setName(std::string newName);
 
-    virtual void deliver(const std::string& msg);
-
-    // for testing purposes
-    Player(IPlayer *playerImpl, float initialMoney ,Hand* hand);
-    float getMoney() const;
-
-private:
-    enum State {
-        PLAYING,
-        FOLDED,
-        NOT_PLAYING
-    };
-
-    void clearPot();
-    Hand getVisibleHand() const;
-
-    Hand hand;
-
-    IPlayer *playerImpl;
-
-    State currentState;
-
-    float money;
-    float pot;
+protected:
+    std::string name;
 };
 
 }
-
 #endif

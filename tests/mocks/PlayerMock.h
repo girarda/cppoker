@@ -1,12 +1,12 @@
 #ifndef IPLAYERMOCK_H_
 #define IPLAYERMOCK_H_
 
-#include "pokerGame/IPlayer.h"
+#include "pokerGame/Player.h"
 #include "gmock/gmock.h"
 
 namespace test
 {
-    class IPlayerMock : public pokerGame::IPlayer
+    class IPlayerMock : public pokerGame::Player
     {
         public:
         MOCK_METHOD1(makeDecision, pokerGame::Decision(const float minBet));

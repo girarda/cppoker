@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "pokerGame/GameEngine.h"
-#include "PlayerMock.cc"
+#include "PokerPlayermock.h"
 
 using ::testing::Return;
 

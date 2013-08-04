@@ -1,10 +1,10 @@
-#include "pokerGame/IPlayer.h"
+#include "pokerGame/Player.h"
 #include <string>
 
 namespace playerInterface
 {
 
-class ConsolePlayer : public pokerGame::IPlayer
+class ConsolePlayer : public pokerGame::Player
 {
 public:
     ConsolePlayer();

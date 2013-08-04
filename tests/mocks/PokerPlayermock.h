@@ -1,15 +1,15 @@
 #ifndef PLAYERMOCK_H_
 #define PLAYERMOCK_H_
 
-#include "pokerGame/Player.h"
+#include "pokerGame/PokerPlayer.h"
 #include "gmock/gmock.h"
 
 namespace test
 {
-    class PlayerMock : public pokerGame::Player
+    class PlayerMock : public pokerGame::PokerPlayer
     {
         public:
-        PlayerMock(): Player(NULL, 0){};
+        PlayerMock(): PokerPlayer(NULL, 0){};
 
         MOCK_METHOD0(makeDecision, pokerGame::Decision());
 
@@ -22,19 +22,19 @@ namespace test
 
         MOCK_CONST_METHOD0(isPlaying, bool());
         MOCK_CONST_METHOD0(isFolded, bool());
-        MOCK_CONST_METHOD1(hasBetterHand, bool(const Player& other));
+        MOCK_CONST_METHOD1(hasBetterHand, bool(const PokerPlayer& other));
 
         MOCK_METHOD1(addCard, void(const pokerGame::Card& card));
         MOCK_METHOD1(addToPot, void(float bet));
         MOCK_METHOD1(winMoney, void(float gainedMoney));
 
-        MOCK_METHOD1(seeDealer, void(const Player& dealer));
-        MOCK_METHOD2(seeBigBlind, void(const Player& player, float bigBlind));
-        MOCK_METHOD2(seeSmallBlind, void(const Player& player, float smallBlind));
-        MOCK_METHOD2(seeRoundWinner, void(const Player& winner, float moneyWon));
-        MOCK_METHOD1(seeWinner, void(const Player& winner));
-        MOCK_METHOD1(seeOpponentCards, void(const Player& opponent));
-        MOCK_METHOD1(seeOpponentMoney, void(const Player& opponent));
+        MOCK_METHOD1(seeDealer, void(const PokerPlayer& dealer));
+        MOCK_METHOD2(seeBigBlind, void(const PokerPlayer& player, float bigBlind));
+        MOCK_METHOD2(seeSmallBlind, void(const PokerPlayer& player, float smallBlind));
+        MOCK_METHOD2(seeRoundWinner, void(const PokerPlayer& winner, float moneyWon));
+        MOCK_METHOD1(seeWinner, void(const PokerPlayer& winner));
+        MOCK_METHOD1(seeOpponentCards, void(const PokerPlayer& opponent));
+        MOCK_METHOD1(seeOpponentMoney, void(const PokerPlayer& opponent));
         MOCK_METHOD0(seeCards, void());
         MOCK_METHOD0(seeMoney, void());
     };

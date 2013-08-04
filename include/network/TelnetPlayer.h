@@ -6,7 +6,7 @@
 #include "network/OnlineRoom.h"
 #include "network/OnlineUser.h"
 #include "pokerGame/Hand.h"
-#include "pokerGame/IPlayer.h"
+#include "pokerGame/Player.h"
 
 namespace network
 {
@@ -20,7 +20,7 @@ enum SOCKET_READ_STATE {
     RS_NOT_WAITING
 };
 
-class TelnetPlayer : public pokerGame::IPlayer, public OnlineUser {
+class TelnetPlayer : public pokerGame::Player, public OnlineUser {
 
 public:
     TelnetPlayer(boost::asio::io_service& io_service, OnlineRoom* room);

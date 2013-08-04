@@ -62,7 +62,7 @@ void TelnetPlayer::handleRead(const boost::system::error_code& error)
     {
     case (RS_WAITING_FOR_NAME):
         setName(message);
-        room->join((IPlayer*)this);
+        room->join((Player*)this);
         break;
     case (RS_NOT_WAITING):
         sendChatMessage(name, message);

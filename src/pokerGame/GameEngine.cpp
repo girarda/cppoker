@@ -19,7 +19,7 @@ GameEngine::GameEngine():
 
 GameEngine::~GameEngine()
 {
-    for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++)
+    for (std::vector<PokerPlayer*>::iterator it = players.begin(); it != players.end(); it++)
     {
         if (*it)
         {
@@ -30,7 +30,7 @@ GameEngine::~GameEngine()
 
 void GameEngine::start()
 {
-    for (Player* p: players)
+    for (PokerPlayer* p: players)
     {
         p->startPlaying();
     }
@@ -46,7 +46,7 @@ void GameEngine::start()
 
 void GameEngine::endGame()
 {
-    for (Player* p: players)
+    for (PokerPlayer* p: players)
     {
         p->stopPlaying();
     }
@@ -107,13 +107,13 @@ void GameEngine::showdown()
     {
         players[i]->showCards();
     }
-    for (Player* p : players)
+    for (PokerPlayer* p : players)
     {
         p->seeOpponentCards(*p);
         p->seeOpponentMoney(*p);
     }
-    Player* winner = players[0];
-    for (Player* p: players)
+    PokerPlayer* winner = players[0];
+    for (PokerPlayer* p: players)
     {
         if (p->hasBetterHand(*winner))
             winner = p;
@@ -122,7 +122,7 @@ void GameEngine::showdown()
     announceRoundWinner(winner, getTotalPot());
 }
 
-void GameEngine::playerTurn(Player* player, float minBet)
+void GameEngine::playerTurn(PokerPlayer* player, float minBet)
 {
     announcements(player);
     if (player->isPlaying())
@@ -162,7 +162,7 @@ void GameEngine::addOneCardToBoard()
     }
 }
 
-void GameEngine::announcements(Player* player)
+void GameEngine::announcements(PokerPlayer* player)
 {
     player->seeDealer(*players[dealerIndex]);
     player->seeBigBlind(*players[bigBlindPlayerIndex], bigBlind);
@@ -170,16 +170,16 @@ void GameEngine::announcements(Player* player)
     player->seeCards();
     player->seeMoney();
 
-    for (Player* p : players)
+    for (PokerPlayer* p : players)
     {
         player->seeOpponentCards(*p);
         player->seeOpponentMoney(*p);
     }
 }
 
-void GameEngine::announceRoundWinner(Player* winner, float moneyWon)
+void GameEngine::announceRoundWinner(PokerPlayer* winner, float moneyWon)
 {
-    for (Player* p: players)
+    for (PokerPlayer* p: players)
     {
         p->seeRoundWinner(*winner, moneyWon);
     }
@@ -187,8 +187,8 @@ void GameEngine::announceRoundWinner(Player* winner, float moneyWon)
 
 void GameEngine::announceWinner()
 {
-    Player* winner;
-    for (Player* p: players)
+    PokerPlayer* winner;
+    for (PokerPlayer* p: players)
     {
         if (p->isPlaying())
         {
@@ -196,13 +196,13 @@ void GameEngine::announceWinner()
             break;
         }
     }
-    for (Player* p: players)
+    for (PokerPlayer* p: players)
     {
         p->seeWinner(*winner);
     }
 }
 
-void GameEngine::addPlayer(Player* player)
+void GameEngine::addPlayer(PokerPlayer* player)
 {
     players.push_back(player);
 }
@@ -228,7 +228,7 @@ void GameEngine::initRound()
     chooseNextDealer();
     bet = bigBlind;
     deck.shuffle();
-    for (Player* p: players)
+    for (PokerPlayer* p: players)
     {
         p->setupForNewTableTurn();
     }
@@ -255,7 +255,7 @@ void GameEngine::betBlinds()
 float GameEngine::getTotalPot() const
 {
     float totalPot = 0;
-    for (Player* p: players)
+    for (PokerPlayer* p: players)
     {
         totalPot += p->getPot();
     }
@@ -270,7 +270,7 @@ int GameEngine::getNumberOfPlayers() const
 int GameEngine::getNumberOfPlayingPlayers() const
 {
     int nbPlayingPlayers = 0;
-    for (Player* p: players)
+    for (PokerPlayer* p: players)
     {
         if (p->isPlaying())
             nbPlayingPlayers++;
@@ -280,7 +280,7 @@ int GameEngine::getNumberOfPlayingPlayers() const
 
 void GameEngine::join(IPlayer* player)
 {
-    Player* newPlayer = new Player(player, INITIAL_AMOUNT_OF_MONEY);
+    PokerPlayer* newPlayer = new PokerPlayer(player, INITIAL_AMOUNT_OF_MONEY);
     players.push_back(newPlayer);
     sendChatMessage("A new player joined!");
 }
@@ -293,7 +293,7 @@ void GameEngine::leave(IPlayer* player)
 void GameEngine::sendChatMessage(const std::string& msg)
 {
     std::for_each(players.begin(), players.end(),
-                  boost::bind(&Player::deliver, _1, boost::ref(msg)));
+                  boost::bind(&PokerPlayer::deliver, _1, boost::ref(msg)));
 }
 
 }
