@@ -30,7 +30,7 @@ public:
 
     float getTotalPot() const;
 
-    void announceRoundWinner(Player* winner);
+    void announceRoundWinner(Player* winner, float moneyWon);
     void announceWinner();
 
     void initRound();

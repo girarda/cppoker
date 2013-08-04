@@ -39,7 +39,7 @@ public:
     virtual void seeDealer(const Player& dealer);
     virtual void seeBigBlind(const Player& player, float bigBlind);
     virtual void seeSmallBlind(const Player& player, float smallBlind);
-    virtual void seeRoundWinner(const Player& winner);
+    virtual void seeRoundWinner(const Player& winner, float moneyWon);
     virtual void seeWinner(const Player& winner);
     virtual void seeOpponentCards(const Player& opponent);
     virtual void seeOpponentMoney(const Player& opponnent);

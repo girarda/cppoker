@@ -119,7 +119,7 @@ void GameEngine::showdown()
             winner = p;
     }
     winner->winMoney(getTotalPot());
-    announceRoundWinner(winner);
+    announceRoundWinner(winner, getTotalPot());
 }
 
 void GameEngine::playerTurn(Player* player, float minBet)
@@ -177,11 +177,11 @@ void GameEngine::announcements(Player* player)
     }
 }
 
-void GameEngine::announceRoundWinner(Player* winner)
+void GameEngine::announceRoundWinner(Player* winner, float moneyWon)
 {
     for (Player* p: players)
     {
-        p->seeRoundWinner(*winner);
+        p->seeRoundWinner(*winner, moneyWon);
     }
 }
 

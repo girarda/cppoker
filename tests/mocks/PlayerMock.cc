@@ -31,7 +31,7 @@ namespace test
         MOCK_METHOD1(seeDealer, void(const Player& dealer));
         MOCK_METHOD2(seeBigBlind, void(const Player& player, float bigBlind));
         MOCK_METHOD2(seeSmallBlind, void(const Player& player, float smallBlind));
-        MOCK_METHOD1(seeRoundWinner, void(const Player& winner));
+        MOCK_METHOD2(seeRoundWinner, void(const Player& winner, float moneyWon));
         MOCK_METHOD1(seeWinner, void(const Player& winner));
         MOCK_METHOD1(seeOpponentCards, void(const Player& opponent));
         MOCK_METHOD1(seeOpponentMoney, void(const Player& opponent));

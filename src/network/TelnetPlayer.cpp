@@ -127,10 +127,11 @@ void TelnetPlayer::seeOpponentCards(std::string player, const pokerGame::Hand& p
     deliver(msg);
 }
 
-void TelnetPlayer::seeRoundWinner(std::string player)
+void TelnetPlayer::seeRoundWinner(std::string player, float moneyWon)
 {
-    std::string msg = "player " + player + " won this round.";
-    deliver(msg);
+    std::stringstream ss;
+    ss << "player " << player + " won " << moneyWon << "$ this round.";
+    deliver(ss.str());
 }
 
 void TelnetPlayer::seeWinner(std::string player)

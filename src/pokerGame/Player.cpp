@@ -139,9 +139,9 @@ void Player::seeSmallBlind(const Player& player, float smallBlind)
     playerImpl->seeSmallBlind(player.getName(), smallBlind);
 }
 
-void Player::seeRoundWinner(const Player& winner)
+void Player::seeRoundWinner(const Player& winner, float moneyWon)
 {
-    playerImpl->seeRoundWinner(winner.getName());
+    playerImpl->seeRoundWinner(winner.getName(), moneyWon);
 }
 
 void Player::seeWinner(const Player& winner)

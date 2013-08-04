@@ -35,7 +35,7 @@ public:
     virtual void seeDealer(std::string dealer);
     virtual void seeBigBlind(std::string player, float bigBlind);
     virtual void seeSmallBlind(std::string player, float smallBlind );
-    virtual void seeRoundWinner(std::string winner);
+    virtual void seeRoundWinner(std::string winner, float moneyWon);
     virtual void seeWinner(std::string winner);
     virtual void seeOpponentCards(std::string opponent, const pokerGame::Hand& hand);
     virtual void seeOpponentMoney(std::string opponent, float money);
