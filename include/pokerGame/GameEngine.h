@@ -30,6 +30,8 @@ public:
 
     float getTotalPot() const;
 
+    void announcePhase(const std::string& phaseName);
+    void announcePlayerTurn(PokerPlayer* player);
     void announceRoundWinner(PokerPlayer* winner, float moneyWon);
     void announceWinner();
 

@@ -32,6 +32,8 @@ public:
 
     bool isPlaying() const;
 
+    virtual void seeGamePhase(std::string phaseName);
+    virtual void seePlayerTurn(std::string player);
     virtual void seeDealer(std::string dealer);
     virtual void seeBigBlind(std::string player, float bigBlind);
     virtual void seeSmallBlind(std::string player, float smallBlind );

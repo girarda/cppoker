@@ -94,6 +94,18 @@ void TelnetPlayer::seeMoney(float money)
     deliver(ss.str());
 }
 
+void TelnetPlayer::seeGamePhase(std::string gamePhase)
+{
+    std::string msg = "--- Entering " + gamePhase + " ---";
+    deliver(msg);
+}
+
+void TelnetPlayer::seePlayerTurn(std::string player)
+{
+    std::string msg = "It is now " + player + "'s turn.";
+    deliver(msg);
+}
+
 void TelnetPlayer::seeDealer(std::string dealer)
 {
     std::string msg = "Dealer is " + dealer;

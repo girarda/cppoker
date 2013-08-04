@@ -13,6 +13,8 @@ namespace test
 
         MOCK_METHOD1(deliver, void(const std::string& msg));
 
+        MOCK_METHOD1(seeGamePhase, void(const std::string gamePhase));
+        MOCK_METHOD1(seePlayerTurn, void(const std::string playerTurn));
         MOCK_METHOD1(seeDealer, void(const std::string dealer));
         MOCK_METHOD2(seeBigBlind, void(const std::string player, float bigBlind));
         MOCK_METHOD2(seeSmallBlind, void(std::string player, float smallBlind));

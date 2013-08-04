@@ -30,6 +30,7 @@ GameEngine::~GameEngine()
 
 void GameEngine::start()
 {
+    announcePhase("Game Start");
     for (PokerPlayer* p: players)
     {
         p->startPlaying();
@@ -46,6 +47,7 @@ void GameEngine::start()
 
 void GameEngine::endGame()
 {
+    announcePhase("Game End");
     for (PokerPlayer* p: players)
     {
         p->stopPlaying();
@@ -54,6 +56,9 @@ void GameEngine::endGame()
 
 void GameEngine::playRound()
 {
+    std::stringstream ss;
+    ss << "Round " << numberOfRounds;
+    announcePhase(ss.str());
     initRound();
 
     betBlinds();
@@ -72,6 +77,7 @@ void GameEngine::playRound()
 
 void GameEngine::preFlop()
 {
+    announcePhase("PreFlop");
     distributeOneCard();
     distributeOneCard();
     tableTurn(bet);
@@ -79,6 +85,7 @@ void GameEngine::preFlop()
 
 void GameEngine::flop()
 {
+    announcePhase("Flop");
     addOneCardToBoard();
     addOneCardToBoard();
     addOneCardToBoard();
@@ -93,12 +100,15 @@ void GameEngine::turn()
 
 void GameEngine::river()
 {
+    announcePhase("Turn");
+    announcePhase("River");
     addOneCardToBoard();
     tableTurn(bet);
 }
 
 void GameEngine::showdown()
 {
+    announcePhase("Showdown");
     for (int i = bigBlindPlayerIndex; i < players.size(); i++)
     {
         players[i]->showCards();
@@ -124,6 +134,7 @@ void GameEngine::showdown()
 
 void GameEngine::playerTurn(PokerPlayer* player, float minBet)
 {
+    announcePlayerTurn(player);
     announcements(player);
     if (player->isPlaying())
     {
@@ -177,6 +188,14 @@ void GameEngine::announcements(PokerPlayer* player)
     }
 }
 
+void GameEngine::announcePlayerTurn(PokerPlayer* player)
+{
+    for (PokerPlayer* p: players)
+    {
+        p->seePlayerTurn(*player);
+    }
+}
+
 void GameEngine::announceRoundWinner(PokerPlayer* winner, float moneyWon)
 {
     for (PokerPlayer* p: players)
@@ -199,6 +218,14 @@ void GameEngine::announceWinner()
     for (PokerPlayer* p: players)
     {
         p->seeWinner(*winner);
+    }
+}
+
+void GameEngine::announcePhase(const std::string& phaseName)
+{
+    for (PokerPlayer* p: players)
+    {
+        p->seeGamePhase(phaseName);
     }
 }
 
@@ -278,14 +305,14 @@ int GameEngine::getNumberOfPlayingPlayers() const
     return nbPlayingPlayers;
 }
 
-void GameEngine::join(IPlayer* player)
+void GameEngine::join(Player* player)
 {
     PokerPlayer* newPlayer = new PokerPlayer(player, INITIAL_AMOUNT_OF_MONEY);
     players.push_back(newPlayer);
     sendChatMessage("A new player joined!");
 }
 
-void GameEngine::leave(IPlayer* player)
+void GameEngine::leave(Player* player)
 {
     //mVPlayers.erase(player);
 }

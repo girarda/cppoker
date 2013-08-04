@@ -28,6 +28,8 @@ namespace test
         MOCK_METHOD1(addToPot, void(float bet));
         MOCK_METHOD1(winMoney, void(float gainedMoney));
 
+        MOCK_METHOD1(seeGamePhase, void(const std::string& phaseName));
+        MOCK_METHOD1(seePlayerTurn, void(const PokerPlayer& player));
         MOCK_METHOD1(seeDealer, void(const PokerPlayer& dealer));
         MOCK_METHOD2(seeBigBlind, void(const PokerPlayer& player, float bigBlind));
         MOCK_METHOD2(seeSmallBlind, void(const PokerPlayer& player, float smallBlind));

@@ -36,6 +36,8 @@ public:
     virtual void addToPot(float moneyToAdd);
     virtual void winMoney(float gainedMoney);
 
+    virtual void seeGamePhase(const std::string& phaseName);
+    virtual void seePlayerTurn(const PokerPlayer& player);
     virtual void seeDealer(const PokerPlayer& dealer);
     virtual void seeBigBlind(const PokerPlayer& player, float bigBlind);
     virtual void seeSmallBlind(const PokerPlayer& player, float smallBlind);

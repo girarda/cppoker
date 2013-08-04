@@ -124,6 +124,16 @@ void PokerPlayer::showCards()
     hand.showCards();
 }
 
+void PokerPlayer::seeGamePhase(const std::string& phaseName)
+{
+    playerImpl->seeGamePhase(phaseName);
+}
+
+void PokerPlayer::seePlayerTurn(const PokerPlayer& player)
+{
+    playerImpl->seePlayerTurn(player.getName());
+}
+
 void PokerPlayer::seeDealer(const PokerPlayer& dealer)
 {
     playerImpl->seeDealer(dealer.getName());

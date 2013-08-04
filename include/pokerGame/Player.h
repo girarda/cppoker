@@ -23,6 +23,8 @@ public:
 
     virtual void deliver(const std::string& msg) = 0;
 
+    virtual void seeGamePhase(std::string phaseName) = 0;
+    virtual void seePlayerTurn(std::string player) = 0;
     virtual void seeDealer(std::string dealer) = 0;
     virtual void seeBigBlind(std::string player, float bigBlind) = 0;
     virtual void seeSmallBlind(std::string player, float smallBlind ) = 0;
