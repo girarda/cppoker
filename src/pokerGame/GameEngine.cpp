@@ -41,6 +41,15 @@ void GameEngine::start()
             bigBlind *= 2;
     }
     announceWinner();
+    endGame();
+}
+
+void GameEngine::endGame()
+{
+    for (Player* p: players)
+    {
+        p->stopPlaying();
+    }
 }
 
 void GameEngine::playRound()

@@ -34,8 +34,16 @@ void Player::fold()
     currentState =  FOLDED;
 }
 
-void Player::setupForNewTableTurn() {
+void Player::setupForNewTableTurn()
+{
     currentState = PLAYING;
+    clearPot();
+    hand.empty();
+}
+
+void Player::stopPlaying()
+{
+    currentState = NOT_PLAYING;
     clearPot();
     hand.empty();
 }

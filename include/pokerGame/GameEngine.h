@@ -12,6 +12,8 @@ public:
     virtual ~GameEngine();
 
     void start();
+    void endGame();
+
     void playRound();
     void playerTurn(Player* player, float minBet);
     void announcements(Player* player);

@@ -22,6 +22,7 @@ public:
     virtual void startPlaying();
     virtual void fold();
     virtual void setupForNewTableTurn();
+    virtual void stopPlaying();
 
     virtual bool hasBetterHand(const Player& other) const;
     virtual float getPot() const;
