@@ -41,8 +41,8 @@ public:
     int getNumberOfPlayers() const;
     int getNumberOfPlayingPlayers() const;
 
-    virtual void join(Player* player);
-    virtual void leave(Player* player);
+    virtual void join(PlayerController* player);
+    virtual void leave(PlayerController* player);
     virtual void sendChatMessage(const std::string& mesage);
 
 private:

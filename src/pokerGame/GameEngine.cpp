@@ -30,6 +30,7 @@ GameEngine::~GameEngine()
 
 void GameEngine::start()
 {
+    
     announcePhase("Game Start");
     for (PokerPlayer* p: players)
     {
@@ -305,14 +306,14 @@ int GameEngine::getNumberOfPlayingPlayers() const
     return nbPlayingPlayers;
 }
 
-void GameEngine::join(Player* player)
+void GameEngine::join(PlayerController* player)
 {
     PokerPlayer* newPlayer = new PokerPlayer(player, INITIAL_AMOUNT_OF_MONEY);
     players.push_back(newPlayer);
     sendChatMessage("A new player joined!");
 }
 
-void GameEngine::leave(Player* player)
+void GameEngine::leave(PlayerController* player)
 {
     //mVPlayers.erase(player);
 }

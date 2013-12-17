@@ -28,15 +28,15 @@ namespace test
         MOCK_METHOD1(addToPot, void(float bet));
         MOCK_METHOD1(winMoney, void(float gainedMoney));
 
-        MOCK_METHOD1(seeGamePhase, void(const std::string& phaseName));
-        MOCK_METHOD1(seePlayerTurn, void(const PokerPlayer& player));
-        MOCK_METHOD1(seeDealer, void(const PokerPlayer& dealer));
-        MOCK_METHOD2(seeBigBlind, void(const PokerPlayer& player, float bigBlind));
-        MOCK_METHOD2(seeSmallBlind, void(const PokerPlayer& player, float smallBlind));
-        MOCK_METHOD2(seeRoundWinner, void(const PokerPlayer& winner, float moneyWon));
-        MOCK_METHOD1(seeWinner, void(const PokerPlayer& winner));
-        MOCK_METHOD1(seeOpponentCards, void(const PokerPlayer& opponent));
-        MOCK_METHOD1(seeOpponentMoney, void(const PokerPlayer& opponent));
+        MOCK_METHOD1(seeGamePhase, void(std::string phaseName));
+        MOCK_METHOD1(seePlayerTurn, void(const pokerGame::PokerPlayer& player));
+        MOCK_METHOD1(seeDealer, void(const pokerGame::PokerPlayer& dealer));
+        MOCK_METHOD2(seeBigBlind, void(const pokerGame::PokerPlayer& player, float bigBlind));
+        MOCK_METHOD2(seeSmallBlind, void(const pokerGame::PokerPlayer& player, float smallBlind));
+        MOCK_METHOD2(seeRoundWinner, void(const pokerGame::PokerPlayer& winner, float moneyWon));
+        MOCK_METHOD1(seeWinner, void(const pokerGame::PokerPlayer& winner));
+        MOCK_METHOD1(seeOpponentCards, void(const pokerGame::PokerPlayer& opponent));
+        MOCK_METHOD1(seeOpponentMoney, void(const pokerGame::PokerPlayer& opponent));
         MOCK_METHOD0(seeCards, void());
         MOCK_METHOD0(seeMoney, void());
     };

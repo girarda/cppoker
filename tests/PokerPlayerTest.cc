@@ -1,14 +1,15 @@
 #include "gtest/gtest.h"
 #include "pokerGame/PokerPlayer.h"
-#include "PlayerMock.h"
+#include "PlayerControllerMock.h"
 #include "HandMock.h"
+#include "pokerGame/PlayerController.h"
 
 using ::testing::Return;
 
 class PlayerTest : public ::testing::Test
 {
 protected:
-    test::IPlayerMock* aPlayerImpl;
+    test::PlayerControllerMock* aPlayerController;
     test::HandMock* aHand;
     pokerGame::PokerPlayer* aPlayer;
 
@@ -19,9 +20,9 @@ protected:
 
     virtual void SetUp()
     {
-        aPlayerImpl = new test::IPlayerMock();
+        aPlayerController = new test::PlayerControllerMock();
         aHand = new test::HandMock();
-        aPlayer = new pokerGame::PokerPlayer(aPlayerImpl, INITIAL_AMOUNT_MONEY);
+        aPlayer = new pokerGame::PokerPlayer(aPlayerController, INITIAL_AMOUNT_MONEY);
     }
     virtual void TearDown()
     {
@@ -109,9 +110,9 @@ TEST_F(PlayerTest, playerHasMoreMoneyWhenWinningMoney)
 TEST_F(PlayerTest, makingDecisionReturnsCheckWhenPlayerChecks)
 {
     pokerGame::Decision aDecision = {pokerGame::CHECK, 0};
-    EXPECT_CALL(*aPlayerImpl, makeDecision(0)).Times(1).WillOnce(Return(aDecision));
+    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0)).Times(1).WillOnce(Return(aDecision));
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision((0));
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0);
 
     ASSERT_EQ(aDecision.choice, returnedDecision.choice);
     ASSERT_EQ(aDecision.bet, returnedDecision.bet);
@@ -121,7 +122,7 @@ TEST_F(PlayerTest, makingDecisionAsksUserASecondTimesIfItDoesNotHaveEnoughMoneyF
 {
     pokerGame::Decision callDecision = {pokerGame::CALL, TOO_MUCH_MONEY};
     pokerGame::Decision checkDecision = {pokerGame::CHECK, 0};
-    EXPECT_CALL(*aPlayerImpl, makeDecision(0)).Times(2).WillOnce(Return(callDecision)).WillOnce(Return(checkDecision));
+    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0)).Times(2).WillOnce(Return(callDecision)).WillOnce(Return(checkDecision));
 
     pokerGame::Decision returnedDecision = aPlayer->makeDecision((0));
 
@@ -133,8 +134,7 @@ TEST_F(PlayerTest, makingDecisionReturnsCallWhenPlayerCallsAndHasEnoughMoney)
 {
     aPlayer->setMoney(5);
     pokerGame::Decision callDecision = {pokerGame::CALL, 5};
-    EXPECT_CALL(*aPlayerImpl, makeDecision(0)).Times(1).WillOnce(Return(callDecision));
-
+    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0)).Times(1).WillOnce(Return(callDecision)); 
     pokerGame::Decision returnedDecision = aPlayer->makeDecision((0));
 
     ASSERT_EQ(callDecision.choice, returnedDecision.choice);
@@ -144,7 +144,7 @@ TEST_F(PlayerTest, makingDecisionReturnsCallWhenPlayerCallsAndHasEnoughMoney)
 TEST_F(PlayerTest, playerFoldsWhenDecisionIsToFold)
 {
     pokerGame::Decision foldDecision = {pokerGame::FOLD, 0};
-    EXPECT_CALL(*aPlayerImpl, makeDecision(0)).Times(1).WillOnce(Return(foldDecision));
+    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0)).Times(1).WillOnce(Return(foldDecision));
 
     pokerGame::Decision returnedDecision = aPlayer->makeDecision((0));
     bool playerFolded = aPlayer->isFolded();

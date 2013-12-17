@@ -3,7 +3,7 @@
 
 #include <string>
 #include "pokerGame/Hand.h"
-#include "pokerGame/Player.h"
+#include "pokerGame/PlayerController.h"
 
 namespace pokerGame
 {
@@ -12,7 +12,7 @@ class PokerPlayer
 {
 public:
 
-    PokerPlayer(Player *playerImpl, float initialMoney);
+    PokerPlayer(PlayerController *aPlayerController, float initialMoney);
     virtual ~PokerPlayer();
 
     virtual Decision makeDecision(float minBet);
@@ -36,7 +36,7 @@ public:
     virtual void addToPot(float moneyToAdd);
     virtual void winMoney(float gainedMoney);
 
-    virtual void seeGamePhase(const std::string& phaseName);
+    virtual void seeGamePhase(std::string phaseName);
     virtual void seePlayerTurn(const PokerPlayer& player);
     virtual void seeDealer(const PokerPlayer& dealer);
     virtual void seeBigBlind(const PokerPlayer& player, float bigBlind);
@@ -54,7 +54,7 @@ public:
     virtual void deliver(const std::string& msg);
 
     // for testing purposes
-    PokerPlayer(Player *playerImpl, float initialMoney ,Hand* hand);
+    PokerPlayer(PlayerController *playerController, float initialMoney ,Hand* hand);
     float getMoney() const;
 
 private:
@@ -69,7 +69,7 @@ private:
 
     Hand hand;
 
-    Player *playerImpl;
+    PlayerController *playerController;
 
     State currentState;
 

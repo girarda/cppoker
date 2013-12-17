@@ -2,8 +2,8 @@
 
 namespace pokerGame
 {
-PokerPlayer::PokerPlayer(Player *playerImpl, float initialMoney):
-    playerImpl(playerImpl),
+PokerPlayer::PokerPlayer(PlayerController *aPlayerController, float initialMoney):
+    playerController(aPlayerController),
     hand(),
     currentState(NOT_PLAYING),
     money(initialMoney),
@@ -13,9 +13,9 @@ PokerPlayer::PokerPlayer(Player *playerImpl, float initialMoney):
 
 PokerPlayer::~PokerPlayer()
 {
-    if (playerImpl)
+    if (playerController)
     {
-        delete playerImpl;
+        delete playerController;
     }
 }
 
@@ -95,7 +95,7 @@ Decision PokerPlayer::makeDecision(float minBet)
     bool decisionIsValid = false;
     while(!decisionIsValid)
     {
-        decision = playerImpl->makeDecision(minBet);
+        decision = playerController->makeDecision(hand, minBet);
         if (decision.choice == FOLD)
         {
             fold();
@@ -124,72 +124,72 @@ void PokerPlayer::showCards()
     hand.showCards();
 }
 
-void PokerPlayer::seeGamePhase(const std::string& phaseName)
+void PokerPlayer::seeGamePhase(std::string phaseName)
 {
-    playerImpl->seeGamePhase(phaseName);
+    playerController->seeGamePhase(phaseName);
 }
 
 void PokerPlayer::seePlayerTurn(const PokerPlayer& player)
 {
-    playerImpl->seePlayerTurn(player.getName());
+    playerController->seePlayerTurn(player.getName());
 }
 
 void PokerPlayer::seeDealer(const PokerPlayer& dealer)
 {
-    playerImpl->seeDealer(dealer.getName());
+    playerController->seeDealer(dealer.getName());
 }
 
 void PokerPlayer::seeBigBlind(const PokerPlayer& player, float bigBlind)
 {
-    playerImpl->seeBigBlind(player.getName(), bigBlind);
+    playerController->seeBigBlind(player.getName(), bigBlind);
 }
 
 void PokerPlayer::seeSmallBlind(const PokerPlayer& player, float smallBlind)
 {
-    playerImpl->seeSmallBlind(player.getName(), smallBlind);
+    playerController->seeSmallBlind(player.getName(), smallBlind);
 }
 
 void PokerPlayer::seeRoundWinner(const PokerPlayer& winner, float moneyWon)
 {
-    playerImpl->seeRoundWinner(winner.getName(), moneyWon);
+    playerController->seeRoundWinner(winner.getName(), moneyWon);
 }
 
 void PokerPlayer::seeWinner(const PokerPlayer& winner)
 {
-    playerImpl->seeWinner(winner.getName());
+    playerController->seeWinner(winner.getName());
 }
 
 void PokerPlayer::seeOpponentCards(const PokerPlayer& opponent)
 {
-    playerImpl->seeOpponentCards(opponent.getName(), opponent.hand.getVisibleHand());
+    playerController->seeOpponentCards(opponent.getName(), opponent.hand.getVisibleHand());
 }
 
 void PokerPlayer::seeOpponentMoney(const PokerPlayer& opponent)
 {
-    playerImpl->seeOpponentMoney(opponent.getName(), opponent.money);
+    playerController->seeOpponentMoney(opponent.getName(), opponent.money);
 }
 
 void PokerPlayer::seeCards()
 {
-    playerImpl->seeCards(hand);
+    playerController->seeCards(hand);
 }
 
 void PokerPlayer::seeMoney()
 {
-    playerImpl->seeMoney(money);
+    playerController->seeMoney(money);
 }
 
 std::string PokerPlayer::getName() const
 {
-    return playerImpl->getName();
+    return playerController->getName();
 }
 
 void PokerPlayer::deliver(const std::string& msg)
 {
-    playerImpl->deliver(msg);
+    playerController->deliver(msg);
 }
 
-PokerPlayer::PokerPlayer(Player *playerImpl, float initialMoney, Hand* hand): playerImpl(playerImpl), hand(*hand), currentState(NOT_PLAYING), money(initialMoney), pot(0)
+PokerPlayer::PokerPlayer(PlayerController *aPlayerController, float initialMoney, Hand* hand): playerController(aPlayerController), hand(*hand), currentState(NOT_PLAYING), money(initialMoney), pot(0)
 {
 }
 

@@ -6,7 +6,7 @@
 #include "network/OnlineRoom.h"
 #include "network/OnlineUser.h"
 #include "pokerGame/Hand.h"
-#include "pokerGame/Player.h"
+#include "pokerGame/PlayerController.h"
 
 namespace network
 {
@@ -20,7 +20,7 @@ enum SOCKET_READ_STATE {
     RS_NOT_WAITING
 };
 
-class TelnetPlayer : public pokerGame::Player, public OnlineUser {
+class TelnetPlayer : public pokerGame::PlayerController, public OnlineUser {
 
 public:
     TelnetPlayer(boost::asio::io_service& io_service, OnlineRoom* room);
@@ -46,7 +46,7 @@ public:
 
     void sendChatMessage(std::string sender, std::string message);
     void seeCardDealt(const pokerGame::Hand& hand, const pokerGame::Card& new_card);
-    pokerGame::Decision makeDecision(float minimumBid);
+    pokerGame::Decision makeDecision(const pokerGame::Hand& hand, float minimumBid);
 
     virtual void deliver(const std::string& message);
 

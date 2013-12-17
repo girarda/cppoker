@@ -34,11 +34,15 @@ public:
     HandValue getHandValue() const;
     Hand getVisibleHand() const;
 
+    bool hasPair() const;
+    int getSumOfPower() const;
+
     void empty();
     void showCards();
 
     bool operator<(const Hand& other) const;
     bool operator>(const Hand& other) const;
+    bool operator==(const Hand& other) const;
 
     std::string toString() const;
 
@@ -59,7 +63,6 @@ private:
     HandValue bestHand;
 };
 
-bool operator==(const HandValue &h1, const HandValue &h2);
 }
 
 #endif

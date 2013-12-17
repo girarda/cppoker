@@ -5,7 +5,6 @@
 #include <boost/thread.hpp>
 #include "network/OnlineRoom.h"
 #include "network/OnlineUser.h"
-#include "pokerGame/Player.h"
 
 namespace network
 {

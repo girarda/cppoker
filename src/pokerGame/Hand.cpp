@@ -55,6 +55,23 @@ Hand Hand::getVisibleHand() const
     return visibleHand;
 }
 
+bool Hand::hasPair() const
+{
+    return bestHand.type == HandType::PAIR || bestHand.type == HandType::TWO_PAIRS ||
+        bestHand.type == HandType::THREE_OF_A_KIND || bestHand.type == HandType::FULL_HOUSE ||
+        bestHand.type == HandType::FOUR_OF_A_KIND;
+}
+
+int Hand::getSumOfPower() const
+{
+    int sum = 0;
+    for (std::vector<Card>::const_iterator it = cards.begin(); it != cards.end(); it++)
+    {
+        sum += it->getRank();
+    }
+    return sum;
+}
+
 void Hand::calculateBestHand()
 {
     std::sort(cards.begin(), cards.end(), std::greater<Card>());
@@ -335,6 +352,11 @@ bool Hand::operator<(const Hand& other) const
 bool Hand::operator>(const Hand& other) const
 {
     return other < *this;
+}
+
+bool Hand::operator==(const Hand& other) const
+{
+    return cards == other.cards;
 }
 
 bool operator==(const HandValue &h1, const HandValue &h2)

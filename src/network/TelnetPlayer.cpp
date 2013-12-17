@@ -62,7 +62,7 @@ void TelnetPlayer::handleRead(const boost::system::error_code& error)
     {
     case (RS_WAITING_FOR_NAME):
         setName(message);
-        room->join((Player*)this);
+        room->join((PlayerController*)this);
         break;
     case (RS_NOT_WAITING):
         sendChatMessage(name, message);
@@ -164,7 +164,7 @@ void TelnetPlayer::seeCards(const pokerGame::Hand& hand)
     deliver(msg);
 }
 
-pokerGame::Decision TelnetPlayer::makeDecision(float minimumBid)
+pokerGame::Decision TelnetPlayer::makeDecision(const pokerGame::Hand& hand, float minimumBid)
 {
     read_state = RS_WAITING_FOR_PLAY;
     decision.choice = pokerGame::WAITING;
