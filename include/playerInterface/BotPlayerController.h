@@ -1,14 +1,15 @@
 #include "pokerGame/PlayerController.h"
 #include <string>
 #include "pokerGame/Hand.h"
+#include "playerInterface/bot/BettingStrategy.h"
 
 namespace playerInterface
 {
 
-class SimpleBotPlayerController : public pokerGame::PlayerController
+class BotPlayerController : public pokerGame::PlayerController
 {
 public:
-    SimpleBotPlayerController();
+    BotPlayerController(bot::BettingStrategy* botBettingStrategy);
 
     virtual pokerGame::Decision makeDecision(const pokerGame::Hand& hand, float minBet);
 
@@ -28,10 +29,7 @@ public:
     virtual void seeGamePhase(std::string phaseName);
 
 private:
-    pokerGame::Decision makePreFlopDecision(const pokerGame::Hand& hand, float minBet);
-    pokerGame::Decision makePostFlopDecision(const pokerGame::Hand& hand, float minBet);
-
-    bool isPreFlopHand(const pokerGame::Hand& hand) const;
+    bot::BettingStrategy* bettingStrategy;
 };
 
 }

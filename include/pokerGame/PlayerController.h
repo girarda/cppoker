@@ -2,16 +2,10 @@
 #define IPlayer_H
 
 #include "pokerGame/Hand.h"
+#include "pokerGame/Decision.h"
 
 namespace pokerGame
 {
-enum Choice {WAITING, FOLD, CHECK, CALL};
-
-typedef struct Decision
-{
-    Choice choice;
-    float bet;
-} Decision;
 
 class PlayerController
 {
