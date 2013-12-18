@@ -15,13 +15,13 @@ SimpleBettingStrategy::~SimpleBettingStrategy()
 
 }
 
-pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(const pokerGame::Hand& hand, float minBet)
+pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(const pokerGame::Hand& hand, float minBet, float bigBlind)
 {
     pokerGame::Decision decision;
     if(hand.getHandValue().type == pokerGame::HandType::PAIR)
     {
         decision.choice = pokerGame::CALL;
-        decision.bet = minBet;
+        decision.bet = bigBlind;
     }
     else if(hand.getSumOfPower() > 16)
     {
@@ -36,7 +36,7 @@ pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(const pokerGame::
     return decision;
 }
 
-pokerGame::Decision SimpleBettingStrategy::makePostFlopDecision(const pokerGame::Hand& hand, float minBet)
+pokerGame::Decision SimpleBettingStrategy::makePostFlopDecision(const pokerGame::Hand& hand, float minBet, float bigBlind)
 {
     pokerGame::Decision decision;
     if(hand.getHandValue().type == pokerGame::HandType::HIGH_CARD)
@@ -55,7 +55,7 @@ pokerGame::Decision SimpleBettingStrategy::makePostFlopDecision(const pokerGame:
     else if(hand.getHandValue().type >= pokerGame::STRAIGHT)
     {
         decision.choice = pokerGame::CALL;
-        decision.bet = minBet;
+        decision.bet = bigBlind;
     }
     else
     {

@@ -46,7 +46,7 @@ public:
 
     void sendChatMessage(std::string sender, std::string message);
     void seeCardDealt(const pokerGame::Hand& hand, const pokerGame::Card& new_card);
-    pokerGame::Decision makeDecision(const pokerGame::Hand& hand, float minimumBid);
+    pokerGame::Decision makeDecision(const pokerGame::Hand& hand, float minimumBid, float bigBlind);
 
     virtual void deliver(const std::string& message);
 

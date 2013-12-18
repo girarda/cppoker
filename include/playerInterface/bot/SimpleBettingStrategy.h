@@ -14,8 +14,8 @@ public:
     virtual ~SimpleBettingStrategy();
 
 protected:
-    virtual pokerGame::Decision makePreFlopDecision(const pokerGame::Hand& hand, float minBet);
-    virtual pokerGame::Decision makePostFlopDecision(const pokerGame::Hand& hand, float minBet);
+    virtual pokerGame::Decision makePreFlopDecision(const pokerGame::Hand& hand, float minBet, float bigBlind);
+    virtual pokerGame::Decision makePostFlopDecision(const pokerGame::Hand& hand, float minBet, float bigBlind);
 };
 
 }

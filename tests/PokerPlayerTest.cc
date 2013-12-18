@@ -17,6 +17,7 @@ protected:
     static const float MONEY_WON;
     static const float INITIAL_AMOUNT_MONEY;
     static const float TOO_MUCH_MONEY;
+    static const float BIG_BLIND;
 
     virtual void SetUp()
     {
@@ -35,6 +36,7 @@ const float PlayerTest::NO_MONEY(0);
 const float PlayerTest::MONEY_WON(10);
 const float PlayerTest::INITIAL_AMOUNT_MONEY(5);
 const float PlayerTest::TOO_MUCH_MONEY(10);
+const float PlayerTest::BIG_BLIND(1);
 
 TEST_F(PlayerTest, newPlayerIsNotPlaying)
 {
@@ -110,9 +112,9 @@ TEST_F(PlayerTest, playerHasMoreMoneyWhenWinningMoney)
 TEST_F(PlayerTest, makingDecisionReturnsCheckWhenPlayerChecks)
 {
     pokerGame::Decision aDecision = {pokerGame::CHECK, 0};
-    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0)).Times(1).WillOnce(Return(aDecision));
+    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0, BIG_BLIND)).Times(1).WillOnce(Return(aDecision));
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0);
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND);
 
     ASSERT_EQ(aDecision.choice, returnedDecision.choice);
     ASSERT_EQ(aDecision.bet, returnedDecision.bet);
@@ -122,9 +124,9 @@ TEST_F(PlayerTest, makingDecisionAsksUserASecondTimesIfItDoesNotHaveEnoughMoneyF
 {
     pokerGame::Decision callDecision = {pokerGame::CALL, TOO_MUCH_MONEY};
     pokerGame::Decision checkDecision = {pokerGame::CHECK, 0};
-    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0)).Times(2).WillOnce(Return(callDecision)).WillOnce(Return(checkDecision));
+    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0, BIG_BLIND)).Times(2).WillOnce(Return(callDecision)).WillOnce(Return(checkDecision));
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision((0));
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND);
 
     ASSERT_EQ(checkDecision.choice, returnedDecision.choice);
     ASSERT_EQ(checkDecision.bet, returnedDecision.bet);
@@ -134,8 +136,8 @@ TEST_F(PlayerTest, makingDecisionReturnsCallWhenPlayerCallsAndHasEnoughMoney)
 {
     aPlayer->setMoney(5);
     pokerGame::Decision callDecision = {pokerGame::CALL, 5};
-    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0)).Times(1).WillOnce(Return(callDecision)); 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision((0));
+    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0, BIG_BLIND)).Times(1).WillOnce(Return(callDecision));
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND);
 
     ASSERT_EQ(callDecision.choice, returnedDecision.choice);
     ASSERT_EQ(callDecision.bet, returnedDecision.bet);
@@ -144,9 +146,9 @@ TEST_F(PlayerTest, makingDecisionReturnsCallWhenPlayerCallsAndHasEnoughMoney)
 TEST_F(PlayerTest, playerFoldsWhenDecisionIsToFold)
 {
     pokerGame::Decision foldDecision = {pokerGame::FOLD, 0};
-    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0)).Times(1).WillOnce(Return(foldDecision));
+    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0, BIG_BLIND)).Times(1).WillOnce(Return(foldDecision));
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision((0));
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND);
     bool playerFolded = aPlayer->isFolded();
 
     ASSERT_EQ(foldDecision.choice, returnedDecision.choice);

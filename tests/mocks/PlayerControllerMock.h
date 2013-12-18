@@ -9,7 +9,7 @@ namespace test
     class PlayerControllerMock : public pokerGame::PlayerController
     {
         public:
-        MOCK_METHOD2(makeDecision, pokerGame::Decision(const pokerGame::Hand& hand, float minBet));
+        MOCK_METHOD3(makeDecision, pokerGame::Decision(const pokerGame::Hand& hand, float minBet, float bigBlind));
 
         MOCK_METHOD1(deliver, void(const std::string& msg));
 

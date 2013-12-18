@@ -13,7 +13,7 @@ public:
     PlayerController();
     virtual ~PlayerController();
 
-    virtual Decision makeDecision(const Hand& hand, float minBet) = 0;
+    virtual Decision makeDecision(const Hand& hand, float minBet, float bigBlind) = 0;
 
     virtual void deliver(const std::string& msg) = 0;
 

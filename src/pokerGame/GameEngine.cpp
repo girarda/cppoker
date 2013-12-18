@@ -30,7 +30,7 @@ GameEngine::~GameEngine()
 
 void GameEngine::start()
 {
-    
+
     announcePhase("Game Start");
     for (PokerPlayer* p: players)
     {
@@ -139,7 +139,7 @@ void GameEngine::playerTurn(PokerPlayer* player, float minBet)
     announcements(player);
     if (player->isPlaying())
     {
-        Decision d = player->makeDecision(bet);
+        Decision d = player->makeDecision(bet, bigBlind);
         if (d.choice == CALL)
         {
             bet += d.bet;

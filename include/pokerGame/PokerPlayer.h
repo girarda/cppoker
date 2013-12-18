@@ -15,7 +15,7 @@ public:
     PokerPlayer(PlayerController *aPlayerController, float initialMoney);
     virtual ~PokerPlayer();
 
-    virtual Decision makeDecision(float minBet);
+    virtual Decision makeDecision(float minBet, float bigBlind);
 
     virtual void setMoney(float newValue);
 

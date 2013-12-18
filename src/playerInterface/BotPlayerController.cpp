@@ -6,9 +6,9 @@ BotPlayerController::BotPlayerController(bot::BettingStrategy* botBettingStrateg
 {
 }
 
-pokerGame::Decision BotPlayerController::makeDecision(const pokerGame::Hand& hand, float minBet)
+pokerGame::Decision BotPlayerController::makeDecision(const pokerGame::Hand& hand, float minBet, float bigBlind)
 {
-    return bettingStrategy->makeDecision(hand, minBet);
+    return bettingStrategy->makeDecision(hand, minBet, bigBlind);
 }
 
 void BotPlayerController::seeDealer(std::string dealer)

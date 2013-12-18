@@ -164,7 +164,7 @@ void TelnetPlayer::seeCards(const pokerGame::Hand& hand)
     deliver(msg);
 }
 
-pokerGame::Decision TelnetPlayer::makeDecision(const pokerGame::Hand& hand, float minimumBid)
+pokerGame::Decision TelnetPlayer::makeDecision(const pokerGame::Hand& hand, float minimumBid, float bigBlind)
 {
     read_state = RS_WAITING_FOR_PLAY;
     decision.choice = pokerGame::WAITING;

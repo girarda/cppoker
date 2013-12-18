@@ -9,7 +9,7 @@ class ConsolePlayer : public pokerGame::PlayerController
 public:
     ConsolePlayer();
 
-    virtual pokerGame::Decision makeDecision(const pokerGame::Hand& hand, float minBet);
+    virtual pokerGame::Decision makeDecision(const pokerGame::Hand& hand, float minBet, float bigBlind);
 
     virtual void deliver(const std::string &msg);
 

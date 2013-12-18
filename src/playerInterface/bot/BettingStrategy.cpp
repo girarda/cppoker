@@ -15,15 +15,15 @@ BettingStrategy::~BettingStrategy()
 
 }
 
-pokerGame::Decision BettingStrategy::makeDecision(const pokerGame::Hand& hand, float minBet)
+pokerGame::Decision BettingStrategy::makeDecision(const pokerGame::Hand& hand, float minBet, float bigBlind)
 {
     if(isPreFlopHand(hand))
     {
-        return makePreFlopDecision(hand, minBet);
+        return makePreFlopDecision(hand, minBet, bigBlind);
     }
     else
     {
-        return makePostFlopDecision(hand, minBet);
+        return makePostFlopDecision(hand, minBet, bigBlind);
     }
 }
 

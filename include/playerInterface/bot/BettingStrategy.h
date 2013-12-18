@@ -14,11 +14,11 @@ class BettingStrategy
 public:
     BettingStrategy();
     virtual ~BettingStrategy();
-    virtual pokerGame::Decision makeDecision(const pokerGame::Hand& hand, float minBet);
+    virtual pokerGame::Decision makeDecision(const pokerGame::Hand& hand, float minBet, float bigBlind);
 
 protected:
-    virtual pokerGame::Decision makePreFlopDecision(const pokerGame::Hand& hand, float minBet) = 0;
-    virtual pokerGame::Decision makePostFlopDecision(const pokerGame::Hand& hand, float minBet) = 0;
+    virtual pokerGame::Decision makePreFlopDecision(const pokerGame::Hand& hand, float minBet, float bigBlind) = 0;
+    virtual pokerGame::Decision makePostFlopDecision(const pokerGame::Hand& hand, float minBet, float bigBlind) = 0;
 
 private:
     bool isPreFlopHand(const pokerGame::Hand& hand) const;

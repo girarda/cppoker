@@ -8,7 +8,7 @@ ConsolePlayer::ConsolePlayer()
 {
 }
 
-pokerGame::Decision ConsolePlayer::makeDecision(const pokerGame::Hand& hand, float minBet)
+pokerGame::Decision ConsolePlayer::makeDecision(const pokerGame::Hand& hand, float minBet, float bigBlind)
 {
 
     std::string choice;

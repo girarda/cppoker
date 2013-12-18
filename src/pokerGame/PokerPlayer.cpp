@@ -89,13 +89,14 @@ void PokerPlayer::winMoney(float gainedMoney)
     money += gainedMoney;
 }
 
-Decision PokerPlayer::makeDecision(float minBet)
+Decision PokerPlayer::makeDecision(float minBet, float bigBlind)
 {
     Decision decision;
     bool decisionIsValid = false;
     while(!decisionIsValid)
     {
-        decision = playerController->makeDecision(hand, minBet);
+        float diffToAdd = minBet - pot;;
+        decision = playerController->makeDecision(hand, minBet, bigBlind);
         if (decision.choice == FOLD)
         {
             fold();
@@ -103,10 +104,7 @@ Decision PokerPlayer::makeDecision(float minBet)
         }
         else
         {
-            float diffToAdd;
-            if (decision.choice == CHECK)
-                diffToAdd = minBet - pot;
-            else
+            if (decision.choice == CALL)
                 diffToAdd = decision.bet - pot;
             if (money >= diffToAdd)
             {
