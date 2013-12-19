@@ -1,25 +1,25 @@
 #include "gtest/gtest.h"
 #include "pokerGame/Card.h"
 
-TEST(Card, ConstructorRankTooLowError)
-{
-    ASSERT_DEATH(pokerGame::Card(1,pokerGame::SPADE), "");
-}
+//TEST(Card, ConstructorRankTooLowError)
+//{
+//    ASSERT_DEATH(pokerGame::Card(1,pokerGame::SPADE), "");
+//}
 
-TEST(Card, ConstructorRankTooHighError)
-{
-    ASSERT_DEATH(pokerGame::Card(15,pokerGame::SPADE), "");
-}
+//TEST(Card, ConstructorRankTooHighError)
+//{
+//    ASSERT_DEATH(pokerGame::Card(15,pokerGame::SPADE), "");
+//}
 
-TEST(Card, ConstructorSuitTooLowError)
-{
-    ASSERT_DEATH(pokerGame::Card(pokerGame::ACE,-1), "");
-}
+//TEST(Card, ConstructorSuitTooLowError)
+//{
+//    ASSERT_DEATH(pokerGame::Card(pokerGame::ACE,-1), "");
+//}
 
-TEST(Card, ConstructorSuitTooHighError)
-{
-    ASSERT_DEATH(pokerGame::Card(pokerGame::ACE,-1), "");
-}
+//TEST(Card, ConstructorSuitTooHighError)
+//{
+//    ASSERT_DEATH(pokerGame::Card(pokerGame::ACE,-1), "");
+//}
 
 TEST(Card, ConstructorLowestValues)
 {

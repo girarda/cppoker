@@ -4,7 +4,7 @@
 
 using ::testing::Return;
 
-class GameEngineTest : public ::testing::Test
+class BettingRoundTest : public ::testing::Test
 {
 protected:
     pokerGame::GameEngine game;
@@ -23,37 +23,37 @@ protected:
 
 };
 
-TEST_F(GameEngineTest, newGameHasNoPlayers)
-{
-    int nbOfPlayers = game.getNumberOfPlayers();
+//TEST_F(BettingRoundTest, newGameHasNoPlayers)
+//{
+//    int nbOfPlayers = game.getNumberOfPlayers();
 
-    ASSERT_EQ(0, nbOfPlayers);
-}
+//    ASSERT_EQ(0, nbOfPlayers);
+//}
 
-TEST_F(GameEngineTest, addingAPlayerToTheGameIncreasesTheNuberOfPlayerInTheGame)
-{
-    game.addPlayer(aPlayer);
+//TEST_F(BettingRoundTest, addingAPlayerToTheGameIncreasesTheNuberOfPlayerInTheGame)
+//{
+//    game.addPlayer(aPlayer);
 
-    int nbOfPlayers = game.getNumberOfPlayers();
+//    int nbOfPlayers = game.getNumberOfPlayers();
 
-    ASSERT_EQ(1, nbOfPlayers);
-}
+//    ASSERT_EQ(1, nbOfPlayers);
+//}
 
-TEST_F(GameEngineTest, initatingATableTurnSetsThePlayerForATableTurn)
-{
-    EXPECT_CALL(*anotherPlayer, setupForNewTableTurn()).Times(1);
-    EXPECT_CALL(*aPlayer, setupForNewTableTurn()).Times(1);
-    game.addPlayer(aPlayer);
-    game.addPlayer(anotherPlayer);
+//TEST_F(BettingRoundTest, initatingATableTurnSetsThePlayerForATableTurn)
+//{
+//    EXPECT_CALL(*anotherPlayer, setupForNewTableTurn()).Times(1);
+//    EXPECT_CALL(*aPlayer, setupForNewTableTurn()).Times(1);
+//    game.addPlayer(aPlayer);
+//    game.addPlayer(anotherPlayer);
 
-    game.initRound();
-}
+//    game.initRound();
+//}
 
-TEST_F(GameEngineTest, startingANewGameMakesEveryPlayersStart)
-{
-    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
-    EXPECT_CALL(*aPlayer, startPlaying()).Times(1);
-    game.addPlayer(aPlayer);
+//TEST_F(BettingRoundTest, startingANewGameMakesEveryPlayersStart)
+//{
+//    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
+//    EXPECT_CALL(*aPlayer, startPlaying()).Times(1);
+//    game.addPlayer(aPlayer);
 
-    game.start();
-}
+//    game.start();
+//}

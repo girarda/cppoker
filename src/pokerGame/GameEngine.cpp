@@ -133,7 +133,7 @@ void GameEngine::showdown()
     announceRoundWinner(winner, getTotalPot());
 }
 
-void GameEngine::playerTurn(PokerPlayer* player, float minBet)
+void GameEngine::playerTurn(PokerPlayer* player)
 {
     announcePlayerTurn(player);
     announcements(player);
@@ -242,11 +242,11 @@ void GameEngine::tableTurn(float minBet)
         currentBet = bet;
         for (int i = bigBlindPlayerIndex; i < players.size(); i++)
         {
-            playerTurn(players[i], minBet);
+            playerTurn(players[i]);
         }
         for (int i = 0; i < bigBlindPlayerIndex; i++)
         {
-            playerTurn(players[i], minBet);
+            playerTurn(players[i]);
         }
     } while (bet != currentBet);
 }

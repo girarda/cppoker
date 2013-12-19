@@ -16,7 +16,7 @@ public:
     void exit();
 
     void playRound();
-    void playerTurn(PokerPlayer* player, float minBet);
+    void playerTurn(PokerPlayer* player);
     void announcements(PokerPlayer* player);
 
     void preFlop();
