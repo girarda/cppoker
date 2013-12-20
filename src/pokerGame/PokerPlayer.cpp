@@ -34,7 +34,7 @@ void PokerPlayer::fold()
     currentState =  FOLDED;
 }
 
-void PokerPlayer::setupForNewTableTurn()
+void PokerPlayer::setupForNewRound()
 {
     currentState = PLAYING;
     clearPot();
@@ -71,6 +71,11 @@ bool PokerPlayer::isPlaying() const
 bool PokerPlayer::isFolded() const
 {
     return currentState == FOLDED;
+}
+
+bool PokerPlayer::lost() const
+{
+    return currentState == NOT_PLAYING;
 }
 
 void PokerPlayer::addCard(const Card& card)

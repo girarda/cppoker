@@ -71,7 +71,7 @@ TEST_F(PlayerTest, playerIsPlayingAfterStarting)
 TEST_F(PlayerTest, playerIsNotFoldedAfterSetupingANewTableTurn)
 {
     aPlayer->startPlaying();
-    aPlayer->setupForNewTableTurn();
+    aPlayer->setupForNewRound();
 
     bool playerIsFolded = aPlayer->isFolded();
 
@@ -81,7 +81,7 @@ TEST_F(PlayerTest, playerIsNotFoldedAfterSetupingANewTableTurn)
 TEST_F(PlayerTest, playerIsFoldedWhenFoldingAfterSetupingAnewTableTurn)
 {
     aPlayer->startPlaying();
-    aPlayer->setupForNewTableTurn();
+    aPlayer->setupForNewRound();
     aPlayer->fold();
 
     bool playerIsFolded = aPlayer->isFolded();
@@ -93,7 +93,7 @@ TEST_F(PlayerTest, playerPotIsClearedWhenSettingForNewTableTurn)
 {
     aPlayer->startPlaying();
     aPlayer->addToPot(INITIAL_AMOUNT_MONEY);
-    aPlayer->setupForNewTableTurn();
+    aPlayer->setupForNewRound();
 
     float moneyInPot = aPlayer->getPot();
 

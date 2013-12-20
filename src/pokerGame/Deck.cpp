@@ -23,7 +23,7 @@ void Deck::burn()
     --currentPosition;
 }
 
-const Card& Deck::draw()
+Card Deck::draw()
 {
     burn();
     return cards[currentPosition];

@@ -7,6 +7,9 @@ using ::testing::_;
 
 using ::testing::Return;
 
+namespace pokerGame
+{
+
 class BettingRoundTest : public ::testing::Test
 {
 protected:
@@ -29,7 +32,7 @@ protected:
         anotherPlayer = new test::PlayerMock();
         players.push_back(aPlayer);
         players.push_back(anotherPlayer);
-        bettingRound = new pokerGame::BettingRound(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
+        bettingRound = new pokerGame::BettingRound();
 
         ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
         ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(true));
@@ -49,30 +52,40 @@ const int BettingRoundTest::BIG_BLIND_INDEX(1);
 const int BettingRoundTest::SMALL_BLIND_INDEX(0);
 const int BettingRoundTest::A_BET(2);
 
-TEST_F(BettingRoundTest, playerTurnCallPlayerMakeDecisionIfPlayerIsPlaying)
+TEST_F(BettingRoundTest, playersMakeDecisionIfTheyArePlaying)
 {
     pokerGame::Decision aDecision = {pokerGame::FOLD, 0};
+    ON_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND)).WillByDefault(Return(aDecision));
+    EXPECT_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND));
+    EXPECT_CALL(*anotherPlayer, isPlaying());
     ON_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND)).WillByDefault(Return(aDecision));
     EXPECT_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND));
     EXPECT_CALL(*aPlayer, isPlaying());
-    bettingRound->playerTurn(aPlayer);
+    bettingRound->start(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
 }
 
-TEST_F(BettingRoundTest, playerDoesNotMakeDecisionsIfHeIsNotPlaying)
+TEST_F(BettingRoundTest, playersDoNotMakeDecisionsIfTheyAreNotPlaying)
 {
+    ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
+    EXPECT_CALL(*anotherPlayer, makeDecision(_, _)).Times(0);
+    EXPECT_CALL(*anotherPlayer, isPlaying());
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(false));
     EXPECT_CALL(*aPlayer, makeDecision(_, _)).Times(0);
     EXPECT_CALL(*aPlayer, isPlaying());
-    bettingRound->playerTurn(aPlayer);
+    bettingRound->start(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
 }
 
-TEST_F(BettingRoundTest, whenPlayersTurnIfPlayerRaisesThenBetIsRaised)
+TEST_F(BettingRoundTest, whenAPlayerRaisesTheMinimumBetIsRaised)
 {
-    pokerGame::Decision aDecision = {pokerGame::CALL, BIG_BLIND};
-    ON_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND)).WillByDefault(Return(aDecision));
-    EXPECT_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND));
-    EXPECT_CALL(*aPlayer, isPlaying());
-    bettingRound->playerTurn(aPlayer);
+    pokerGame::Decision aDecision = {pokerGame::CHECK, 0};
+    pokerGame::Decision raiseDecision = {pokerGame::CALL, BIG_BLIND};
+    ON_CALL(*anotherPlayer, makeDecision(_, BIG_BLIND)).WillByDefault(Return(aDecision));
+    EXPECT_CALL(*anotherPlayer, makeDecision(_, BIG_BLIND)).Times(2);
+    EXPECT_CALL(*anotherPlayer, isPlaying()).Times(2);
+    ON_CALL(*aPlayer, makeDecision(_, BIG_BLIND)).WillByDefault(Return(aDecision));
+    EXPECT_CALL(*aPlayer, makeDecision(_, BIG_BLIND)).Times(2).WillOnce(Return(raiseDecision)).WillOnce(Return(aDecision));
+    EXPECT_CALL(*aPlayer, isPlaying()).Times(2);
+    bettingRound->start(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
 
     float newMinBet = bettingRound->getMinBet();
     float expectedMinBet = A_BET + BIG_BLIND;
@@ -81,21 +94,29 @@ TEST_F(BettingRoundTest, whenPlayersTurnIfPlayerRaisesThenBetIsRaised)
 
 TEST_F(BettingRoundTest, everyPlayersSeePlayerTurnWhenAnnoucingPlayerTurn)
 {
-    EXPECT_CALL(*aPlayer, seePlayerTurn(_)); //TODO: Find a way to mock calls with const ref parameters
-    EXPECT_CALL(*anotherPlayer, seePlayerTurn(_)); // _ should be aPlayer
-    bettingRound->announcePlayerTurn(aPlayer);
+    ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
+    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(false));
+    EXPECT_CALL(*aPlayer, seePlayerTurn(_)).Times(2); //TODO: Find a way to mock calls with const ref parameters
+    EXPECT_CALL(*anotherPlayer, seePlayerTurn(_)).Times(2);
+    bettingRound->start(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
 }
 
-TEST_F(BettingRoundTest, announcementsShowsToThePlayerTheDealer)
+TEST_F(BettingRoundTest, thePlayersSeeWhoTheDealerIsWhenItIsTheirTurn)
 {
+    ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
+    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(false));
     EXPECT_CALL(*aPlayer, seeDealer(_)); //TODO: Find a way to mock calls with const ref parameters
-    bettingRound->announcements(aPlayer); // _ should be aPlayer
+    EXPECT_CALL(*anotherPlayer, seeDealer(_)); //TODO: Find a way to mock calls with const ref parameters
+    bettingRound->start(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
 }
 
 TEST_F(BettingRoundTest, announcementsShowsToThePlayerTheBigBlind)
 {
+    ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
+    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(false));
     EXPECT_CALL(*aPlayer, seeBigBlind(_, BIG_BLIND)); //TODO: Find a way to mock calls with const ref parameters
-    bettingRound->announcements(aPlayer); // _ should be anotherPlayer
+    EXPECT_CALL(*anotherPlayer, seeBigBlind(_, BIG_BLIND)); //TODO: Find a way to mock calls with const ref parameters
+    bettingRound->start(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
 }
 
 TEST_F(BettingRoundTest, ifEveryPlayerCheckThenEveryPlayerDecidesOnce)
@@ -107,10 +128,10 @@ TEST_F(BettingRoundTest, ifEveryPlayerCheckThenEveryPlayerDecidesOnce)
     EXPECT_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND)).Times(1);
     EXPECT_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND)).Times(1);
 
-    bettingRound->start();
+    bettingRound->start(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
 }
 
-TEST_F(BettingRoundTest, test)
+TEST_F(BettingRoundTest, ifAPlayerRaisesThenThePlayingPlayersMustMakeAnotherDecision)
 {
     pokerGame::Decision aDecision = {pokerGame::CHECK, 0};
     pokerGame::Decision raiseDecision = {pokerGame::CALL, 2};
@@ -119,7 +140,9 @@ TEST_F(BettingRoundTest, test)
     EXPECT_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND)).Times(1).WillOnce(Return(raiseDecision));
     EXPECT_CALL(*aPlayer, makeDecision(_, BIG_BLIND)).Times(2).WillRepeatedly(Return(aDecision));
 
-    bettingRound->start();
+    bettingRound->start(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
+}
+
 }
 
 

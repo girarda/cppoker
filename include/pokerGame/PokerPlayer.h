@@ -21,7 +21,7 @@ public:
 
     virtual void startPlaying();
     virtual void fold();
-    virtual void setupForNewTableTurn();
+    virtual void setupForNewRound();
     virtual void stopPlaying();
 
     virtual bool hasBetterHand(const PokerPlayer& other) const;
@@ -29,6 +29,7 @@ public:
 
     virtual bool isPlaying() const;
     virtual bool isFolded() const;
+    virtual bool lost() const;
 
     virtual void showCards();
 

@@ -4,12 +4,13 @@
 namespace pokerGame
 {
 
-BettingRound::BettingRound(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex) : players(roundPlayers), bigBlind(blind), bet(bigBlind), dealerIndex(dealerPlayerIndex), bigBlindIndex(bigBlindPlayerIndex), smallBlindIndex(smallBlindPlayerIndex)
+BettingRound::BettingRound() : players(), bigBlind(0), bet(0), dealerIndex(0), bigBlindIndex(0), smallBlindIndex(0)
 {
 }
 
-void BettingRound::start()
+void BettingRound::start(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex)
 {
+    initialize(roundPlayers, blind, dealerPlayerIndex, bigBlindPlayerIndex, smallBlindPlayerIndex);
     float currentBet;
     do {
         currentBet = bet;
@@ -22,8 +23,19 @@ void BettingRound::start()
     } while (bet != currentBet);
 }
 
+void BettingRound::initialize(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex){
+    players = roundPlayers;
+    bigBlind = blind;
+    bet = bigBlind;
+    dealerIndex = dealerPlayerIndex;
+    bigBlindIndex = bigBlindPlayerIndex;
+    smallBlindIndex = smallBlindPlayerIndex;
+}
+
 void BettingRound::playerTurn(PokerPlayer* player)
 {
+    announcePlayerTurn(player);
+    announcements(player);
     if(player->isPlaying()) {
         Decision d = player->makeDecision(bet, bigBlind);
         if (d.choice == pokerGame::CALL) {

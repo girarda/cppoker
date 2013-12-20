@@ -17,12 +17,17 @@ namespace test
         MOCK_METHOD1(setName, void(std::string name));
 
         MOCK_METHOD0(startPlaying, void());
+        MOCK_METHOD0(stopPlaying, void());
         MOCK_METHOD0(fold, void());
-        MOCK_METHOD0(setupForNewTableTurn, void());
+        MOCK_METHOD0(setupForNewRound, void());
 
         MOCK_CONST_METHOD0(isPlaying, bool());
         MOCK_CONST_METHOD0(isFolded, bool());
+        MOCK_CONST_METHOD0(lost, bool());
         MOCK_CONST_METHOD1(hasBetterHand, bool(const PokerPlayer& other));
+        MOCK_CONST_METHOD0(getPot, float());
+
+        MOCK_METHOD0(showCards, void());
 
         MOCK_METHOD1(addCard, void(const pokerGame::Card& card));
         MOCK_METHOD1(addToPot, void(float bet));

@@ -16,7 +16,7 @@ const int MIN_SUIT(DIAMOND);
 class Card
 {
 public:
-    Card( int rank, int suit );
+    Card(int rank, int suit);
     int getRank() const;
     int getSuit() const;
 

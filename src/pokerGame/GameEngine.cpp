@@ -6,13 +6,14 @@
 namespace pokerGame
 {
 
-GameEngine::GameEngine():
+GameEngine::GameEngine(GameRound* gameRoundToUse):
     players(),
     bigBlind(2),
     bigBlindPlayerIndex(-1),
     smallBlindPlayerIndex(-1),
     dealerIndex(-1),
     bet(0),
+    gameRound(gameRoundToUse),
     INITIAL_AMOUNT_OF_MONEY(10)
 {
 }
@@ -31,7 +32,7 @@ GameEngine::~GameEngine()
 void GameEngine::start()
 {
 
-    announcePhase("Game Start");
+//    announcePhase("Game Start");
     for (PokerPlayer* p: players)
     {
         p->startPlaying();
@@ -48,7 +49,7 @@ void GameEngine::start()
 
 void GameEngine::endGame()
 {
-    announcePhase("Game End");
+//    announcePhase("Game End");
     for (PokerPlayer* p: players)
     {
         p->stopPlaying();
@@ -57,152 +58,9 @@ void GameEngine::endGame()
 
 void GameEngine::playRound()
 {
-    std::stringstream ss;
-    ss << "Round " << numberOfRounds;
-    announcePhase(ss.str());
-    initRound();
-
-    betBlinds();
-
-    preFlop();
-    if (getNumberOfPlayingPlayers() > 1)
-        flop();
-    if (getNumberOfPlayingPlayers() > 1)
-        turn();
-    if (getNumberOfPlayingPlayers() > 1)
-        river();
-    showdown();
-
+    chooseNextDealer();
+    gameRound->playRound(players, bigBlind, dealerIndex, bigBlindPlayerIndex, smallBlindPlayerIndex);
     numberOfRounds++;
-}
-
-void GameEngine::preFlop()
-{
-    announcePhase("PreFlop");
-    distributeOneCard();
-    distributeOneCard();
-    tableTurn(bet);
-}
-
-void GameEngine::flop()
-{
-    announcePhase("Flop");
-    addOneCardToBoard();
-    addOneCardToBoard();
-    addOneCardToBoard();
-    tableTurn(bet);
-}
-
-void GameEngine::turn()
-{
-    addOneCardToBoard();
-    tableTurn(bet);
-}
-
-void GameEngine::river()
-{
-    announcePhase("Turn");
-    announcePhase("River");
-    addOneCardToBoard();
-    tableTurn(bet);
-}
-
-void GameEngine::showdown()
-{
-    announcePhase("Showdown");
-    for (int i = bigBlindPlayerIndex; i < players.size(); i++)
-    {
-        players[i]->showCards();
-    }
-    for (int i = 0; i < bigBlindPlayerIndex; i++)
-    {
-        players[i]->showCards();
-    }
-    for (PokerPlayer* p : players)
-    {
-        p->seeOpponentCards(*p);
-        p->seeOpponentMoney(*p);
-    }
-    PokerPlayer* winner = players[0];
-    for (PokerPlayer* p: players)
-    {
-        if (p->hasBetterHand(*winner))
-            winner = p;
-    }
-    winner->winMoney(getTotalPot());
-    announceRoundWinner(winner, getTotalPot());
-}
-
-void GameEngine::playerTurn(PokerPlayer* player)
-{
-    announcePlayerTurn(player);
-    announcements(player);
-    if (player->isPlaying())
-    {
-        Decision d = player->makeDecision(bet, bigBlind);
-        if (d.choice == CALL)
-        {
-            bet += d.bet;
-        }
-    }
-}
-
-void GameEngine::distributeOneCard()
-{
-    for (int i = bigBlindPlayerIndex; i < players.size(); i++)
-    {
-        Card card = deck.draw();
-        players[i]->addCard(card);
-    }
-    for (int i = 0; i < bigBlindPlayerIndex; i++)
-    {
-        Card card = deck.draw();
-        players[i]->addCard(card);
-    }
-}
-
-void GameEngine::addOneCardToBoard()
-{
-    Card card = deck.draw();
-    for (int i = bigBlindPlayerIndex; i < players.size(); i++)
-    {
-        players[i]->addCard(card);
-    }
-    for (int i = 0; i < bigBlindPlayerIndex; i++)
-    {
-        players[i]->addCard(card);
-    }
-}
-
-void GameEngine::announcements(PokerPlayer* player)
-{
-    player->seeDealer(*players[dealerIndex]);
-    player->seeBigBlind(*players[bigBlindPlayerIndex], bigBlind);
-    player->seeSmallBlind(*players[smallBlindPlayerIndex], bigBlind/2);
-    player->seeCards();
-    player->seeMoney();
-
-    for (PokerPlayer* p : players)
-    {
-        player->seeOpponentCards(*p);
-        player->seeOpponentMoney(*p);
-    }
-}
-
-void GameEngine::announcePlayerTurn(PokerPlayer* player)
-{
-    for (PokerPlayer* p: players)
-    {
-        p->seePlayerTurn(*player);
-    }
-}
-
-void GameEngine::announceRoundWinner(PokerPlayer* winner, float moneyWon)
-{
-    for (PokerPlayer* p: players)
-    {
-        p->seeRoundWinner(*winner, moneyWon);
-    }
 }
 
 void GameEngine::announceWinner()
@@ -222,47 +80,12 @@ void GameEngine::announceWinner()
     }
 }
 
-void GameEngine::announcePhase(const std::string& phaseName)
-{
-    for (PokerPlayer* p: players)
-    {
-        p->seeGamePhase(phaseName);
-    }
-}
-
 void GameEngine::addPlayer(PokerPlayer* player)
 {
     players.push_back(player);
 }
 
-void GameEngine::tableTurn(float minBet)
-{
-    float currentBet;
-    do {
-        currentBet = bet;
-        for (int i = bigBlindPlayerIndex; i < players.size(); i++)
-        {
-            playerTurn(players[i]);
-        }
-        for (int i = 0; i < bigBlindPlayerIndex; i++)
-        {
-            playerTurn(players[i]);
-        }
-    } while (bet != currentBet);
-}
-
-void GameEngine::initRound()
-{
-    chooseNextDealer();
-    bet = bigBlind;
-    deck.shuffle();
-    for (PokerPlayer* p: players)
-    {
-        p->setupForNewTableTurn();
-    }
-}
-
-void GameEngine::chooseNextDealer()
+void GameEngine::chooseNextDealer() // TODO: test this method
 {
     dealerIndex++;
     dealerIndex %= players.size();
@@ -274,22 +97,6 @@ void GameEngine::chooseNextDealer()
     smallBlindPlayerIndex %= players.size();
 }
 
-void GameEngine::betBlinds()
-{
-    players[bigBlindPlayerIndex]->addToPot(bigBlind);
-    players[smallBlindPlayerIndex]->addToPot(bigBlind/2);
-}
-
-float GameEngine::getTotalPot() const
-{
-    float totalPot = 0;
-    for (PokerPlayer* p: players)
-    {
-        totalPot += p->getPot();
-    }
-    return totalPot;
-}
-
 int GameEngine::getNumberOfPlayers() const
 {
     return players.size();
@@ -297,28 +104,29 @@ int GameEngine::getNumberOfPlayers() const
 
 int GameEngine::getNumberOfPlayingPlayers() const
 {
-    int nbPlayingPlayers = 0;
+    int count = 0;
     for (PokerPlayer* p: players)
     {
-        if (p->isPlaying())
-            nbPlayingPlayers++;
+        if(!p->lost()) {
+            count++;
+        }
     }
-    return nbPlayingPlayers;
+    return count;
 }
 
-void GameEngine::join(PlayerController* player)
+void GameEngine::join(PlayerController* player) // TODO: test this method
 {
     PokerPlayer* newPlayer = new PokerPlayer(player, INITIAL_AMOUNT_OF_MONEY);
     players.push_back(newPlayer);
     sendChatMessage("A new player joined!");
 }
 
-void GameEngine::leave(PlayerController* player)
+void GameEngine::leave(PlayerController* player) // TODO: test this method
 {
-    //mVPlayers.erase(player);
+    //players.erase(player);
 }
 
-void GameEngine::sendChatMessage(const std::string& msg)
+void GameEngine::sendChatMessage(const std::string& msg) // TODO: test this method
 {
     std::for_each(players.begin(), players.end(),
                   boost::bind(&PokerPlayer::deliver, _1, boost::ref(msg)));

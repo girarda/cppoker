@@ -13,10 +13,9 @@ class Deck
 {
 public:
     Deck();
-    void burn();
-    void init();
-    void shuffle();
-    const Card& draw();
+    virtual void burn();
+    virtual void shuffle();
+    virtual Card draw();
 
     int getCount() const;
 private:

@@ -1,6 +1,7 @@
 #include "pokerGame/PokerPlayer.h"
 #include "pokerGame/Deck.h"
 #include "network/OnlineRoom.h"
+#include "GameRound.h"
 
 namespace pokerGame
 {
@@ -8,7 +9,7 @@ namespace pokerGame
 class GameEngine : public network::OnlineRoom
 {
 public:
-    GameEngine();
+    GameEngine(GameRound* gameRoundToUse);
     virtual ~GameEngine();
 
     void start();
@@ -16,27 +17,12 @@ public:
     void exit();
 
     void playRound();
-    void playerTurn(PokerPlayer* player);
-    void announcements(PokerPlayer* player);
-
-    void preFlop();
-    void flop();
-    void turn();
-    void river();
-    void showdown();
 
     void addPlayer(PokerPlayer* player);
-    void tableTurn(float minBet);
 
     float getTotalPot() const;
 
-    void announcePhase(const std::string& phaseName);
-    void announcePlayerTurn(PokerPlayer* player);
-    void announceRoundWinner(PokerPlayer* winner, float moneyWon);
     void announceWinner();
-
-    void initRound();
-    void betBlinds();
 
     int getNumberOfPlayers() const;
     int getNumberOfPlayingPlayers() const;
@@ -47,10 +33,7 @@ public:
 
 private:
     void chooseNextDealer();
-    void distributeOneCard();
-    void addOneCardToBoard();
 
-    Deck deck;
     std::vector<PokerPlayer*> players;
     int numberOfRounds;
     float bet;
@@ -58,6 +41,8 @@ private:
     int bigBlindPlayerIndex;
     int smallBlindPlayerIndex;
     int dealerIndex;
+
+    GameRound* gameRound;
 
     const float INITIAL_AMOUNT_OF_MONEY;
 };
