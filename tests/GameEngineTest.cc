@@ -10,7 +10,7 @@ class GameEngineTest : public ::testing::Test
 {
 protected:
     pokerGame::GameEngine* game;
-
+    pokerGame::GameContext* context;
     test::PlayerMock* aPlayer;
     test::PlayerMock* anotherPlayer;
     test::GameRoundMock* gameRound;
@@ -25,12 +25,14 @@ protected:
         aPlayer = new test::PlayerMock();
         anotherPlayer = new test::PlayerMock();
         gameRound = new test::GameRoundMock();
-        game = new pokerGame::GameEngine(gameRound);
+        context = new pokerGame::GameContext(BIG_BLIND);
+        game = new pokerGame::GameEngine(context, gameRound);
     }
     virtual void TearDown()
     {
         delete game;
         delete gameRound;
+        delete context;
     }
 
 };

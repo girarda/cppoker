@@ -2,6 +2,7 @@
 #include "pokerGame/Deck.h"
 #include "network/OnlineRoom.h"
 #include "GameRound.h"
+#include "GameContext.h"
 
 namespace pokerGame
 {
@@ -9,7 +10,7 @@ namespace pokerGame
 class GameEngine : public network::OnlineRoom
 {
 public:
-    GameEngine(GameRound* gameRoundToUse);
+    GameEngine(GameContext* context, GameRound* gameRoundToUse);
     virtual ~GameEngine();
 
     void start();
@@ -34,13 +35,8 @@ public:
 private:
     void chooseNextDealer();
 
-    std::vector<PokerPlayer*> players;
+    GameContext* context;
     int numberOfRounds;
-    float bet;
-    float bigBlind;
-    int bigBlindPlayerIndex;
-    int smallBlindPlayerIndex;
-    int dealerIndex;
 
     GameRound* gameRound;
 

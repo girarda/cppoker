@@ -6,13 +6,8 @@
 namespace pokerGame
 {
 
-GameEngine::GameEngine(GameRound* gameRoundToUse):
-    players(),
-    bigBlind(2),
-    bigBlindPlayerIndex(-1),
-    smallBlindPlayerIndex(-1),
-    dealerIndex(-1),
-    bet(0),
+GameEngine::GameEngine(GameContext* gameContext, GameRound* gameRoundToUse):
+    context(gameContext),
     gameRound(gameRoundToUse),
     INITIAL_AMOUNT_OF_MONEY(10)
 {
@@ -20,7 +15,7 @@ GameEngine::GameEngine(GameRound* gameRoundToUse):
 
 GameEngine::~GameEngine()
 {
-    for (std::vector<PokerPlayer*>::iterator it = players.begin(); it != players.end(); it++)
+    for (std::vector<PokerPlayer*>::iterator it = context->players.begin(); it != context->players.end(); it++)
     {
         if (*it)
         {
@@ -33,7 +28,7 @@ void GameEngine::start()
 {
 
 //    announcePhase("Game Start");
-    for (PokerPlayer* p: players)
+    for (PokerPlayer* p: context->players)
     {
         p->startPlaying();
     }
@@ -41,7 +36,7 @@ void GameEngine::start()
     {
         playRound();
         if (numberOfRounds % 2 == 0)
-            bigBlind *= 2;
+            context->bigBlind *= 2;
     }
     announceWinner();
     endGame();
@@ -50,7 +45,7 @@ void GameEngine::start()
 void GameEngine::endGame()
 {
 //    announcePhase("Game End");
-    for (PokerPlayer* p: players)
+    for (PokerPlayer* p: context->players)
     {
         p->stopPlaying();
     }
@@ -59,14 +54,14 @@ void GameEngine::endGame()
 void GameEngine::playRound()
 {
     chooseNextDealer();
-    gameRound->playRound(players, bigBlind, dealerIndex, bigBlindPlayerIndex, smallBlindPlayerIndex);
+    gameRound->playRound(context->players, context->bigBlind, context->dealerIndex, context->bigBlindIndex, context->smallBlindIndex);
     numberOfRounds++;
 }
 
 void GameEngine::announceWinner()
 {
     PokerPlayer* winner;
-    for (PokerPlayer* p: players)
+    for (PokerPlayer* p: context->players)
     {
         if (p->isPlaying())
         {
@@ -74,7 +69,7 @@ void GameEngine::announceWinner()
             break;
         }
     }
-    for (PokerPlayer* p: players)
+    for (PokerPlayer* p: context->players)
     {
         p->seeWinner(*winner);
     }
@@ -82,30 +77,30 @@ void GameEngine::announceWinner()
 
 void GameEngine::addPlayer(PokerPlayer* player)
 {
-    players.push_back(player);
+    context->players.push_back(player);
 }
 
 void GameEngine::chooseNextDealer() // TODO: test this method
 {
-    dealerIndex++;
-    dealerIndex %= players.size();
+    context->dealerIndex++;
+    context->dealerIndex %= context->players.size();
 
-    bigBlindPlayerIndex = dealerIndex+1;
-    bigBlindPlayerIndex %= players.size();
+    context->bigBlindIndex = context->dealerIndex+1;
+    context->bigBlindIndex %= context->players.size();
 
-    smallBlindPlayerIndex = dealerIndex+2;
-    smallBlindPlayerIndex %= players.size();
+    context->smallBlindIndex = context->dealerIndex+2;
+    context->smallBlindIndex %= context->players.size();
 }
 
 int GameEngine::getNumberOfPlayers() const
 {
-    return players.size();
+    return context->players.size();
 }
 
 int GameEngine::getNumberOfPlayingPlayers() const
 {
     int count = 0;
-    for (PokerPlayer* p: players)
+    for (PokerPlayer* p: context->players)
     {
         if(!p->lost()) {
             count++;
@@ -117,7 +112,7 @@ int GameEngine::getNumberOfPlayingPlayers() const
 void GameEngine::join(PlayerController* player) // TODO: test this method
 {
     PokerPlayer* newPlayer = new PokerPlayer(player, INITIAL_AMOUNT_OF_MONEY);
-    players.push_back(newPlayer);
+    context->players.push_back(newPlayer);
     sendChatMessage("A new player joined!");
 }
 
@@ -128,7 +123,7 @@ void GameEngine::leave(PlayerController* player) // TODO: test this method
 
 void GameEngine::sendChatMessage(const std::string& msg) // TODO: test this method
 {
-    std::for_each(players.begin(), players.end(),
+    std::for_each(context->players.begin(), context->players.end(),
                   boost::bind(&PokerPlayer::deliver, _1, boost::ref(msg)));
 }
 
