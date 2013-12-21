@@ -32,7 +32,7 @@ private:
     void initialize(std::vector<PokerPlayer*> players, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex);
 
     void betBlinds();
-    void distributeOneCard();
+    void distributeHoles();
     void addOneCardToBoard();
 
     void preFlop();
@@ -50,8 +50,8 @@ private:
     int getNumberOfPlayingPlayers() const;
 
     FRIEND_TEST(GameRoundTest,bigAndSmallBlindPlayersAddTheirBlindsToTheirPotWhenBettingPot);
-    FRIEND_TEST(GameRoundTest,oneCardIsAddedToEachPlayingPlayerWhenDistributingOneCard);
-    FRIEND_TEST(GameRoundTest,aCardIsNotAddedToThePlayersWhoAreNotPlaying);
+    FRIEND_TEST(GameRoundTest,twoCardIsAddedToEachPlayingPlayerWhenDistributingHoles);
+    FRIEND_TEST(GameRoundTest,holesAreNotDistributedToPlayersWhoAreNotPlaying);
     FRIEND_TEST(GameRoundTest,addingACardToTheBoardAddsOneCardToEveryPlayingPlayer);
     FRIEND_TEST(GameRoundTest,everyPlayerSeePhaseNameWhenAnnouncingPhase);
     FRIEND_TEST(GameRoundTest,everyPlayerSeeWinnerWhenAnnouncingRoundWinner);

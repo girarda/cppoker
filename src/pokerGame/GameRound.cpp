@@ -40,17 +40,23 @@ void GameRound::betBlinds() {
     players[smallBlindIndex]->addToPot(bigBlind/2);
 }
 
-void GameRound::distributeOneCard() {
+void GameRound::distributeHoles() {
     for (int i = bigBlindIndex; i < players.size(); i++) {
         if (players[i]->isPlaying()) {
-            Card card = deck->draw();
-            players[i]->addCard(card);
+            Card c1 = deck->draw();
+            Card c2 = deck->draw();
+            c1.hide();
+            players[i]->addCard(c1);
+            players[i]->addCard(c2);
         }
     }
     for (int i = 0; i < bigBlindIndex; i++) {
         if (players[i]->isPlaying()) {
-            Card card = deck->draw();
-            players[i]->addCard(card);
+            Card c1 = deck->draw();
+            Card c2 = deck->draw();
+            c1.hide();
+            players[i]->addCard(c1);
+            players[i]->addCard(c2);
         }
     }
 }
@@ -71,8 +77,7 @@ void GameRound::addOneCardToBoard() {
 
 void GameRound::preFlop() {
     announcePhase("PreFlop");
-    distributeOneCard();
-    distributeOneCard();
+    distributeHoles();
     executeNewBettingRound();
 }
 

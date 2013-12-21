@@ -85,18 +85,18 @@ TEST_F(GameRoundTest, bigAndSmallBlindPlayersAddTheirBlindsToTheirPotWhenBetting
     gameRound->betBlinds();
 }
 
-TEST_F(GameRoundTest, oneCardIsAddedToEachPlayingPlayerWhenDistributingOneCard)
+TEST_F(GameRoundTest, twoCardIsAddedToEachPlayingPlayerWhenDistributingHoles)
 {
     gameRound->initialize(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
     ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(true));
     ON_CALL(*deck, draw()).WillByDefault(Return(*aCard));
-    EXPECT_CALL(*aPlayer, addCard(_));
-    EXPECT_CALL(*anotherPlayer, addCard(_));
-    gameRound->distributeOneCard();
+    EXPECT_CALL(*aPlayer, addCard(_)).Times(2);
+    EXPECT_CALL(*anotherPlayer, addCard(_)).Times(2);
+    gameRound->distributeHoles();
 }
 
-TEST_F(GameRoundTest, aCardIsNotAddedToThePlayersWhoAreNotPlaying)
+TEST_F(GameRoundTest, holesAreNotDistributedToPlayersWhoAreNotPlaying)
 {
     gameRound->initialize(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(false));
@@ -104,7 +104,7 @@ TEST_F(GameRoundTest, aCardIsNotAddedToThePlayersWhoAreNotPlaying)
     ON_CALL(*deck, draw()).WillByDefault(Return(*aCard));
     EXPECT_CALL(*aPlayer, addCard(_)).Times(0);
     EXPECT_CALL(*anotherPlayer, addCard(_)).Times(0);
-    gameRound->distributeOneCard();
+    gameRound->distributeHoles();
 }
 
 TEST_F(GameRoundTest, addingACardToTheBoardAddsOneCardToEveryPlayingPlayer)
