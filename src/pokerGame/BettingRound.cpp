@@ -4,33 +4,29 @@
 namespace pokerGame
 {
 
-BettingRound::BettingRound() : players(), bigBlind(0), bet(0), dealerIndex(0), bigBlindIndex(0), smallBlindIndex(0)
+BettingRound::BettingRound() : gameContext(0),bet(0), sharedCards()
 {
 }
 
-void BettingRound::start(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex, std::vector<Card> sharedCards)
+void BettingRound::start(GameContext* gameContext, std::vector<Card> sharedCards)
 {
-    initialize(roundPlayers, blind, dealerPlayerIndex, bigBlindPlayerIndex, smallBlindPlayerIndex, sharedCards);
+    initialize(gameContext, sharedCards);
     float currentBet;
     do {
         currentBet = bet;
-        for (int i = bigBlindIndex; i < players.size(); i++) {
-            playerTurn(players[i]);
+        for (int i = gameContext->bigBlindIndex; i < gameContext->players.size(); i++) {
+            playerTurn(gameContext->players[i]);
         }
-        for (int i = 0; i < bigBlindIndex; i++) {
-            playerTurn(players[i]);
+        for (int i = 0; i < gameContext->bigBlindIndex; i++) {
+            playerTurn(gameContext->players[i]);
         }
     } while (bet != currentBet);
 }
 
-void BettingRound::initialize(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex, std::vector<Card> sharedCards){
-    players = roundPlayers;
-    bigBlind = blind;
-    bet = bigBlind;
-    dealerIndex = dealerPlayerIndex;
-    bigBlindIndex = bigBlindPlayerIndex;
-    smallBlindIndex = smallBlindPlayerIndex;
+void BettingRound::initialize(GameContext* gameContext, std::vector<Card> sharedCards){
+    this->gameContext = gameContext;
     this->sharedCards = sharedCards;
+    this->bet = gameContext->bigBlind;
 }
 
 void BettingRound::playerTurn(PokerPlayer* player)
@@ -38,7 +34,7 @@ void BettingRound::playerTurn(PokerPlayer* player)
     announcePlayerTurn(player);
     announcements(player);
     if(player->isPlaying()) {
-        Decision d = player->makeDecision(bet, bigBlind, sharedCards);
+        Decision d = player->makeDecision(bet, gameContext->bigBlind, sharedCards);
         if (d.choice == pokerGame::CALL) {
             bet += d.bet;
         }
@@ -47,15 +43,15 @@ void BettingRound::playerTurn(PokerPlayer* player)
 
 void BettingRound::announcePlayerTurn(PokerPlayer* player)
 {
-    for (PokerPlayer* p: players) {
+    for (PokerPlayer* p: gameContext->players) {
         p->seePlayerTurn(*player);
     }
 }
 
 void BettingRound::announcements(PokerPlayer* player)
 {
-    player->seeDealer(*players[dealerIndex]);
-    player->seeBigBlind(*players[bigBlindIndex], bigBlind);
+    player->seeDealer(*gameContext->players[gameContext->dealerIndex]);
+    player->seeBigBlind(*gameContext->players[gameContext->bigBlindIndex], gameContext->bigBlind);
 }
 
 float BettingRound::getMinBet() const

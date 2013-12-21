@@ -235,7 +235,7 @@ TEST_F(GameRoundTest, everyPlayersSeeTheirOponnentsCardsAndMoney)
 TEST_F(GameRoundTest, aBettingRoundStartsWhenExecutingNewBettingRound)
 {
     gameRound->initialize(gameContext);
-    EXPECT_CALL(*bettingRound, start(gameContext->players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX, _)); //TODO: _ should be gameRound->sharedCards
+    EXPECT_CALL(*bettingRound, start(gameContext, _)); //TODO: _ should be gameRound->sharedCards
     gameRound->executeNewBettingRound();
 }
 

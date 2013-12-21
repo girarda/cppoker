@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "pokerGame/PokerPlayer.h"
+#include "GameContext.h"
 
 namespace pokerGame
 {
@@ -12,7 +13,7 @@ class BettingRound
 public:
     BettingRound();
 
-    virtual void start(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex, std::vector<Card> );
+    virtual void start(GameContext* gameContext, std::vector<Card> sharedCards);
     virtual float getMinBet() const;
 
 private:
@@ -20,15 +21,11 @@ private:
     void announcePlayerTurn(PokerPlayer* player);
     void announcements(PokerPlayer* player);
 
-    void initialize(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex, std::vector<Card> sharedCards);
+    void initialize(GameContext* gameContext, std::vector<Card> sharedCards);
 
-    std::vector<PokerPlayer*> players;
-    float bigBlind;
+    GameContext* gameContext;
+
     float bet;
-
-    int dealerIndex;
-    int bigBlindIndex;
-    int smallBlindIndex;
 
     std::vector<Card> sharedCards;
 };

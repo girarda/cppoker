@@ -140,7 +140,7 @@ void GameRound::announceRoundWinner(PokerPlayer* winner, float moneyWon) {
 }
 
 void GameRound::executeNewBettingRound() {
-    bettingRound->start(gameContext->players, gameContext->bigBlind, gameContext->dealerIndex, gameContext->bigBlindIndex, gameContext->smallBlindIndex, sharedCards);
+    bettingRound->start(gameContext, sharedCards);
 }
 
 float GameRound::getTotalPot() const {
