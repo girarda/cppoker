@@ -60,7 +60,7 @@ TEST_F(GameEngineTest, addingAPlayerToTheGameIncreasesTheNuberOfPlayerInTheGame)
 
 TEST_F(GameEngineTest, gameRoundPlaysRoundWhen)
 {
-    EXPECT_CALL(*gameRound, playRound(_, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX));
+    EXPECT_CALL(*gameRound, playRound(context));
     game->addPlayer(aPlayer);
     game->addPlayer(anotherPlayer);
 
@@ -93,7 +93,7 @@ TEST_F(GameEngineTest, ifThereAreMoreThanOnePlayerStillPlayingThenPlayARound)
     ON_CALL(*anotherPlayer, lost()).WillByDefault(Return(true));
     EXPECT_CALL(*anotherPlayer, lost()).Times(2).WillOnce(Return(false));
     EXPECT_CALL(*aPlayer, lost()).Times(2).WillRepeatedly(Return(false));
-    EXPECT_CALL(*gameRound, playRound(_, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX)).Times(1);
+    EXPECT_CALL(*gameRound, playRound(context)).Times(1);
     game->addPlayer(aPlayer);
     game->addPlayer(anotherPlayer);
 

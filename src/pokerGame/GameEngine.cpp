@@ -54,7 +54,7 @@ void GameEngine::endGame()
 void GameEngine::playRound()
 {
     chooseNextDealer();
-    gameRound->playRound(context->players, context->bigBlind, context->dealerIndex, context->bigBlindIndex, context->smallBlindIndex);
+    gameRound->playRound(context);
     numberOfRounds++;
 }
 

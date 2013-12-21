@@ -5,6 +5,7 @@
 #include "pokerGame/PokerPlayer.h"
 #include "Deck.h"
 #include "BettingRound.h"
+#include "GameContext.h"
 #include "gtest/gtest_prod.h"
 
 namespace pokerGame
@@ -15,21 +16,15 @@ class GameRound
 public:
     GameRound(Deck *deckToUse, BettingRound* bettingRoundToUse);
 
-    virtual void playRound(std::vector<PokerPlayer*> players, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex);
+    virtual void playRound(GameContext* gameContext);
 
 private:
-    int dealerIndex;
-    int bigBlindIndex;
-    int smallBlindIndex;
-
-    float bigBlind;
-
-    std::vector<PokerPlayer*> players;
+    GameContext* gameContext;
     std::vector<Card> sharedCards;
     Deck* deck;
     BettingRound* bettingRound;
 
-    void initialize(std::vector<PokerPlayer*> players, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex);
+    void initialize(GameContext* gameContext);
 
     void betBlinds();
     void distributeHoles();

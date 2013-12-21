@@ -3,12 +3,12 @@
 namespace pokerGame
 {
 
-GameRound::GameRound(Deck *deckToUse, BettingRound* bettingRoundToUse): players(), bigBlind(0), dealerIndex(0), bigBlindIndex(0), smallBlindIndex(0), deck(deckToUse), bettingRound(bettingRoundToUse), sharedCards()
+GameRound::GameRound(Deck *deckToUse, BettingRound* bettingRoundToUse): gameContext(0), deck(deckToUse), bettingRound(bettingRoundToUse), sharedCards()
 {
 }
 
-void GameRound::playRound(std::vector<PokerPlayer*> players, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex) { // TODO: test this method
-    initialize(players, blind, dealerPlayerIndex, bigBlindPlayerIndex, smallBlindPlayerIndex);
+void GameRound::playRound(GameContext* gameContext) { // TODO: test this method
+    initialize(gameContext);
     betBlinds();
 
     preFlop();
@@ -21,14 +21,10 @@ void GameRound::playRound(std::vector<PokerPlayer*> players, float blind, int de
     showdown();
 }
 
-void GameRound::initialize(std::vector<PokerPlayer*> players, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex) {
-    this->players = players;
-    this->bigBlind = blind;
-    this->dealerIndex = dealerPlayerIndex;
-    this->bigBlindIndex = bigBlindPlayerIndex;
-    this->smallBlindIndex = smallBlindPlayerIndex;
+void GameRound::initialize(GameContext* gameContext) {
+    this->gameContext = gameContext;
     deck->shuffle();
-        for (PokerPlayer* p: players)
+        for (PokerPlayer* p: gameContext->players)
         {
             p->setupForNewRound();
         }
@@ -36,40 +32,40 @@ void GameRound::initialize(std::vector<PokerPlayer*> players, float blind, int d
 
 
 void GameRound::betBlinds() {
-    players[bigBlindIndex]->addToPot(bigBlind);
-    players[smallBlindIndex]->addToPot(bigBlind/2);
+    gameContext->players[gameContext->bigBlindIndex]->addToPot(gameContext->bigBlind);
+    gameContext->players[gameContext->smallBlindIndex]->addToPot(gameContext->bigBlind/2);
 }
 
 void GameRound::distributeHoles() {
-    for (int i = bigBlindIndex; i < players.size(); i++) {
-        if (players[i]->isPlaying()) {
+    for (int i = gameContext->bigBlindIndex; i < gameContext->players.size(); i++) {
+        if (gameContext->players[i]->isPlaying()) {
             Card c1 = deck->draw();
             Card c2 = deck->draw();
             c1.hide();
-            players[i]->addCardToHole(c1);
-            players[i]->addCardToHole(c2);
+            gameContext->players[i]->addCardToHole(c1);
+            gameContext->players[i]->addCardToHole(c2);
         }
     }
-    for (int i = 0; i < bigBlindIndex; i++) {
-        if (players[i]->isPlaying()) {
+    for (int i = 0; i < gameContext->bigBlindIndex; i++) {
+        if (gameContext->players[i]->isPlaying()) {
             Card c1 = deck->draw();
             Card c2 = deck->draw();
             c1.hide();
-            players[i]->addCardToHole(c1);
-            players[i]->addCardToHole(c2);
+            gameContext->players[i]->addCardToHole(c1);
+            gameContext->players[i]->addCardToHole(c2);
         }
     }
 }
 
 void GameRound::addOneCardToBoard() {
     Card card = deck->draw();
-    for (int i = bigBlindIndex; i < players.size(); i++) {
-        if (players[i]->isPlaying()) {
+    for (int i = gameContext->bigBlindIndex; i < gameContext->players.size(); i++) {
+        if (gameContext->players[i]->isPlaying()) {
             sharedCards.push_back(card);
         }
     }
-    for (int i = 0; i < bigBlindIndex; i++) {
-        if (players[i]->isPlaying()) {
+    for (int i = 0; i < gameContext->bigBlindIndex; i++) {
+        if (gameContext->players[i]->isPlaying()) {
             sharedCards.push_back(card);
         }
     }
@@ -105,24 +101,24 @@ void GameRound::river()
 
 void GameRound::showdown() {
     announcePhase("Showdown");
-    for (int i = bigBlindIndex; i < players.size(); i++)
+    for (int i = gameContext->bigBlindIndex; i < gameContext->players.size(); i++)
     {
-        players[i]->showCards();
+        gameContext->players[i]->showCards();
     }
-    for (int i = 0; i < bigBlindIndex; i++)
+    for (int i = 0; i < gameContext->bigBlindIndex; i++)
     {
-        players[i]->showCards();
+        gameContext->players[i]->showCards();
     }
-    for (PokerPlayer* p : players)
+    for (PokerPlayer* p : gameContext->players)
     {
-        for(PokerPlayer* other: players) {
+        for(PokerPlayer* other: gameContext->players) {
             p->seeOpponentHole(*other);
             p->seeOpponentMoney(*other);
         }
 
     }
-    PokerPlayer* winner = players[0];
-    for (PokerPlayer* p: players)
+    PokerPlayer* winner = gameContext->players[0];
+    for (PokerPlayer* p: gameContext->players)
     {
         if (p->hasBetterHand(*winner, sharedCards))
             winner = p;
@@ -132,24 +128,24 @@ void GameRound::showdown() {
 }
 
 void GameRound::announcePhase(std::string phaseName) {
-    for (PokerPlayer* p: players) {
+    for (PokerPlayer* p: gameContext->players) {
         p->seeGamePhase(phaseName);
     }
 }
 
 void GameRound::announceRoundWinner(PokerPlayer* winner, float moneyWon) {
-    for (PokerPlayer* p: players) {
+    for (PokerPlayer* p: gameContext->players) {
         p->seeRoundWinner(*winner, moneyWon);
     }
 }
 
 void GameRound::executeNewBettingRound() {
-    bettingRound->start(players, bigBlind, dealerIndex, bigBlindIndex, smallBlindIndex, sharedCards);
+    bettingRound->start(gameContext->players, gameContext->bigBlind, gameContext->dealerIndex, gameContext->bigBlindIndex, gameContext->smallBlindIndex, sharedCards);
 }
 
 float GameRound::getTotalPot() const {
     float totalPot = 0;
-    for (PokerPlayer* p: players)
+    for (PokerPlayer* p: gameContext->players)
     {
         totalPot += p->getPot();
     }
@@ -158,7 +154,7 @@ float GameRound::getTotalPot() const {
 
 int GameRound::getNumberOfPlayingPlayers() const {
     int nbPlayingPlayers = 0;
-    for (PokerPlayer* p: players)
+    for (PokerPlayer* p: gameContext->players)
     {
         if (p->isPlaying())
             nbPlayingPlayers++;
