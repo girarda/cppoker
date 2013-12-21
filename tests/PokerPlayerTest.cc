@@ -1,17 +1,18 @@
 #include "gtest/gtest.h"
 #include "pokerGame/PokerPlayer.h"
 #include "PlayerControllerMock.h"
-#include "HandMock.h"
 #include "pokerGame/PlayerController.h"
 
 using ::testing::Return;
+using ::testing::_;
 
 class PlayerTest : public ::testing::Test
 {
 protected:
     test::PlayerControllerMock* aPlayerController;
-    test::HandMock* aHand;
     pokerGame::PokerPlayer* aPlayer;
+
+    std::vector<pokerGame::Card>* sharedCards;
 
     static const float NO_MONEY;
     static const float MONEY_WON;
@@ -22,13 +23,13 @@ protected:
     virtual void SetUp()
     {
         aPlayerController = new test::PlayerControllerMock();
-        aHand = new test::HandMock();
+        sharedCards = new std::vector<pokerGame::Card>();
         aPlayer = new pokerGame::PokerPlayer(aPlayerController, INITIAL_AMOUNT_MONEY);
     }
     virtual void TearDown()
     {
         delete aPlayer;
-        delete aHand;
+        delete sharedCards;
     }
 };
 
@@ -112,9 +113,9 @@ TEST_F(PlayerTest, playerHasMoreMoneyWhenWinningMoney)
 TEST_F(PlayerTest, makingDecisionReturnsCheckWhenPlayerChecks)
 {
     pokerGame::Decision aDecision = {pokerGame::CHECK, 0};
-    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0, BIG_BLIND)).Times(1).WillOnce(Return(aDecision));
+    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, 0, BIG_BLIND)).Times(1).WillOnce(Return(aDecision)); // TODO: _ should be player->hole
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND);
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND, *sharedCards);
 
     ASSERT_EQ(aDecision.choice, returnedDecision.choice);
     ASSERT_EQ(aDecision.bet, returnedDecision.bet);
@@ -124,9 +125,9 @@ TEST_F(PlayerTest, makingDecisionAsksUserASecondTimesIfItDoesNotHaveEnoughMoneyF
 {
     pokerGame::Decision callDecision = {pokerGame::CALL, TOO_MUCH_MONEY};
     pokerGame::Decision checkDecision = {pokerGame::CHECK, 0};
-    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0, BIG_BLIND)).Times(2).WillOnce(Return(callDecision)).WillOnce(Return(checkDecision));
+    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, 0, BIG_BLIND)).Times(2).WillOnce(Return(callDecision)).WillOnce(Return(checkDecision)); // TODO: _ should be player->hole
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND);
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND, *sharedCards);
 
     ASSERT_EQ(checkDecision.choice, returnedDecision.choice);
     ASSERT_EQ(checkDecision.bet, returnedDecision.bet);
@@ -136,8 +137,8 @@ TEST_F(PlayerTest, makingDecisionReturnsCallWhenPlayerCallsAndHasEnoughMoney)
 {
     aPlayer->setMoney(5);
     pokerGame::Decision callDecision = {pokerGame::CALL, 5};
-    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0, BIG_BLIND)).Times(1).WillOnce(Return(callDecision));
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND);
+    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, 0, BIG_BLIND)).Times(1).WillOnce(Return(callDecision)); // TODO: _ should be player->hole
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND, *sharedCards);
 
     ASSERT_EQ(callDecision.choice, returnedDecision.choice);
     ASSERT_EQ(callDecision.bet, returnedDecision.bet);
@@ -146,9 +147,9 @@ TEST_F(PlayerTest, makingDecisionReturnsCallWhenPlayerCallsAndHasEnoughMoney)
 TEST_F(PlayerTest, playerFoldsWhenDecisionIsToFold)
 {
     pokerGame::Decision foldDecision = {pokerGame::FOLD, 0};
-    EXPECT_CALL(*aPlayerController, makeDecision(*aHand, 0, BIG_BLIND)).Times(1).WillOnce(Return(foldDecision));
+    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, 0, BIG_BLIND)).Times(1).WillOnce(Return(foldDecision)); // TODO: _ should be player->hole
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND);
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND, *sharedCards);
     bool playerFolded = aPlayer->isFolded();
 
     ASSERT_EQ(foldDecision.choice, returnedDecision.choice);

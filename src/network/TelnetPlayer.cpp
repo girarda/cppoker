@@ -133,7 +133,7 @@ void TelnetPlayer::seeOpponentMoney(std::string player, float money)
     deliver(ss.str());
 }
 
-void TelnetPlayer::seeOpponentCards(std::string player, const pokerGame::Hand& playersHand)
+void TelnetPlayer::seeOpponentHole(std::string player, const pokerGame::Hand& playersHand)
 {
     std::string msg = "Player " + player + " has " + playersHand.toString() + ".";
     deliver(msg);
@@ -158,20 +158,20 @@ void TelnetPlayer::sendChatMessage(std::string sender, std::string message)
     room->sendChatMessage(msg);
 }
 
-void TelnetPlayer::seeCards(const pokerGame::Hand& hand)
+void TelnetPlayer::seeHole(std::vector<pokerGame::Card> hole)
 {
-    std::string msg = "You cards are: " + hand.toString();
+    std::string msg = "You cards are: " + hole[0].toString() + " ," + hole[1].toString();
     deliver(msg);
 }
 
-pokerGame::Decision TelnetPlayer::makeDecision(const pokerGame::Hand& hand, float minimumBid, float bigBlind)
+pokerGame::Decision TelnetPlayer::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind)
 {
     read_state = RS_WAITING_FOR_PLAY;
     decision.choice = pokerGame::WAITING;
     while (decision.choice == pokerGame::WAITING)
     {
         std::stringstream ss;
-        ss << "The minimum bet is " << minimumBid << "." << TELNET_NEWLINE
+        ss << "The minimum bet is " << minBet << "." << TELNET_NEWLINE
               << "To make a choice, enter:\n\"\"CALL\", \"CHECK\", or \"FOLD\"\n";
         deliver(ss.str());
         while (choice == "")

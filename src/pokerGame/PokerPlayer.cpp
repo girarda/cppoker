@@ -4,7 +4,7 @@ namespace pokerGame
 {
 PokerPlayer::PokerPlayer(PlayerController *aPlayerController, float initialMoney):
     playerController(aPlayerController),
-    hand(),
+    hole(),
     currentState(NOT_PLAYING),
     money(initialMoney),
     pot(0)
@@ -38,14 +38,17 @@ void PokerPlayer::setupForNewRound()
 {
     currentState = PLAYING;
     clearPot();
-    hand.empty();
+}
+
+void PokerPlayer::discardCards() {
+    hole.empty();
 }
 
 void PokerPlayer::stopPlaying()
 {
     currentState = NOT_PLAYING;
     clearPot();
-    hand.empty();
+    discardCards();
 }
 
 void PokerPlayer::clearPot()
@@ -53,9 +56,11 @@ void PokerPlayer::clearPot()
     pot = 0;
 }
 
-bool PokerPlayer::hasBetterHand(const PokerPlayer& other) const
+bool PokerPlayer::hasBetterHand(const PokerPlayer& other, std::vector<Card> sharedCards) const //TODO: test this method
 {
-    return hand > other.hand;
+    Hand hand(hole, sharedCards);
+    Hand otherHand(other.hole, sharedCards);
+    return hand > otherHand;
 }
 
 float PokerPlayer::getPot() const
@@ -78,9 +83,9 @@ bool PokerPlayer::lost() const
     return currentState == NOT_PLAYING;
 }
 
-void PokerPlayer::addCard(const Card& card)
+void PokerPlayer::addCardToHole(const Card& card)
 {
-    hand.addCard(card);
+    hole.push_back(card);
 }
 
 void PokerPlayer::addToPot(float moneyToAdd)
@@ -94,14 +99,14 @@ void PokerPlayer::winMoney(float gainedMoney)
     money += gainedMoney;
 }
 
-Decision PokerPlayer::makeDecision(float minBet, float bigBlind)
+Decision PokerPlayer::makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards)
 {
     Decision decision;
     bool decisionIsValid = false;
     while(!decisionIsValid)
     {
         float diffToAdd = minBet - pot;;
-        decision = playerController->makeDecision(hand, minBet, bigBlind);
+        decision = playerController->makeDecision(hole, sharedCards, minBet, bigBlind);
         if (decision.choice == FOLD)
         {
             fold();
@@ -124,7 +129,18 @@ Decision PokerPlayer::makeDecision(float minBet, float bigBlind)
 
 void PokerPlayer::showCards()
 {
-    hand.showCards();
+    hole[0].show();
+    hole[1].show();
+}
+
+std::vector<Card> PokerPlayer::getVisibleHole() const {
+    std::vector<Card> visibleHole;
+    for (Card c: hole) {
+        if(c.isVisible()) {
+            visibleHole.push_back(c);
+        }
+    }
+    return visibleHole;
 }
 
 void PokerPlayer::seeGamePhase(std::string phaseName)
@@ -162,9 +178,9 @@ void PokerPlayer::seeWinner(const PokerPlayer& winner)
     playerController->seeWinner(winner.getName());
 }
 
-void PokerPlayer::seeOpponentCards(const PokerPlayer& opponent)
+void PokerPlayer::seeOpponentHole(const PokerPlayer& opponent)
 {
-    playerController->seeOpponentCards(opponent.getName(), opponent.hand.getVisibleHand());
+    playerController->seeOpponentHole(opponent.getName(), opponent.getVisibleHole());
 }
 
 void PokerPlayer::seeOpponentMoney(const PokerPlayer& opponent)
@@ -172,9 +188,9 @@ void PokerPlayer::seeOpponentMoney(const PokerPlayer& opponent)
     playerController->seeOpponentMoney(opponent.getName(), opponent.money);
 }
 
-void PokerPlayer::seeCards()
+void PokerPlayer::seeHole()
 {
-    playerController->seeCards(hand);
+    playerController->seeHole(hole);
 }
 
 void PokerPlayer::seeMoney()
@@ -190,10 +206,6 @@ std::string PokerPlayer::getName() const
 void PokerPlayer::deliver(const std::string& msg)
 {
     playerController->deliver(msg);
-}
-
-PokerPlayer::PokerPlayer(PlayerController *aPlayerController, float initialMoney, Hand* hand): playerController(aPlayerController), hand(*hand), currentState(NOT_PLAYING), money(initialMoney), pot(0)
-{
 }
 
 float PokerPlayer::getMoney() const

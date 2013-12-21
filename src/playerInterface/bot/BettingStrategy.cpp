@@ -15,21 +15,16 @@ BettingStrategy::~BettingStrategy()
 
 }
 
-pokerGame::Decision BettingStrategy::makeDecision(const pokerGame::Hand& hand, float minBet, float bigBlind)
+pokerGame::Decision BettingStrategy::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind)
 {
-    if(isPreFlopHand(hand))
+    if(sharedCards.empty())
     {
-        return makePreFlopDecision(hand, minBet, bigBlind);
+        return makePreFlopDecision(hole, minBet, bigBlind);
     }
     else
     {
-        return makePostFlopDecision(hand, minBet, bigBlind);
+        return makePostFlopDecision(hole, sharedCards, minBet, bigBlind);
     }
-}
-
-bool BettingStrategy::isPreFlopHand(const pokerGame::Hand& hand) const
-{
-    return hand.getSize() == 2;
 }
 
 }

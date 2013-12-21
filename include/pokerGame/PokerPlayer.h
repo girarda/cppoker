@@ -15,17 +15,18 @@ public:
     PokerPlayer(PlayerController *aPlayerController, float initialMoney);
     virtual ~PokerPlayer();
 
-    virtual Decision makeDecision(float minBet, float bigBlind);
+    virtual Decision makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards);
 
     virtual void setMoney(float newValue);
 
     virtual void startPlaying();
+    virtual void stopPlaying();
     virtual void fold();
     virtual void setupForNewRound();
-    virtual void stopPlaying();
 
-    virtual bool hasBetterHand(const PokerPlayer& other) const;
+    virtual bool hasBetterHand(const PokerPlayer& other, std::vector<Card> sharedCards) const;
     virtual float getPot() const;
+    virtual std::vector<Card> getVisibleHole() const;
 
     virtual bool isPlaying() const;
     virtual bool isFolded() const;
@@ -33,7 +34,7 @@ public:
 
     virtual void showCards();
 
-    virtual void addCard(const Card& card);
+    virtual void addCardToHole(const Card& card);
     virtual void addToPot(float moneyToAdd);
     virtual void winMoney(float gainedMoney);
 
@@ -44,9 +45,9 @@ public:
     virtual void seeSmallBlind(const PokerPlayer& player, float smallBlind);
     virtual void seeRoundWinner(const PokerPlayer& winner, float moneyWon);
     virtual void seeWinner(const PokerPlayer& winner);
-    virtual void seeOpponentCards(const PokerPlayer& opponent);
+    virtual void seeOpponentHole(const PokerPlayer& opponent);
     virtual void seeOpponentMoney(const PokerPlayer& opponnent);
-    virtual void seeCards();
+    virtual void seeHole();
     virtual void seeMoney();
 
 
@@ -54,8 +55,6 @@ public:
 
     virtual void deliver(const std::string& msg);
 
-    // for testing purposes
-    PokerPlayer(PlayerController *playerController, float initialMoney ,Hand* hand);
     float getMoney() const;
 
 private:
@@ -66,9 +65,10 @@ private:
     };
 
     void clearPot();
-    Hand getVisibleHand() const;
 
-    Hand hand;
+    void discardCards();
+
+    std::vector<Card> hole;
 
     PlayerController *playerController;
 

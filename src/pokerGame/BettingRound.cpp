@@ -8,9 +8,9 @@ BettingRound::BettingRound() : players(), bigBlind(0), bet(0), dealerIndex(0), b
 {
 }
 
-void BettingRound::start(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex)
+void BettingRound::start(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex, std::vector<Card> sharedCards)
 {
-    initialize(roundPlayers, blind, dealerPlayerIndex, bigBlindPlayerIndex, smallBlindPlayerIndex);
+    initialize(roundPlayers, blind, dealerPlayerIndex, bigBlindPlayerIndex, smallBlindPlayerIndex, sharedCards);
     float currentBet;
     do {
         currentBet = bet;
@@ -23,13 +23,14 @@ void BettingRound::start(std::vector<PokerPlayer*> roundPlayers, float blind, in
     } while (bet != currentBet);
 }
 
-void BettingRound::initialize(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex){
+void BettingRound::initialize(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex, std::vector<Card> sharedCards){
     players = roundPlayers;
     bigBlind = blind;
     bet = bigBlind;
     dealerIndex = dealerPlayerIndex;
     bigBlindIndex = bigBlindPlayerIndex;
     smallBlindIndex = smallBlindPlayerIndex;
+    this->sharedCards = sharedCards;
 }
 
 void BettingRound::playerTurn(PokerPlayer* player)
@@ -37,7 +38,7 @@ void BettingRound::playerTurn(PokerPlayer* player)
     announcePlayerTurn(player);
     announcements(player);
     if(player->isPlaying()) {
-        Decision d = player->makeDecision(bet, bigBlind);
+        Decision d = player->makeDecision(bet, bigBlind, sharedCards);
         if (d.choice == pokerGame::CALL) {
             bet += d.bet;
         }

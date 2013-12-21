@@ -29,6 +29,8 @@ class Hand
 {
 public:
     Hand();
+    Hand(std::vector<Card> hole);
+    Hand(std::vector<Card> hole, std::vector<Card> sharedCards);
     int getSize() const;
     void addCard(const pokerGame::Card &aCard);
     HandValue getHandValue() const;

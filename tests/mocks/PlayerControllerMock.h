@@ -9,7 +9,7 @@ namespace test
     class PlayerControllerMock : public pokerGame::PlayerController
     {
         public:
-        MOCK_METHOD3(makeDecision, pokerGame::Decision(const pokerGame::Hand& hand, float minBet, float bigBlind));
+        MOCK_METHOD4(makeDecision, pokerGame::Decision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind));
 
         MOCK_METHOD1(deliver, void(const std::string& msg));
 
@@ -18,9 +18,9 @@ namespace test
         MOCK_METHOD2(seeSmallBlind, void(std::string player, float smallBlind));
         MOCK_METHOD1(seeWinner, void(std::string winner));
         MOCK_METHOD2(seeRoundWinner, void(std::string winner, float moneyWon));
-        MOCK_METHOD2(seeOpponentCards, void(std::string opponent, const pokerGame:: Hand&));
+        MOCK_METHOD2(seeOpponentHole, void(std::string opponent, const pokerGame:: Hand&));
         MOCK_METHOD2(seeOpponentMoney, void(std::string opponent, float));
-        MOCK_METHOD1(seeCards, void(const pokerGame::Hand& hand));
+        MOCK_METHOD1(seeHole, void(std::vector<pokerGame::Card> hole));
         MOCK_METHOD1(seeMoney, void(const float money));
 
         MOCK_METHOD1(seeGamePhase, void(std::string gamePhase));

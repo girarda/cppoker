@@ -14,8 +14,8 @@ public:
     virtual ~SimpleBettingStrategy();
 
 protected:
-    virtual pokerGame::Decision makePreFlopDecision(const pokerGame::Hand& hand, float minBet, float bigBlind);
-    virtual pokerGame::Decision makePostFlopDecision(const pokerGame::Hand& hand, float minBet, float bigBlind);
+    virtual pokerGame::Decision makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind);
+    virtual pokerGame::Decision makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind);
 };
 
 }

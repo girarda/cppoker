@@ -13,7 +13,7 @@ public:
     PlayerController();
     virtual ~PlayerController();
 
-    virtual Decision makeDecision(const Hand& hand, float minBet, float bigBlind) = 0;
+    virtual Decision makeDecision(std::vector<Card> hole, std::vector<Card> sharedCards, float minBet, float bigBlind) = 0;
 
     virtual void deliver(const std::string& msg) = 0;
 
@@ -23,9 +23,9 @@ public:
     virtual void seeSmallBlind(std::string player, float smallBlind ) = 0;
     virtual void seeRoundWinner(std::string winner, float moneyWon) = 0;
     virtual void seeWinner(std::string winner) = 0;
-    virtual void seeOpponentCards(std::string opponent, const Hand& hand) = 0;
+    virtual void seeOpponentHole(std::string opponent, const Hand& hand) = 0;
     virtual void seeOpponentMoney(std::string opponent, float money) = 0;
-    virtual void seeCards(const Hand& hand) = 0;
+    virtual void seeHole(std::vector<Card> hole) = 0;
     virtual void seeMoney(float money) = 0;
 
     virtual void seePlayerTurn(std::string player) = 0;

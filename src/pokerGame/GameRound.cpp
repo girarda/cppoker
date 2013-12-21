@@ -3,7 +3,7 @@
 namespace pokerGame
 {
 
-GameRound::GameRound(Deck *deckToUse, BettingRound* bettingRoundToUse): players(), bigBlind(0), dealerIndex(0), bigBlindIndex(0), smallBlindIndex(0), deck(deckToUse), bettingRound(bettingRoundToUse)
+GameRound::GameRound(Deck *deckToUse, BettingRound* bettingRoundToUse): players(), bigBlind(0), dealerIndex(0), bigBlindIndex(0), smallBlindIndex(0), deck(deckToUse), bettingRound(bettingRoundToUse), sharedCards()
 {
 }
 
@@ -46,8 +46,8 @@ void GameRound::distributeHoles() {
             Card c1 = deck->draw();
             Card c2 = deck->draw();
             c1.hide();
-            players[i]->addCard(c1);
-            players[i]->addCard(c2);
+            players[i]->addCardToHole(c1);
+            players[i]->addCardToHole(c2);
         }
     }
     for (int i = 0; i < bigBlindIndex; i++) {
@@ -55,8 +55,8 @@ void GameRound::distributeHoles() {
             Card c1 = deck->draw();
             Card c2 = deck->draw();
             c1.hide();
-            players[i]->addCard(c1);
-            players[i]->addCard(c2);
+            players[i]->addCardToHole(c1);
+            players[i]->addCardToHole(c2);
         }
     }
 }
@@ -65,12 +65,12 @@ void GameRound::addOneCardToBoard() {
     Card card = deck->draw();
     for (int i = bigBlindIndex; i < players.size(); i++) {
         if (players[i]->isPlaying()) {
-            players[i]->addCard(card);
+            sharedCards.push_back(card);
         }
     }
     for (int i = 0; i < bigBlindIndex; i++) {
         if (players[i]->isPlaying()) {
-            players[i]->addCard(card);
+            sharedCards.push_back(card);
         }
     }
 }
@@ -116,7 +116,7 @@ void GameRound::showdown() {
     for (PokerPlayer* p : players)
     {
         for(PokerPlayer* other: players) {
-            p->seeOpponentCards(*other);
+            p->seeOpponentHole(*other);
             p->seeOpponentMoney(*other);
         }
 
@@ -124,7 +124,7 @@ void GameRound::showdown() {
     PokerPlayer* winner = players[0];
     for (PokerPlayer* p: players)
     {
-        if (p->hasBetterHand(*winner))
+        if (p->hasBetterHand(*winner, sharedCards))
             winner = p;
     }
     winner->winMoney(getTotalPot());
@@ -144,7 +144,7 @@ void GameRound::announceRoundWinner(PokerPlayer* winner, float moneyWon) {
 }
 
 void GameRound::executeNewBettingRound() {
-    bettingRound->start(players, bigBlind, dealerIndex, bigBlindIndex, smallBlindIndex);
+    bettingRound->start(players, bigBlind, dealerIndex, bigBlindIndex, smallBlindIndex, sharedCards);
 }
 
 float GameRound::getTotalPot() const {

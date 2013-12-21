@@ -25,7 +25,7 @@ private:
     float bigBlind;
 
     std::vector<PokerPlayer*> players;
-
+    std::vector<Card> sharedCards;
     Deck* deck;
     BettingRound* bettingRound;
 
@@ -50,7 +50,7 @@ private:
     int getNumberOfPlayingPlayers() const;
 
     FRIEND_TEST(GameRoundTest,bigAndSmallBlindPlayersAddTheirBlindsToTheirPotWhenBettingPot);
-    FRIEND_TEST(GameRoundTest,twoCardIsAddedToEachPlayingPlayerWhenDistributingHoles);
+    FRIEND_TEST(GameRoundTest,twoCardsAreAddedToEachPlayingPlayersHoleWhenDistributingHoles);
     FRIEND_TEST(GameRoundTest,holesAreNotDistributedToPlayersWhoAreNotPlaying);
     FRIEND_TEST(GameRoundTest,addingACardToTheBoardAddsOneCardToEveryPlayingPlayer);
     FRIEND_TEST(GameRoundTest,everyPlayerSeePhaseNameWhenAnnouncingPhase);

@@ -15,8 +15,9 @@ SimpleBettingStrategy::~SimpleBettingStrategy()
 
 }
 
-pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(const pokerGame::Hand& hand, float minBet, float bigBlind)
+pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind)
 {
+    pokerGame::Hand hand(hole);
     pokerGame::Decision decision;
     if(hand.getHandValue().type == pokerGame::HandType::PAIR)
     {
@@ -36,8 +37,9 @@ pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(const pokerGame::
     return decision;
 }
 
-pokerGame::Decision SimpleBettingStrategy::makePostFlopDecision(const pokerGame::Hand& hand, float minBet, float bigBlind)
+pokerGame::Decision SimpleBettingStrategy::makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind)
 {
+    pokerGame::Hand hand(hole, sharedCards);
     pokerGame::Decision decision;
     if(hand.getHandValue().type == pokerGame::HandType::HIGH_CARD)
     {

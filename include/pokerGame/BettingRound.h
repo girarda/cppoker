@@ -12,7 +12,7 @@ class BettingRound
 public:
     BettingRound();
 
-    virtual void start(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex);
+    virtual void start(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex, std::vector<Card> );
     virtual float getMinBet() const;
 
 private:
@@ -20,8 +20,7 @@ private:
     void announcePlayerTurn(PokerPlayer* player);
     void announcements(PokerPlayer* player);
 
-    void initialize(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex);
-
+    void initialize(std::vector<PokerPlayer*> roundPlayers, float blind, int dealerPlayerIndex, int bigBlindPlayerIndex, int smallBlindPlayerIndex, std::vector<Card> sharedCards);
 
     std::vector<PokerPlayer*> players;
     float bigBlind;
@@ -30,6 +29,8 @@ private:
     int dealerIndex;
     int bigBlindIndex;
     int smallBlindIndex;
+
+    std::vector<Card> sharedCards;
 };
 
 }

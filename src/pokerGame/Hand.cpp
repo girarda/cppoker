@@ -7,6 +7,18 @@ namespace pokerGame
 Hand::Hand(): size(0) ,cards(), bestHand(NO_HAND_VALUE)
 {}
 
+Hand::Hand(std::vector<Card> hole) : size(hole.size()), cards(), bestHand(NO_HAND_VALUE) {
+    cards.insert(cards.end(), hole.begin(), hole.end());
+    calculateBestHand();
+}
+
+Hand::Hand(std::vector<Card> hole, std::vector<Card> sharedCards) : size(hole.size()), cards(), bestHand(NO_HAND_VALUE) {
+    cards.insert(cards.end(), hole.begin(), hole.end());
+    cards.insert(cards.end(), sharedCards.begin(), sharedCards.end());
+    calculateBestHand();
+}
+
+
 int Hand::getSize() const
 {
     return cards.size();
@@ -16,10 +28,6 @@ void Hand::addCard(const pokerGame::Card &aCard)
 {
     cards.push_back(aCard);
     calculateBestHand();
-    if (cards.size() == 1)
-    {
-        cards[0].hide();
-    }
 }
 
 void Hand::empty()

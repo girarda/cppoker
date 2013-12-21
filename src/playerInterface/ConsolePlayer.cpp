@@ -8,7 +8,7 @@ ConsolePlayer::ConsolePlayer()
 {
 }
 
-pokerGame::Decision ConsolePlayer::makeDecision(const pokerGame::Hand& hand, float minBet, float bigBlind)
+pokerGame::Decision ConsolePlayer::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind)
 {
 
     std::string choice;
@@ -67,7 +67,7 @@ void ConsolePlayer::seeWinner(std::string winner)
     deliver(message);
 }
 
-void ConsolePlayer::seeOpponentCards(std::string opponent, const pokerGame::Hand& hand)
+void ConsolePlayer::seeOpponentHole(std::string opponent, const pokerGame::Hand& hand)
 {
     //TODO
 }
@@ -77,7 +77,7 @@ void ConsolePlayer::seeOpponentMoney(std::string opponent, float money)
     //TODO
 }
 
-void ConsolePlayer::seeCards(const pokerGame::Hand& hand)
+void ConsolePlayer::seeHole(std::vector<pokerGame::Card>)
 {
     //TODO
 }

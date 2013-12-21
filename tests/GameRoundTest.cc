@@ -85,14 +85,14 @@ TEST_F(GameRoundTest, bigAndSmallBlindPlayersAddTheirBlindsToTheirPotWhenBetting
     gameRound->betBlinds();
 }
 
-TEST_F(GameRoundTest, twoCardIsAddedToEachPlayingPlayerWhenDistributingHoles)
+TEST_F(GameRoundTest, twoCardsAreAddedToEachPlayingPlayersHoleWhenDistributingHoles)
 {
     gameRound->initialize(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
     ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(true));
     ON_CALL(*deck, draw()).WillByDefault(Return(*aCard));
-    EXPECT_CALL(*aPlayer, addCard(_)).Times(2);
-    EXPECT_CALL(*anotherPlayer, addCard(_)).Times(2);
+    EXPECT_CALL(*aPlayer, addCardToHole(_)).Times(2);
+    EXPECT_CALL(*anotherPlayer, addCardToHole(_)).Times(2);
     gameRound->distributeHoles();
 }
 
@@ -102,22 +102,10 @@ TEST_F(GameRoundTest, holesAreNotDistributedToPlayersWhoAreNotPlaying)
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(false));
     ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
     ON_CALL(*deck, draw()).WillByDefault(Return(*aCard));
-    EXPECT_CALL(*aPlayer, addCard(_)).Times(0);
-    EXPECT_CALL(*anotherPlayer, addCard(_)).Times(0);
+    EXPECT_CALL(*aPlayer, addCardToHole(_)).Times(0);
+    EXPECT_CALL(*anotherPlayer, addCardToHole(_)).Times(0);
     gameRound->distributeHoles();
 }
-
-TEST_F(GameRoundTest, addingACardToTheBoardAddsOneCardToEveryPlayingPlayer)
-{
-    gameRound->initialize(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
-    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
-    ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(true));
-    ON_CALL(*deck, draw()).WillByDefault(Return(*aCard));
-    EXPECT_CALL(*aPlayer, addCard(_));
-    EXPECT_CALL(*anotherPlayer, addCard(_));
-    gameRound->addOneCardToBoard();
-}
-
 
 TEST_F(GameRoundTest, everyPlayerSeePhaseNameWhenAnnouncingPhase)
 {
@@ -149,8 +137,8 @@ TEST_F(GameRoundTest, twoCardsAreDistributedInPreFlop)
     gameRound->initialize(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
     ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(true));
-    EXPECT_CALL(*anotherPlayer, addCard(_)).Times(2);
-    EXPECT_CALL(*aPlayer, addCard(_)).Times(2);
+    EXPECT_CALL(*anotherPlayer, addCardToHole(_)).Times(2);
+    EXPECT_CALL(*aPlayer, addCardToHole(_)).Times(2);
     gameRound->preFlop();
 }
 
@@ -162,16 +150,6 @@ TEST_F(GameRoundTest, flopPhaseIsAnnouncedWhenItBegins)
     gameRound->flop();
 }
 
-TEST_F(GameRoundTest, threeCardsAreAddedToBoardInFlop)
-{
-    gameRound->initialize(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
-    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
-    ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(true));
-    EXPECT_CALL(*anotherPlayer, addCard(_)).Times(3);
-    EXPECT_CALL(*aPlayer, addCard(_)).Times(3);
-    gameRound->flop();
-}
-
 TEST_F(GameRoundTest, turnPhaseIsAnnouncedWhenItBegins)
 {
     gameRound->initialize(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
@@ -180,31 +158,11 @@ TEST_F(GameRoundTest, turnPhaseIsAnnouncedWhenItBegins)
     gameRound->turn();
 }
 
-TEST_F(GameRoundTest, oneCardsAreAddedToBoardInTurn)
-{
-    gameRound->initialize(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
-    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
-    ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(true));
-    EXPECT_CALL(*anotherPlayer, addCard(_)).Times(1);
-    EXPECT_CALL(*aPlayer, addCard(_)).Times(1);
-    gameRound->turn();
-}
-
 TEST_F(GameRoundTest, riverPhaseIsAnnouncedWhenItBegins)
 {
     gameRound->initialize(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
     EXPECT_CALL(*anotherPlayer, seeGamePhase(RIVER_PHASE));
     EXPECT_CALL(*aPlayer, seeGamePhase(RIVER_PHASE));
-    gameRound->river();
-}
-
-TEST_F(GameRoundTest, oneCardsAreAddedToBoardInRiver)
-{
-    gameRound->initialize(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
-    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
-    ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(true));
-    EXPECT_CALL(*anotherPlayer, addCard(_)).Times(1);
-    EXPECT_CALL(*aPlayer, addCard(_)).Times(1);
     gameRound->river();
 }
 
@@ -222,8 +180,8 @@ TEST_F(GameRoundTest, theRoundWinnerWinsThePot)
     EXPECT_CALL(*anotherPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
     EXPECT_CALL(*aPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
     EXPECT_CALL(*anotherPlayer, winMoney(2*BIG_BLIND));
-    EXPECT_CALL(*anotherPlayer, hasBetterHand(_)).WillOnce(Return(true));
-    EXPECT_CALL(*aPlayer, hasBetterHand(_)).WillOnce(Return(false));
+    EXPECT_CALL(*anotherPlayer, hasBetterHand(_, _)).WillOnce(Return(true)); //TODO: find a way to replace _'s
+    EXPECT_CALL(*aPlayer, hasBetterHand(_, _)).WillOnce(Return(false)); //TODO: find a way to replace _'s
     gameRound->showdown();
 }
 
@@ -235,8 +193,8 @@ TEST_F(GameRoundTest, theRoundWinnerIsAnnouncedInShowndown)
     EXPECT_CALL(*anotherPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
     EXPECT_CALL(*aPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
     EXPECT_CALL(*anotherPlayer, winMoney(2*BIG_BLIND));
-    EXPECT_CALL(*anotherPlayer, hasBetterHand(_)).WillOnce(Return(true));
-    EXPECT_CALL(*aPlayer, hasBetterHand(_)).WillOnce(Return(false));
+    EXPECT_CALL(*anotherPlayer, hasBetterHand(_, _)).WillOnce(Return(true)); //TODO: find a way to replace _'s
+    EXPECT_CALL(*aPlayer, hasBetterHand(_, _)).WillOnce(Return(false)); //TODO: find a way to replace _'s
     gameRound->showdown();
 }
 
@@ -246,8 +204,8 @@ TEST_F(GameRoundTest, everyPlayersShowTheirCardsInShowdown)
     EXPECT_CALL(*anotherPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
     EXPECT_CALL(*aPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
     EXPECT_CALL(*anotherPlayer, winMoney(2*BIG_BLIND));
-    EXPECT_CALL(*anotherPlayer, hasBetterHand(_)).WillOnce(Return(true));
-    EXPECT_CALL(*aPlayer, hasBetterHand(_)).WillOnce(Return(false));
+    EXPECT_CALL(*anotherPlayer, hasBetterHand(_, _)).WillOnce(Return(true)); //TODO: find a way to replace _'s
+    EXPECT_CALL(*aPlayer, hasBetterHand(_, _)).WillOnce(Return(false)); //TODO: find a way to replace _'s
     EXPECT_CALL(*anotherPlayer, showCards());
     EXPECT_CALL(*aPlayer, showCards());
     gameRound->showdown();
@@ -259,19 +217,19 @@ TEST_F(GameRoundTest, everyPlayersSeeTheirOponnentsCardsAndMoney)
     EXPECT_CALL(*anotherPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
     EXPECT_CALL(*aPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
     EXPECT_CALL(*anotherPlayer, winMoney(2*BIG_BLIND));
-    EXPECT_CALL(*anotherPlayer, hasBetterHand(_)).WillOnce(Return(true));
-    EXPECT_CALL(*aPlayer, hasBetterHand(_)).WillOnce(Return(false));
+    EXPECT_CALL(*anotherPlayer, hasBetterHand(_, _)).WillOnce(Return(true)); //TODO: find a way to replace _'s
+    EXPECT_CALL(*aPlayer, hasBetterHand(_, _)).WillOnce(Return(false)); //TODO: find a way to replace _'s
     EXPECT_CALL(*anotherPlayer, seeOpponentMoney(_)).Times(2);
-    EXPECT_CALL(*anotherPlayer, seeOpponentCards(_)).Times(2);
+    EXPECT_CALL(*anotherPlayer, seeOpponentHole(_)).Times(2);
     EXPECT_CALL(*aPlayer, seeOpponentMoney(_)).Times(2);
-    EXPECT_CALL(*aPlayer, seeOpponentCards(_)).Times(2);
+    EXPECT_CALL(*aPlayer, seeOpponentHole(_)).Times(2);
     gameRound->showdown();
 }
 
 TEST_F(GameRoundTest, aBettingRoundStartsWhenExecutingNewBettingRound)
 {
     gameRound->initialize(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX);
-    EXPECT_CALL(*bettingRound, start(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX));
+    EXPECT_CALL(*bettingRound, start(players, BIG_BLIND, DEALER_INDEX, BIG_BLIND_INDEX, SMALL_BLIND_INDEX, _)); //TODO: _ should be gameRound->sharedCards
     gameRound->executeNewBettingRound();
 }
 
