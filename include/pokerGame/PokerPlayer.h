@@ -15,7 +15,7 @@ public:
     PokerPlayer(PlayerController *aPlayerController, float initialMoney);
     virtual ~PokerPlayer();
 
-    virtual Decision makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards);
+    virtual Decision makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards, int numberOfRaises);
 
     virtual void setMoney(float newValue);
 

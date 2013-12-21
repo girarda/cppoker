@@ -9,7 +9,7 @@ class ConsolePlayer : public pokerGame::PlayerController
 public:
     ConsolePlayer();
 
-    virtual pokerGame::Decision makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind);
+    virtual pokerGame::Decision makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises);
 
     virtual void deliver(const std::string &msg);
 

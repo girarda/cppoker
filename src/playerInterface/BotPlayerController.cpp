@@ -6,8 +6,8 @@ BotPlayerController::BotPlayerController(bot::BettingStrategy* botBettingStrateg
 {
 }
 
-pokerGame::Decision BotPlayerController::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind) {
-    return bettingStrategy->makeDecision(hole, sharedCards, minBet, bigBlind);
+pokerGame::Decision BotPlayerController::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises) {
+    return bettingStrategy->makeDecision(hole, sharedCards, minBet, bigBlind, numberOfRaises);
 }
 
 void BotPlayerController::seeDealer(std::string dealer)

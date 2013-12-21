@@ -24,10 +24,9 @@ private:
     void initialize(GameContext* gameContext, std::vector<Card> sharedCards);
 
     GameContext* gameContext;
-
     float bet;
-
     std::vector<Card> sharedCards;
+    int numberOfRaises;
 };
 
 }

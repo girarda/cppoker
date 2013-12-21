@@ -11,7 +11,7 @@ namespace test
         public:
         PlayerMock(): PokerPlayer(NULL, 0){};
 
-        MOCK_METHOD3(makeDecision, pokerGame::Decision(float minBet, float bigBlind, std::vector<pokerGame::Card> sharedCards));
+        MOCK_METHOD4(makeDecision, pokerGame::Decision(float minBet, float bigBlind, std::vector<pokerGame::Card> sharedCards, int numberOfRaises));
 
         MOCK_METHOD1(setMoney, void(float newValue));
 

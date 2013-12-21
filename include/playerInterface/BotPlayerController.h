@@ -11,7 +11,7 @@ class BotPlayerController : public pokerGame::PlayerController
 public:
     BotPlayerController(bot::BettingStrategy* botBettingStrategy);
 
-    virtual pokerGame::Decision makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind);
+    virtual pokerGame::Decision makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises);
 
     virtual void deliver(const std::string &msg);
 

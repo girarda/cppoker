@@ -15,7 +15,7 @@ SimpleBettingBluffStrategy::~SimpleBettingBluffStrategy()
 
 }
 
-pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind)
+pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind, int numberOfRaises)
 {
     pokerGame::Hand hand(hole);
     pokerGame::Decision decision;
@@ -37,7 +37,7 @@ pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(std::vector<
     return decision;
 }
 
-pokerGame::Decision SimpleBettingBluffStrategy::makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind)
+pokerGame::Decision SimpleBettingBluffStrategy::makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises)
 {
     pokerGame::Hand hand(hole, sharedCards);
     pokerGame::Decision decision;

@@ -13,7 +13,7 @@ public:
     PlayerController();
     virtual ~PlayerController();
 
-    virtual Decision makeDecision(std::vector<Card> hole, std::vector<Card> sharedCards, float minBet, float bigBlind) = 0;
+    virtual Decision makeDecision(std::vector<Card> hole, std::vector<Card> sharedCards, float minBet, float bigBlind, int numberOfRaises) = 0;
 
     virtual void deliver(const std::string& msg) = 0;
 

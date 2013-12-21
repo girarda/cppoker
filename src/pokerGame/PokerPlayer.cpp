@@ -99,14 +99,14 @@ void PokerPlayer::winMoney(float gainedMoney)
     money += gainedMoney;
 }
 
-Decision PokerPlayer::makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards)
+Decision PokerPlayer::makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards, int numberOfPlayers)
 {
     Decision decision;
     bool decisionIsValid = false;
     while(!decisionIsValid)
     {
         float diffToAdd = minBet - pot;;
-        decision = playerController->makeDecision(hole, sharedCards, minBet, bigBlind);
+        decision = playerController->makeDecision(hole, sharedCards, minBet, bigBlind, numberOfPlayers);
         if (decision.choice == FOLD)
         {
             fold();
