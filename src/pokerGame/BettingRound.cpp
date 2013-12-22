@@ -34,7 +34,7 @@ void BettingRound::playerTurn(PokerPlayer* player)
     announcePlayerTurn(player);
     announcements(player);
     if(player->isPlaying()) {
-        Decision d = player->makeDecision(bet, gameContext->bigBlind, sharedCards, numberOfRaises);
+        Decision d = player->makeDecision(bet, gameContext->bigBlind, sharedCards, numberOfRaises, gameContext->players.size());
         if (d.choice == pokerGame::CALL) {
             bet += d.bet;
             numberOfRaises++;

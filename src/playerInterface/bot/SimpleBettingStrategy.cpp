@@ -7,15 +7,13 @@ namespace bot
 
 SimpleBettingStrategy::SimpleBettingStrategy()
 {
-
 }
 
 SimpleBettingStrategy::~SimpleBettingStrategy()
 {
-
 }
 
-pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind, int numberOfRaises)
+pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers)
 {
     pokerGame::Hand hand(hole);
     pokerGame::Decision decision;
@@ -37,7 +35,7 @@ pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(std::vector<poker
     return decision;
 }
 
-pokerGame::Decision SimpleBettingStrategy::makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises)
+pokerGame::Decision SimpleBettingStrategy::makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers)
 {
     pokerGame::Hand hand(hole, sharedCards);
     pokerGame::Decision decision;

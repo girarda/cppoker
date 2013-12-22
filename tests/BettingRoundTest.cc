@@ -63,11 +63,11 @@ const int BettingRoundTest::NUMBER_OF_RAISES(0);
 TEST_F(BettingRoundTest, playersMakeDecisionIfTheyArePlaying)
 {
     pokerGame::Decision aDecision = {pokerGame::FOLD, 0};
-    ON_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES)).WillByDefault(Return(aDecision));
-    EXPECT_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES));
+    ON_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES, gameContext->players.size())).WillByDefault(Return(aDecision));
+    EXPECT_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES, gameContext->players.size()));
     EXPECT_CALL(*anotherPlayer, isPlaying());
-    ON_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES)).WillByDefault(Return(aDecision));
-    EXPECT_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES));
+    ON_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES, gameContext->players.size())).WillByDefault(Return(aDecision));
+    EXPECT_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES, gameContext->players.size()));
     EXPECT_CALL(*aPlayer, isPlaying());
     bettingRound->start(gameContext, sharedCards);
 }
@@ -75,10 +75,10 @@ TEST_F(BettingRoundTest, playersMakeDecisionIfTheyArePlaying)
 TEST_F(BettingRoundTest, playersDoNotMakeDecisionsIfTheyAreNotPlaying)
 {
     ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
-    EXPECT_CALL(*anotherPlayer, makeDecision(_, _, sharedCards, NUMBER_OF_RAISES)).Times(0);
+    EXPECT_CALL(*anotherPlayer, makeDecision(_, _, sharedCards, NUMBER_OF_RAISES, gameContext->players.size())).Times(0);
     EXPECT_CALL(*anotherPlayer, isPlaying());
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(false));
-    EXPECT_CALL(*aPlayer, makeDecision(_, _, sharedCards, NUMBER_OF_RAISES)).Times(0);
+    EXPECT_CALL(*aPlayer, makeDecision(_, _, sharedCards, NUMBER_OF_RAISES, gameContext->players.size())).Times(0);
     EXPECT_CALL(*aPlayer, isPlaying());
     bettingRound->start(gameContext, sharedCards);
 }
@@ -87,11 +87,11 @@ TEST_F(BettingRoundTest, whenAPlayerRaisesTheMinimumBetIsRaised)
 {
     pokerGame::Decision aDecision = {pokerGame::CHECK, 0};
     pokerGame::Decision raiseDecision = {pokerGame::CALL, BIG_BLIND};
-    ON_CALL(*anotherPlayer, makeDecision(_, BIG_BLIND, sharedCards, _)).WillByDefault(Return(aDecision));
-    EXPECT_CALL(*anotherPlayer, makeDecision(_, BIG_BLIND, sharedCards, _)).Times(2);
+    ON_CALL(*anotherPlayer, makeDecision(_, BIG_BLIND, sharedCards, _, gameContext->players.size())).WillByDefault(Return(aDecision));
+    EXPECT_CALL(*anotherPlayer, makeDecision(_, BIG_BLIND, sharedCards, _, gameContext->players.size())).Times(2);
     EXPECT_CALL(*anotherPlayer, isPlaying()).Times(2);
-    ON_CALL(*aPlayer, makeDecision(_, BIG_BLIND, sharedCards, _)).WillByDefault(Return(aDecision));
-    EXPECT_CALL(*aPlayer, makeDecision(_, BIG_BLIND, sharedCards, _)).Times(2).WillOnce(Return(raiseDecision)).WillOnce(Return(aDecision));
+    ON_CALL(*aPlayer, makeDecision(_, BIG_BLIND, sharedCards, _, gameContext->players.size())).WillByDefault(Return(aDecision));
+    EXPECT_CALL(*aPlayer, makeDecision(_, BIG_BLIND, sharedCards, _, gameContext->players.size())).Times(2).WillOnce(Return(raiseDecision)).WillOnce(Return(aDecision));
     EXPECT_CALL(*aPlayer, isPlaying()).Times(2);
     bettingRound->start(gameContext, sharedCards);
 
@@ -130,11 +130,11 @@ TEST_F(BettingRoundTest, announcementsShowsToThePlayerTheBigBlind)
 TEST_F(BettingRoundTest, ifEveryPlayerCheckThenEveryPlayerDecidesOnce)
 {
     pokerGame::Decision aDecision = {pokerGame::CHECK, 0};
-    ON_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES)).WillByDefault(Return(aDecision));
-    ON_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES)).WillByDefault(Return(aDecision));
+    ON_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES, gameContext->players.size())).WillByDefault(Return(aDecision));
+    ON_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES, gameContext->players.size())).WillByDefault(Return(aDecision));
 
-    EXPECT_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES)).Times(1);
-    EXPECT_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES)).Times(1);
+    EXPECT_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES, gameContext->players.size())).Times(1);
+    EXPECT_CALL(*aPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES, gameContext->players.size())).Times(1);
 
     bettingRound->start(gameContext, sharedCards);
 }
@@ -144,9 +144,9 @@ TEST_F(BettingRoundTest, ifAPlayerRaisesThenThePlayingPlayersMustMakeAnotherDeci
     pokerGame::Decision aDecision = {pokerGame::CHECK, 0};
     pokerGame::Decision raiseDecision = {pokerGame::CALL, 2};
 
-    EXPECT_CALL(*anotherPlayer, makeDecision(A_BET+BIG_BLIND, BIG_BLIND, sharedCards, NUMBER_OF_RAISES+1)).Times(1).WillOnce(Return(aDecision));
-    EXPECT_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES)).Times(1).WillOnce(Return(raiseDecision));
-    EXPECT_CALL(*aPlayer, makeDecision(_, BIG_BLIND, sharedCards, _)).Times(2).WillRepeatedly(Return(aDecision));
+    EXPECT_CALL(*anotherPlayer, makeDecision(A_BET+BIG_BLIND, BIG_BLIND, sharedCards, NUMBER_OF_RAISES+1, gameContext->players.size())).Times(1).WillOnce(Return(aDecision));
+    EXPECT_CALL(*anotherPlayer, makeDecision(A_BET, BIG_BLIND, sharedCards, NUMBER_OF_RAISES, gameContext->players.size())).Times(1).WillOnce(Return(raiseDecision));
+    EXPECT_CALL(*aPlayer, makeDecision(_, BIG_BLIND, sharedCards, _, gameContext->players.size())).Times(2).WillRepeatedly(Return(aDecision));
 
     bettingRound->start(gameContext, sharedCards);
 }

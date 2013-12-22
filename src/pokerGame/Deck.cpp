@@ -35,9 +35,31 @@ void Deck::shuffle()
     std::random_shuffle (cards.begin(), cards.end());
 }
 
+void Deck::removeCard(Card card) {
+    for(std::vector<Card>::iterator it = cards.begin(); it != cards.end(); ++it) {
+        if (*it == card) {
+            cards.erase(it);
+            break;
+        }
+    }
+}
+
 int Deck::getCount() const
 {
     return currentPosition;
+}
+
+std::vector<std::vector<Card> > Deck::toCouples() {
+    std::vector<std::vector<Card> > couplesOfCards;
+    for (int i = 0; i < cards.size(); i++) {
+        for (int j = i+1; j < cards.size(); j++) {
+            std::vector<Card> couple;
+            couple.push_back(cards[i]);
+            couple.push_back(cards[j]);
+            couplesOfCards.push_back(couple);
+        }
+    }
+    return couplesOfCards;
 }
 
 

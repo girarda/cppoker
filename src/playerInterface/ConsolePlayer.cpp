@@ -8,7 +8,7 @@ ConsolePlayer::ConsolePlayer()
 {
 }
 
-pokerGame::Decision ConsolePlayer::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises)
+pokerGame::Decision ConsolePlayer::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers)
 {
 
     std::string choice;

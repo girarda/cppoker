@@ -17,6 +17,10 @@ public:
     virtual void shuffle();
     virtual Card draw();
 
+    virtual void removeCard(Card card);
+
+    std::vector<std::vector<Card> > toCouples();
+
     int getCount() const;
 private:
     std::vector<Card> cards;
