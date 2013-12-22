@@ -1,4 +1,5 @@
 #include "include/pokerGame/GameRound.h"
+#include <iostream>
 
 namespace pokerGame
 {
@@ -33,6 +34,9 @@ void GameRound::initialize(GameContext* gameContext) {
 
 
 void GameRound::betBlinds() {
+    std::cout << "blinds bet" << std::endl;
+    //std::cout << "big blind is: " << gameContext->bigBlind << " bidded by: " << gameContext->players[gameContext->bigBlindIndex]->getName() << std::endl;
+    //std::cout << "small blind is: " << gameContext->bigBlind/2 << " bidded by: " << gameContext->players[gameContext->smallBlindIndex]->getName() << std::endl;
     gameContext->players[gameContext->bigBlindIndex]->addToPot(gameContext->bigBlind);
     gameContext->players[gameContext->smallBlindIndex]->addToPot(gameContext->bigBlind/2);
 }
@@ -49,12 +53,14 @@ void GameRound::distributeOneCard() {
         nextPlayer();
         Card c = deck->draw();
         gameContext->players[currentPlayer]->addCardToHole(c);
+        //std::cout << "Card " << c.toString() << " was distributed to " << gameContext->players[currentPlayer]->getName() << std::endl;
     } while (currentPlayer != gameContext->dealerIndex);
 }
 
 void GameRound::addOneCardToBoard() {
     Card card = deck->draw();
     sharedCards.push_back(card);
+    //std::cout << "Card " << card.toString() << " was distributed added to board" << std::endl;
 }
 
 void GameRound::preFlop() {
@@ -114,18 +120,21 @@ void GameRound::showdown() {
 }
 
 void GameRound::announcePhase(std::string phaseName) {
+    std::cout<< phaseName << std::endl;
     for (Player* p: gameContext->players) {
         p->seeGamePhase(phaseName);
     }
 }
 
 void GameRound::announceRoundWinner(Player* winner, float moneyWon) {
+    std::cout << "The round winner is " << winner << " who won " << moneyWon << std::endl;
     for (Player* p: gameContext->players) {
         p->seeRoundWinner(*winner, moneyWon);
     }
 }
 
 void GameRound::executeNewBettingRound() {
+    std::cout << "new betting round" << std::endl;
     bettingRound->start(gameContext, sharedCards);
 }
 

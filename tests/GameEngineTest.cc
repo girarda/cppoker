@@ -34,6 +34,8 @@ protected:
         delete game;
         delete gameRound;
         delete context;
+        delete aPlayer;
+        delete anotherPlayer;
     }
 
 };
@@ -70,8 +72,8 @@ TEST_F(GameEngineTest, gameRoundPlaysRoundWhen)
 
 TEST_F(GameEngineTest, startingANewGameMakesEveryPlayersStart)
 {
-    EXPECT_CALL(*anotherPlayer, lost()).Times(1).WillOnce(Return(true));
-    EXPECT_CALL(*aPlayer, lost()).Times(1).WillRepeatedly(Return(true));
+    EXPECT_CALL(*anotherPlayer, getMoney()).Times(1).WillOnce(Return(0));
+    EXPECT_CALL(*aPlayer, getMoney()).Times(1).WillRepeatedly(Return(0));
     EXPECT_CALL(*anotherPlayer, startPlaying()).Times(1);
     EXPECT_CALL(*aPlayer, startPlaying()).Times(1);
     game->addPlayer(aPlayer);
@@ -91,9 +93,9 @@ TEST_F(GameEngineTest, theWinnerIsAnnouncedAfterPlayingTheGame)
 
 TEST_F(GameEngineTest, ifThereAreMoreThanOnePlayerStillPlayingThenPlayARound)
 {
-    ON_CALL(*anotherPlayer, lost()).WillByDefault(Return(true));
-    EXPECT_CALL(*anotherPlayer, lost()).Times(2).WillOnce(Return(false));
-    EXPECT_CALL(*aPlayer, lost()).Times(2).WillRepeatedly(Return(false));
+    ON_CALL(*anotherPlayer, getMoney()).WillByDefault(Return(0));
+    EXPECT_CALL(*anotherPlayer, getMoney()).Times(2).WillOnce(Return(2));
+    EXPECT_CALL(*aPlayer, getMoney()).Times(2).WillRepeatedly(Return(2));
     EXPECT_CALL(*gameRound, playRound(context)).Times(1);
     game->addPlayer(aPlayer);
     game->addPlayer(anotherPlayer);

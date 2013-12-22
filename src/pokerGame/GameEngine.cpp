@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "boost/bind.hpp"
 #include "boost/thread.hpp"
+#include <iostream>
 
 namespace pokerGame
 {
@@ -15,18 +16,18 @@ GameEngine::GameEngine(GameContext* gameContext, GameRound* gameRoundToUse):
 
 GameEngine::~GameEngine()
 {
-    for (std::vector<Player*>::iterator it = context->players.begin(); it != context->players.end(); it++)
-    {
-        if (*it)
-        {
-            delete *it;
-        }
-    }
+//    for (std::vector<Player*>::iterator it = context->players.begin(); it != context->players.end(); it++)
+//    {
+//        if (*it)
+//        {
+//            delete *it;
+//        }
+//    }
 }
 
 void GameEngine::start()
 {
-
+    std::cout << "Game start" << std::endl;
 //    announcePhase("Game Start");
     for (Player* p: context->players)
     {
@@ -44,6 +45,7 @@ void GameEngine::start()
 
 void GameEngine::endGame()
 {
+    std::cout << "Game end" << std::endl;
 //    announcePhase("Game End");
     for (Player* p: context->players)
     {
@@ -53,6 +55,7 @@ void GameEngine::endGame()
 
 void GameEngine::playRound()
 {
+    std::cout << "Round " << numberOfRounds << std::endl;
     chooseNextDealer();
     gameRound->playRound(context);
     numberOfRounds++;
@@ -73,6 +76,7 @@ void GameEngine::announceWinner()
     {
         p->seeWinner(*winner);
     }
+    //std::cout << "The winner is " << winner->getName() << std::endl;
 }
 
 void GameEngine::addPlayer(Player* player)
@@ -102,7 +106,7 @@ int GameEngine::getNumberOfPlayingPlayers() const
     int count = 0;
     for (Player* p: context->players)
     {
-        if(!p->lost()) {
+        if(p->getMoney() != 0) {
             count++;
         }
     }

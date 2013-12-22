@@ -114,26 +114,38 @@ void Player::winMoney(float gainedMoney)
 Decision Player::makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards, int numberOfRaises, int numberOfPlayers)
 {
     Decision decision;
-    bool decisionIsValid = false;
-    while(!decisionIsValid)
+
+    float diffToAdd = minBet - pot;;
+    decision = playerController->makeDecision(hole, sharedCards, minBet, bigBlind, numberOfRaises, numberOfPlayers);
+    if (decision.choice == FOLD)
     {
-        float diffToAdd = minBet - pot;;
-        decision = playerController->makeDecision(hole, sharedCards, minBet, bigBlind, numberOfRaises, numberOfPlayers);
-        if (decision.choice == FOLD)
+        fold();
+    }
+    else if (decision.choice == CHECK)
+    {
+        if (money >= diffToAdd)
         {
-            fold();
-            decisionIsValid = true;
+            addToPot(diffToAdd);
         }
         else
         {
-            if (decision.choice == CALL)
-                diffToAdd = decision.bet - pot;
-            if (money >= diffToAdd)
-            {
-                addToPot(diffToAdd);
-                decisionIsValid = true;
-            }
-
+            decision.choice = CHECK;
+            decision.bet = minBet;
+            addToPot(money);
+        }
+    }
+    else
+    {
+        diffToAdd = decision.bet - pot;
+        if (money >= diffToAdd)
+        {
+            addToPot(diffToAdd);
+        }
+        else
+        {
+            decision.choice = CHECK;
+            decision.bet = minBet;
+            addToPot(money);
         }
     }
     return decision;

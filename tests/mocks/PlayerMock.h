@@ -29,6 +29,8 @@ namespace test
         MOCK_CONST_METHOD0(isFolded, bool());
         MOCK_CONST_METHOD0(lost, bool());
 
+        MOCK_CONST_METHOD0(isAllIn, bool());
+
         MOCK_METHOD0(showCards, void());
 
         MOCK_METHOD1(addCardToHole, void(pokerGame::Card card));
@@ -46,6 +48,8 @@ namespace test
         MOCK_METHOD1(seeOpponentMoney, void(const pokerGame::Player& opponent));
         MOCK_METHOD0(seeHole, void());
         MOCK_METHOD0(seeMoney, void());
+
+        MOCK_CONST_METHOD0(getMoney, float());
     };
 }
 

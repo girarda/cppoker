@@ -95,7 +95,7 @@ bool BettingRound::allPotsAreEven() const {
     bool first = true;
     float pot;
     for (Player* player: gameContext->players) {
-        if (player->isPlaying()) {
+        if (player->isPlaying() && !player->isAllIn()) {
             if (first) {
                 pot = player->getPot();
                 first = false;

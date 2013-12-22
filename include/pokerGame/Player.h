@@ -57,7 +57,7 @@ public:
 
     virtual void deliver(const std::string& msg);
 
-    float getMoney() const;
+    virtual float getMoney() const;
 
 private:
     enum State {

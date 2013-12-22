@@ -27,6 +27,7 @@ protected:
         aPlayerController = new test::PlayerControllerMock();
         sharedCards = new std::vector<pokerGame::Card>();
         aPlayer = new pokerGame::Player(aPlayerController, INITIAL_AMOUNT_MONEY);
+        aPlayer->startPlaying();
     }
     virtual void TearDown()
     {
@@ -45,7 +46,8 @@ const int PlayerTest::NUMBER_OF_PLAYERS(2);
 
 TEST_F(PlayerTest, newPlayerIsNotPlaying)
 {
-    bool playerIsPlaying = aPlayer->isPlaying();
+    pokerGame::Player newPlayer(0, INITIAL_AMOUNT_MONEY);
+    bool playerIsPlaying = newPlayer.isPlaying();
 
     ASSERT_FALSE(playerIsPlaying);
 }
@@ -125,16 +127,14 @@ TEST_F(PlayerTest, makingDecisionReturnsCheckWhenPlayerChecks)
     ASSERT_EQ(aDecision.bet, returnedDecision.bet);
 }
 
-TEST_F(PlayerTest, makingDecisionAsksUserASecondTimesIfItDoesNotHaveEnoughMoneyForHisDecision)
+TEST_F(PlayerTest, userIsAllInIfHeDoesNotHaveEnoughMoneyForHisDecision)
 {
-    pokerGame::Decision callDecision = {pokerGame::CALL, TOO_MUCH_MONEY};
-    pokerGame::Decision checkDecision = {pokerGame::CHECK, 0};
-    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, 0, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS)).Times(2).WillOnce(Return(callDecision)).WillOnce(Return(checkDecision)); // TODO: _ should be player->hole
+    pokerGame::Decision checkDecision = {pokerGame::CHECK, TOO_MUCH_MONEY};
+    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, TOO_MUCH_MONEY, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS)).Times(1).WillOnce(Return(checkDecision)); // TODO: _ should be player->hole
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND, *sharedCards, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(TOO_MUCH_MONEY, BIG_BLIND, *sharedCards, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);
 
-    ASSERT_EQ(checkDecision.choice, returnedDecision.choice);
-    ASSERT_EQ(checkDecision.bet, returnedDecision.bet);
+    ASSERT_TRUE(aPlayer->isAllIn());
 }
 
 TEST_F(PlayerTest, makingDecisionReturnsCallWhenPlayerCallsAndHasEnoughMoney)
