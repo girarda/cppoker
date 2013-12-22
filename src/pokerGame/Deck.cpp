@@ -6,6 +6,11 @@ namespace pokerGame
 {
 Deck::Deck() : cards(), currentPosition(DECK_SIZE)
 {
+    init();
+}
+
+void Deck::init() {
+    cards.clear();
     for( int rank(MIN_RANK) ; rank <= MAX_RANK ; rank++ )
     {
         for( int suit(MIN_SUIT) ; suit <= MAX_SUIT ; ++suit )
@@ -14,13 +19,11 @@ Deck::Deck() : cards(), currentPosition(DECK_SIZE)
         }
 
     }
-
 }
 
 void Deck::burn()
 {
-    assert (currentPosition > 0);
-    --currentPosition;
+    cards.pop_front();
 }
 
 Card Deck::draw()
@@ -31,12 +34,13 @@ Card Deck::draw()
 
 void Deck::shuffle()
 {
+    init();
     currentPosition = DECK_SIZE;
     std::random_shuffle (cards.begin(), cards.end());
 }
 
 void Deck::removeCard(Card card) {
-    for(std::vector<Card>::iterator it = cards.begin(); it != cards.end(); ++it) {
+    for(std::deque<Card>::iterator it = cards.begin(); it != cards.end(); ++it) {
         if (*it == card) {
             cards.erase(it);
             break;

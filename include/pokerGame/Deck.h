@@ -3,6 +3,7 @@
 
 #include "pokerGame/Card.h"
 #include <vector>
+#include <deque>
 
 namespace pokerGame
 {
@@ -23,7 +24,9 @@ public:
 
     int getCount() const;
 private:
-    std::vector<Card> cards;
+    void init();
+
+    std::deque<Card> cards;
     int currentPosition;
 };
 
