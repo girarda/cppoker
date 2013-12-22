@@ -22,12 +22,12 @@ pokerGame::Decision ProbabilisticBettingStrategy::makePreFlopDecision(std::vecto
     if(hand.getHandValue().type == pokerGame::HandType::PAIR)
     {
         decision.choice = pokerGame::CALL;
-        decision.bet = bigBlind;
+        decision.bet = minBet + bigBlind;
     }
     else if(hand.getSumOfPower() > 16)
     {
         decision.choice = pokerGame::CHECK;
-        decision.bet = 0;
+        decision.bet = minBet;
     }
     else
     {
@@ -44,10 +44,10 @@ pokerGame::Decision ProbabilisticBettingStrategy::makePostFlopDecision(std::vect
     double p = calculateCoefficient(hole, sharedCards, numberOfRaises, numberOfPlayers);
     if (p > 0.8) {
         decision.choice = pokerGame::CALL;
-        decision.bet = bigBlind;
+        decision.bet = minBet + bigBlind;
     } else if (p > 0.4 || minBet == 0) {
         decision.choice = pokerGame::CHECK;
-        decision.bet = 0;
+        decision.bet = minBet;
     } else {
         decision.choice = pokerGame::FOLD;
         decision.bet = 0;

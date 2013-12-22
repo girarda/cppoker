@@ -31,7 +31,7 @@ namespace test
 
         MOCK_METHOD0(showCards, void());
 
-        MOCK_METHOD1(addCardToHole, void(const pokerGame::Card& card));
+        MOCK_METHOD1(addCardToHole, void(pokerGame::Card card));
         MOCK_METHOD1(addToPot, void(float bet));
         MOCK_METHOD1(winMoney, void(float gainedMoney));
 

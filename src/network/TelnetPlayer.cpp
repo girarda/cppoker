@@ -189,7 +189,7 @@ pokerGame::Decision TelnetPlayer::makeDecision(std::vector<pokerGame::Card> hole
                 boost::this_thread::sleep(boost::posix_time::milliseconds(100));
                 std::istringstream ss(choice);
                 ss >> newBet;
-            } while (newBet == -1);
+            } while (newBet < minBet);
             decision.bet = newBet;
         }
 

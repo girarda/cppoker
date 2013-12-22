@@ -22,12 +22,12 @@ pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(std::vector<
     if(hand.getHandValue().type == pokerGame::HandType::PAIR || hand.getSumOfPower() < 9)
     {
         decision.choice = pokerGame::CALL;
-        decision.bet = bigBlind;
+        decision.bet = minBet + bigBlind;
     }
     else if(hand.getSumOfPower() > 16)
     {
         decision.choice = pokerGame::CHECK;
-        decision.bet = 0;
+        decision.bet = minBet;
     }
     else
     {
@@ -44,12 +44,12 @@ pokerGame::Decision SimpleBettingBluffStrategy::makePostFlopDecision(std::vector
     if(hand.getHandValue().type == pokerGame::HandType::HIGH_CARD || hand.getHandValue().type >= pokerGame::THREE_OF_A_KIND)
     {
         decision.choice = pokerGame::CALL;
-        decision.bet = bigBlind;
+        decision.bet = minBet + bigBlind;
     }
     else if(minBet == 0)
     {
         decision.choice = pokerGame::CHECK;
-        decision.bet = 0;
+        decision.bet = minBet;
     }
     else
     {

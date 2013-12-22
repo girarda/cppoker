@@ -23,11 +23,13 @@ private:
     std::vector<Card> sharedCards;
     Deck* deck;
     BettingRound* bettingRound;
+    int currentPlayer;
 
     void initialize(GameContext* gameContext);
 
     void betBlinds();
     void distributeHoles();
+    void distributeOneCard();
     void addOneCardToBoard();
 
     void preFlop();
@@ -43,6 +45,9 @@ private:
 
     void executeNewBettingRound();
     int getNumberOfPlayingPlayers() const;
+
+    void nextPlayer();
+    int getNextPlayingPlayer(int player);
 
     FRIEND_TEST(GameRoundTest,bigAndSmallBlindPlayersAddTheirBlindsToTheirPotWhenBettingPot);
     FRIEND_TEST(GameRoundTest,twoCardsAreAddedToEachPlayingPlayersHoleWhenDistributingHoles);

@@ -14,7 +14,7 @@ public:
     BettingRound();
 
     virtual void start(GameContext* gameContext, std::vector<Card> sharedCards);
-    virtual float getMinBet() const;
+    virtual float getCurrentMinimumBid() const;
 
 private:
     void playerTurn(Player* player);
@@ -23,10 +23,15 @@ private:
 
     void initialize(GameContext* gameContext, std::vector<Card> sharedCards);
 
+    void nextPlayer();
+    int getNextPlayingPlayer(int player);
+
+    bool allPotsAreEven() const;
+
     GameContext* gameContext;
-    float bet;
     std::vector<Card> sharedCards;
     int numberOfRaises;
+    int currentPlayer;
 };
 
 }

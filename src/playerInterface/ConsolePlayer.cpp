@@ -25,7 +25,7 @@ pokerGame::Decision ConsolePlayer::makeDecision(std::vector<pokerGame::Card> hol
             float newBet;
             do {
                 std::cin >> newBet;
-            } while (std::cin.fail());
+            } while (std::cin.fail() && newBet > minBet);
             decision.bet = newBet;
         }
 

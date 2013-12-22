@@ -4,7 +4,7 @@
 namespace pokerGame
 {
 
-BettingRound::BettingRound() : gameContext(0),bet(0), sharedCards(), numberOfRaises(0)
+BettingRound::BettingRound() : gameContext(0), sharedCards(), numberOfRaises(0), currentPlayer(0)
 {
 }
 
@@ -12,21 +12,24 @@ void BettingRound::start(GameContext* gameContext, std::vector<Card> sharedCards
 {
     initialize(gameContext, sharedCards);
     float currentBet;
+
+    bool entirePass = false;
+
     do {
-        currentBet = bet;
-        for (int i = gameContext->bigBlindIndex; i < gameContext->players.size(); i++) {
-            playerTurn(gameContext->players[i]);
+        nextPlayer();
+        if (currentPlayer == gameContext->dealerIndex) {
+            entirePass = true;
         }
-        for (int i = 0; i < gameContext->bigBlindIndex; i++) {
-            playerTurn(gameContext->players[i]);
-        }
-    } while (bet != currentBet);
+        playerTurn(gameContext->players[currentPlayer]);
+
+
+    } while (!(entirePass && allPotsAreEven()));
 }
 
 void BettingRound::initialize(GameContext* gameContext, std::vector<Card> sharedCards){
     this->gameContext = gameContext;
     this->sharedCards = sharedCards;
-    this->bet = gameContext->bigBlind;
+    this->currentPlayer = gameContext->dealerIndex;
 }
 
 void BettingRound::playerTurn(Player* player)
@@ -34,9 +37,8 @@ void BettingRound::playerTurn(Player* player)
     announcePlayerTurn(player);
     announcements(player);
     if(player->isPlaying()) {
-        Decision d = player->makeDecision(bet, gameContext->bigBlind, sharedCards, numberOfRaises, gameContext->players.size());
+        Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->bigBlind, sharedCards, numberOfRaises, gameContext->players.size());
         if (d.choice == pokerGame::CALL) {
-            bet += d.bet;
             numberOfRaises++;
         }
     }
@@ -55,9 +57,56 @@ void BettingRound::announcements(Player* player)
     player->seeBigBlind(*gameContext->players[gameContext->bigBlindIndex], gameContext->bigBlind);
 }
 
-float BettingRound::getMinBet() const
+float BettingRound::getCurrentMinimumBid() const
 {
-    return bet;
+    float maxBid = gameContext->bigBlind;
+    for(Player* p: gameContext->players) {
+        if (p->getPot() > maxBid) {
+            maxBid = p->getPot();
+        }
+    }
+    return maxBid;
+}
+
+void BettingRound::nextPlayer() {
+    currentPlayer++;
+    if (currentPlayer == gameContext->players.size()) {
+        currentPlayer = 0;
+    }
+    currentPlayer = getNextPlayingPlayer(currentPlayer);
+
+}
+
+int BettingRound::getNextPlayingPlayer(int player) {
+    int tmp;
+    for (tmp = player; tmp < gameContext->players.size(); tmp++) {
+        if (gameContext->players[tmp]->isPlaying()) {
+            return tmp;
+        }
+    }
+    for (tmp = 0; tmp < player; tmp++) {
+        if (gameContext->players[tmp]->isPlaying()) {
+            return tmp;
+        }
+    }
+}
+
+bool BettingRound::allPotsAreEven() const {
+    bool first = true;
+    float pot;
+    for (Player* player: gameContext->players) {
+        if (player->isPlaying()) {
+            if (first) {
+                pot = player->getPot();
+                first = false;
+            } else {
+                if (player->getPot() != pot && !player->isAllIn()) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
 }
 
 }

@@ -32,9 +32,11 @@ public:
     virtual bool isFolded() const;
     virtual bool lost() const;
 
+    virtual bool isAllIn() const;
+
     virtual void showCards();
 
-    virtual void addCardToHole(const Card& card);
+    virtual void addCardToHole(Card card);
     virtual void addToPot(float moneyToAdd);
     virtual void winMoney(float gainedMoney);
 

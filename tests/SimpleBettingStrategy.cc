@@ -51,11 +51,11 @@ TEST_F(SimpleBettingStrategy, whenPreFlopIfHandValueIsAPairMakeDecisionReturnsCa
     ASSERT_EQ(pokerGame::CALL, choice);
 }
 
-TEST_F(SimpleBettingStrategy, whenPreFlopIfHandValueIsAPairNewBetEqualsBigBlind)
+TEST_F(SimpleBettingStrategy, whenPreFlopIfHandValueIsAPairNewBetEqualsSumOfMinBetAndBigBlind)
 {
     initPreFlopPair();
     float newBet = simpleBettingStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
-    ASSERT_EQ(BIG_BLIND, newBet);
+    ASSERT_EQ(A_BET+BIG_BLIND, newBet);
 }
 
 TEST_F(SimpleBettingStrategy, whenPreFlopIfSumOfPowerOfHandIsHigherThan16MakeDecisionReturnsCheck)
@@ -65,11 +65,11 @@ TEST_F(SimpleBettingStrategy, whenPreFlopIfSumOfPowerOfHandIsHigherThan16MakeDec
     ASSERT_EQ(pokerGame::CHECK, choice);
 }
 
-TEST_F(SimpleBettingStrategy, whenPreFlopIfSumOfPowerOfHandIsHigherThan16NewBetIsZero)
+TEST_F(SimpleBettingStrategy, whenPreFlopIfSumOfPowerOfHandIsHigherThan16NewBetIsInitialBet)
 {
     initPreFlopSumOfPowerHigherThan16();
     float newBet = simpleBettingStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
-    ASSERT_EQ(0, newBet);
+    ASSERT_EQ(A_BET, newBet);
 }
 
 TEST_F(SimpleBettingStrategy, whenPreFlopIfSumOfPowerOfHandIsLowerThan16MakeDecisionReturnsCheck)
@@ -93,11 +93,11 @@ TEST_F(SimpleBettingStrategy, whenPostFlopIfHandValueIsHigherOrEqualsToStraightM
     ASSERT_EQ(pokerGame::CALL, choice);
 }
 
-TEST_F(SimpleBettingStrategy, whenPostFlopIfHandValueIsHigherOrEqualsToStraightNewBetEqualsBigBlind)
+TEST_F(SimpleBettingStrategy, whenPostFlopIfHandValueIsHigherOrEqualsToStraightNewBetEqualsSumOfMinBetAndBigBlind)
 {
     initPostFlopStraight();
     float newBet = simpleBettingStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
-    ASSERT_EQ(BIG_BLIND, newBet);
+    ASSERT_EQ(A_BET+BIG_BLIND, newBet);
 }
 
 TEST_F(SimpleBettingStrategy, whenPostFlopIfHandValueIsHighCardAndBetIsNotZeroThenFold)
@@ -121,11 +121,11 @@ TEST_F(SimpleBettingStrategy, whenPostFlopIfHandValueIsHighCardAndBetIsZeroThenC
     ASSERT_EQ(pokerGame::CHECK, choice);
 }
 
-TEST_F(SimpleBettingStrategy, whenPostFlopIfHandValueIsHighCardAndBetIsZeroThenNewBetIsZero)
+TEST_F(SimpleBettingStrategy, whenPostFlopIfHandValueIsHighCardAndBetIsZeroThenNewBetIsInitialBet)
 {
     initPostFlopHighCard();
-    float newBet = simpleBettingStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
-    ASSERT_EQ(0, newBet);
+    float newBet = simpleBettingStrategy->makeDecision(*hole, *sharedCards, ZERO_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
+    ASSERT_EQ(ZERO_BET, newBet);
 }
 
 TEST_F(SimpleBettingStrategy, whenPostFlopIfHandValueIsBetterThanHighCardButLessThanStraifhtThenCheck)
@@ -135,11 +135,11 @@ TEST_F(SimpleBettingStrategy, whenPostFlopIfHandValueIsBetterThanHighCardButLess
     ASSERT_EQ(pokerGame::CHECK, choice);
 }
 
-TEST_F(SimpleBettingStrategy, whenPostFlopIfHandValueIsBetterThanHighCardButLessThanStraifhtThenNewBetIsZero)
+TEST_F(SimpleBettingStrategy, whenPostFlopIfHandValueIsBetterThanHighCardButLessThanStraifhtThenNewBetIsInitialBet)
 {
     initPostFlopPair();
     float newBet = simpleBettingStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
-    ASSERT_EQ(0, newBet);
+    ASSERT_EQ(A_BET, newBet);
 }
 
 void SimpleBettingStrategy::initPreFlopPair()

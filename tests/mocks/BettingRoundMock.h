@@ -10,7 +10,7 @@ namespace test
     {
         public:
         MOCK_METHOD2(start, void(pokerGame::GameContext* gameContext, std::vector<pokerGame::Card> sharedCards));
-        MOCK_CONST_METHOD0(getMinBet, float());
+        MOCK_CONST_METHOD0(getCurrentMinimumBid, float());
     };
 }
 

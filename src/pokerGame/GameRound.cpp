@@ -3,7 +3,7 @@
 namespace pokerGame
 {
 
-GameRound::GameRound(Deck *deckToUse, BettingRound* bettingRoundToUse): gameContext(0), deck(deckToUse), bettingRound(bettingRoundToUse), sharedCards()
+GameRound::GameRound(Deck *deckToUse, BettingRound* bettingRoundToUse): gameContext(0), deck(deckToUse), bettingRound(bettingRoundToUse), sharedCards(), currentPlayer(0)
 {
 }
 
@@ -23,6 +23,7 @@ void GameRound::playRound(GameContext* gameContext) { // TODO: test this method
 
 void GameRound::initialize(GameContext* gameContext) {
     this->gameContext = gameContext;
+    this->currentPlayer = gameContext->dealerIndex;
     deck->shuffle();
         for (Player* p: gameContext->players)
         {
@@ -37,38 +38,23 @@ void GameRound::betBlinds() {
 }
 
 void GameRound::distributeHoles() {
-    for (int i = gameContext->bigBlindIndex; i < gameContext->players.size(); i++) {
-        if (gameContext->players[i]->isPlaying()) {
-            Card c1 = deck->draw();
-            Card c2 = deck->draw();
-            c1.hide();
-            gameContext->players[i]->addCardToHole(c1);
-            gameContext->players[i]->addCardToHole(c2);
-        }
-    }
-    for (int i = 0; i < gameContext->bigBlindIndex; i++) {
-        if (gameContext->players[i]->isPlaying()) {
-            Card c1 = deck->draw();
-            Card c2 = deck->draw();
-            c1.hide();
-            gameContext->players[i]->addCardToHole(c1);
-            gameContext->players[i]->addCardToHole(c2);
-        }
-    }
+    distributeOneCard();
+    distributeOneCard();
+}
+
+void GameRound::distributeOneCard() {
+    currentPlayer = gameContext->dealerIndex;
+    deck->burn();
+    do {
+        nextPlayer();
+        Card c = deck->draw();
+        gameContext->players[currentPlayer]->addCardToHole(c);
+    } while (currentPlayer != gameContext->dealerIndex);
 }
 
 void GameRound::addOneCardToBoard() {
     Card card = deck->draw();
-    for (int i = gameContext->bigBlindIndex; i < gameContext->players.size(); i++) {
-        if (gameContext->players[i]->isPlaying()) {
-            sharedCards.push_back(card);
-        }
-    }
-    for (int i = 0; i < gameContext->bigBlindIndex; i++) {
-        if (gameContext->players[i]->isPlaying()) {
-            sharedCards.push_back(card);
-        }
-    }
+    sharedCards.push_back(card);
 }
 
 void GameRound::preFlop() {
@@ -160,6 +146,29 @@ int GameRound::getNumberOfPlayingPlayers() const {
             nbPlayingPlayers++;
     }
     return nbPlayingPlayers;
+}
+
+void GameRound::nextPlayer() {
+    currentPlayer++;
+    if (currentPlayer == gameContext->players.size()) {
+        currentPlayer = 0;
+    }
+    currentPlayer = getNextPlayingPlayer(currentPlayer);
+
+}
+
+int GameRound::getNextPlayingPlayer(int player) {
+    int tmp;
+    for (tmp = player; tmp < gameContext->players.size(); tmp++) {
+        if (gameContext->players[tmp]->isPlaying()) {
+            return tmp;
+        }
+    }
+    for (tmp = 0; tmp < player; tmp++) {
+        if (gameContext->players[tmp]->isPlaying()) {
+            return tmp;
+        }
+    }
 }
 
 }

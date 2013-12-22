@@ -83,15 +83,27 @@ bool Player::lost() const
     return currentState == NOT_PLAYING;
 }
 
-void Player::addCardToHole(const Card& card)
+bool Player::isAllIn() const {
+    return isPlaying() && getMoney() == 0;
+}
+
+void Player::addCardToHole(Card card)
 {
+    if (hole.empty()) {
+        card.hide();
+    }
     hole.push_back(card);
 }
 
 void Player::addToPot(float moneyToAdd)
 {
-    money -= moneyToAdd;
-    pot += moneyToAdd;
+    if (money < moneyToAdd) {
+        pot += money;
+        money = 0;
+    } else {
+        money -= moneyToAdd;
+        pot += moneyToAdd;
+    }
 }
 
 void Player::winMoney(float gainedMoney)

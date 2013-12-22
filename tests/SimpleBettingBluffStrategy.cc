@@ -51,11 +51,11 @@ TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfHandValueIsAPairMakeDecision
     ASSERT_EQ(pokerGame::CALL, choice);
 }
 
-TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfHandValueIsAPairNewBetEqualsBigBlind)
+TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfHandValueIsAPairNewBetEqualsSumOfMinBetAndBigBlind)
 {
     initPreFlopPair();
     float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
-    ASSERT_EQ(BIG_BLIND, newBet);
+    ASSERT_EQ(A_BET+BIG_BLIND, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfSumOfPowerOfHandIsLowerThan9ThenBluffAndRaise)
@@ -65,11 +65,11 @@ TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfSumOfPowerOfHandIsLowerThan9
     ASSERT_EQ(pokerGame::CALL, choice);
 }
 
-TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfHandValueIsLowerThan9ThenNewBetEqualsBigBlind)
+TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfHandValueIsLowerThan9ThenNewBetEqualsSumOfMinBetBigBlind)
 {
     initPreFlopSumOfPowerLower8();
     float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
-    ASSERT_EQ(BIG_BLIND, newBet);
+    ASSERT_EQ(A_BET+BIG_BLIND, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfSumOfPowerOfHandIsHigherThan16MakeDecisionReturnsCheck)
@@ -79,11 +79,11 @@ TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfSumOfPowerOfHandIsHigherThan
     ASSERT_EQ(pokerGame::CHECK, choice);
 }
 
-TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfSumOfPowerOfHandIsHigherThan16NewBetIsZero)
+TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfSumOfPowerOfHandIsHigherThan16NewBetIsMinBet)
 {
     initPreFlopSumOfPowerHigherThan16();
     float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
-    ASSERT_EQ(0, newBet);
+    ASSERT_EQ(A_BET, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfSumOfPowerOfHandIsLowerThan16MakeDecisionReturnsCheck)
@@ -107,11 +107,11 @@ TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsHigherOrEqualsTo
     ASSERT_EQ(pokerGame::CALL, choice);
 }
 
-TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsHigherOrEqualsToThreeOfAKindNewBetEqualsBigBlind)
+TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsHigherOrEqualsToThreeOfAKindNewBetEqualsSumOfMinBetAndBigBlind)
 {
     initPostFlopThreeOfAKind();
     float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
-    ASSERT_EQ(BIG_BLIND, newBet);
+    ASSERT_EQ(A_BET+BIG_BLIND, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsHighCardBluffAndRaise)
@@ -121,11 +121,11 @@ TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsHighCardBluffAnd
     ASSERT_EQ(pokerGame::CALL, choice);
 }
 
-TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsHighCardAndBetIsNotZeroThenNewBetEqualsBigBlind)
+TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsHighCardAndBetIsNotZeroThenNewBetEqualsSumOfMinBetAndBigBlind)
 {
     initPostFlopHighCard();
     float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
-    ASSERT_EQ(BIG_BLIND, newBet);
+    ASSERT_EQ(A_BET+BIG_BLIND, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsLowerThanThreeOfAKindAndBetIsZeroThenCheck)
@@ -135,11 +135,11 @@ TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsLowerThanThreeOf
     ASSERT_EQ(pokerGame::CHECK, choice);
 }
 
-TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsLowerThanThreeOfAKindAndBetIsZeroThenNewBetIsZero)
+TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsLowerThanThreeOfAKindAndBetIsZeroThenNewBetIsInitialBet)
 {
     initPostFlopPair();
     float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, ZERO_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
-    ASSERT_EQ(0, newBet);
+    ASSERT_EQ(ZERO_BET, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsLowerThanThreeOfAKindAndBetIsNotZeroThenFold)
