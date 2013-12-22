@@ -15,7 +15,7 @@ GameEngine::GameEngine(GameContext* gameContext, GameRound* gameRoundToUse):
 
 GameEngine::~GameEngine()
 {
-    for (std::vector<PokerPlayer*>::iterator it = context->players.begin(); it != context->players.end(); it++)
+    for (std::vector<Player*>::iterator it = context->players.begin(); it != context->players.end(); it++)
     {
         if (*it)
         {
@@ -28,7 +28,7 @@ void GameEngine::start()
 {
 
 //    announcePhase("Game Start");
-    for (PokerPlayer* p: context->players)
+    for (Player* p: context->players)
     {
         p->startPlaying();
     }
@@ -45,7 +45,7 @@ void GameEngine::start()
 void GameEngine::endGame()
 {
 //    announcePhase("Game End");
-    for (PokerPlayer* p: context->players)
+    for (Player* p: context->players)
     {
         p->stopPlaying();
     }
@@ -60,8 +60,8 @@ void GameEngine::playRound()
 
 void GameEngine::announceWinner()
 {
-    PokerPlayer* winner;
-    for (PokerPlayer* p: context->players)
+    Player* winner;
+    for (Player* p: context->players)
     {
         if (p->isPlaying())
         {
@@ -69,13 +69,13 @@ void GameEngine::announceWinner()
             break;
         }
     }
-    for (PokerPlayer* p: context->players)
+    for (Player* p: context->players)
     {
         p->seeWinner(*winner);
     }
 }
 
-void GameEngine::addPlayer(PokerPlayer* player)
+void GameEngine::addPlayer(Player* player)
 {
     context->players.push_back(player);
 }
@@ -100,7 +100,7 @@ int GameEngine::getNumberOfPlayers() const
 int GameEngine::getNumberOfPlayingPlayers() const
 {
     int count = 0;
-    for (PokerPlayer* p: context->players)
+    for (Player* p: context->players)
     {
         if(!p->lost()) {
             count++;
@@ -111,7 +111,7 @@ int GameEngine::getNumberOfPlayingPlayers() const
 
 void GameEngine::join(PlayerController* player) // TODO: test this method
 {
-    PokerPlayer* newPlayer = new PokerPlayer(player, INITIAL_AMOUNT_OF_MONEY);
+    Player* newPlayer = new Player(player, INITIAL_AMOUNT_OF_MONEY);
     context->players.push_back(newPlayer);
     sendChatMessage("A new player joined!");
 }
@@ -124,7 +124,7 @@ void GameEngine::leave(PlayerController* player) // TODO: test this method
 void GameEngine::sendChatMessage(const std::string& msg) // TODO: test this method
 {
     std::for_each(context->players.begin(), context->players.end(),
-                  boost::bind(&PokerPlayer::deliver, _1, boost::ref(msg)));
+                  boost::bind(&Player::deliver, _1, boost::ref(msg)));
 }
 
 }

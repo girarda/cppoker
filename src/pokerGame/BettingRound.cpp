@@ -29,7 +29,7 @@ void BettingRound::initialize(GameContext* gameContext, std::vector<Card> shared
     this->bet = gameContext->bigBlind;
 }
 
-void BettingRound::playerTurn(PokerPlayer* player)
+void BettingRound::playerTurn(Player* player)
 {
     announcePlayerTurn(player);
     announcements(player);
@@ -42,14 +42,14 @@ void BettingRound::playerTurn(PokerPlayer* player)
     }
 }
 
-void BettingRound::announcePlayerTurn(PokerPlayer* player)
+void BettingRound::announcePlayerTurn(Player* player)
 {
-    for (PokerPlayer* p: gameContext->players) {
+    for (Player* p: gameContext->players) {
         p->seePlayerTurn(*player);
     }
 }
 
-void BettingRound::announcements(PokerPlayer* player)
+void BettingRound::announcements(Player* player)
 {
     player->seeDealer(*gameContext->players[gameContext->dealerIndex]);
     player->seeBigBlind(*gameContext->players[gameContext->bigBlindIndex], gameContext->bigBlind);

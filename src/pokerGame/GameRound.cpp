@@ -24,7 +24,7 @@ void GameRound::playRound(GameContext* gameContext) { // TODO: test this method
 void GameRound::initialize(GameContext* gameContext) {
     this->gameContext = gameContext;
     deck->shuffle();
-        for (PokerPlayer* p: gameContext->players)
+        for (Player* p: gameContext->players)
         {
             p->setupForNewRound();
         }
@@ -109,16 +109,16 @@ void GameRound::showdown() {
     {
         gameContext->players[i]->showCards();
     }
-    for (PokerPlayer* p : gameContext->players)
+    for (Player* p : gameContext->players)
     {
-        for(PokerPlayer* other: gameContext->players) {
+        for(Player* other: gameContext->players) {
             p->seeOpponentHole(*other);
             p->seeOpponentMoney(*other);
         }
 
     }
-    PokerPlayer* winner = gameContext->players[0];
-    for (PokerPlayer* p: gameContext->players)
+    Player* winner = gameContext->players[0];
+    for (Player* p: gameContext->players)
     {
         if (p->hasBetterHand(*winner, sharedCards))
             winner = p;
@@ -128,13 +128,13 @@ void GameRound::showdown() {
 }
 
 void GameRound::announcePhase(std::string phaseName) {
-    for (PokerPlayer* p: gameContext->players) {
+    for (Player* p: gameContext->players) {
         p->seeGamePhase(phaseName);
     }
 }
 
-void GameRound::announceRoundWinner(PokerPlayer* winner, float moneyWon) {
-    for (PokerPlayer* p: gameContext->players) {
+void GameRound::announceRoundWinner(Player* winner, float moneyWon) {
+    for (Player* p: gameContext->players) {
         p->seeRoundWinner(*winner, moneyWon);
     }
 }
@@ -145,7 +145,7 @@ void GameRound::executeNewBettingRound() {
 
 float GameRound::getTotalPot() const {
     float totalPot = 0;
-    for (PokerPlayer* p: gameContext->players)
+    for (Player* p: gameContext->players)
     {
         totalPot += p->getPot();
     }
@@ -154,7 +154,7 @@ float GameRound::getTotalPot() const {
 
 int GameRound::getNumberOfPlayingPlayers() const {
     int nbPlayingPlayers = 0;
-    for (PokerPlayer* p: gameContext->players)
+    for (Player* p: gameContext->players)
     {
         if (p->isPlaying())
             nbPlayingPlayers++;

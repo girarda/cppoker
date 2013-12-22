@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include <vector>
 #include "pokerGame/BettingRound.h"
-#include "PokerPlayermock.h"
+#include "PlayerMock.h"
 
 using ::testing::_;
 

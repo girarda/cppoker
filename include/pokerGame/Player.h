@@ -8,12 +8,12 @@
 namespace pokerGame
 {
 
-class PokerPlayer
+class Player
 {
 public:
 
-    PokerPlayer(PlayerController *aPlayerController, float initialMoney);
-    virtual ~PokerPlayer();
+    Player(PlayerController *aPlayerController, float initialMoney);
+    virtual ~Player();
 
     virtual Decision makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards, int numberOfRaises, int numberOfPlayers);
 
@@ -24,7 +24,7 @@ public:
     virtual void fold();
     virtual void setupForNewRound();
 
-    virtual bool hasBetterHand(const PokerPlayer& other, std::vector<Card> sharedCards) const;
+    virtual bool hasBetterHand(const Player& other, std::vector<Card> sharedCards) const;
     virtual float getPot() const;
     virtual std::vector<Card> getVisibleHole() const;
 
@@ -39,14 +39,14 @@ public:
     virtual void winMoney(float gainedMoney);
 
     virtual void seeGamePhase(std::string phaseName);
-    virtual void seePlayerTurn(const PokerPlayer& player);
-    virtual void seeDealer(const PokerPlayer& dealer);
-    virtual void seeBigBlind(const PokerPlayer& player, float bigBlind);
-    virtual void seeSmallBlind(const PokerPlayer& player, float smallBlind);
-    virtual void seeRoundWinner(const PokerPlayer& winner, float moneyWon);
-    virtual void seeWinner(const PokerPlayer& winner);
-    virtual void seeOpponentHole(const PokerPlayer& opponent);
-    virtual void seeOpponentMoney(const PokerPlayer& opponnent);
+    virtual void seePlayerTurn(const Player& player);
+    virtual void seeDealer(const Player& dealer);
+    virtual void seeBigBlind(const Player& player, float bigBlind);
+    virtual void seeSmallBlind(const Player& player, float smallBlind);
+    virtual void seeRoundWinner(const Player& winner, float moneyWon);
+    virtual void seeWinner(const Player& winner);
+    virtual void seeOpponentHole(const Player& opponent);
+    virtual void seeOpponentMoney(const Player& opponnent);
     virtual void seeHole();
     virtual void seeMoney();
 

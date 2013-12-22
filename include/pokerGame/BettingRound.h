@@ -2,7 +2,7 @@
 #define BETTINGROUND_H
 
 #include <vector>
-#include "pokerGame/PokerPlayer.h"
+#include "pokerGame/Player.h"
 #include "GameContext.h"
 
 namespace pokerGame
@@ -17,9 +17,9 @@ public:
     virtual float getMinBet() const;
 
 private:
-    void playerTurn(PokerPlayer* player);
-    void announcePlayerTurn(PokerPlayer* player);
-    void announcements(PokerPlayer* player);
+    void playerTurn(Player* player);
+    void announcePlayerTurn(Player* player);
+    void announcements(Player* player);
 
     void initialize(GameContext* gameContext, std::vector<Card> sharedCards);
 

@@ -1,7 +1,7 @@
 #ifndef GAMECONTEXT_H
 #define GAMECONTEXT_H
 
-#include "PokerPlayer.h"
+#include "Player.h"
 #include <vector>
 
 namespace pokerGame
@@ -16,7 +16,7 @@ public:
     int bigBlindIndex;
     int smallBlindIndex;
     float bigBlind;
-    std::vector<PokerPlayer*> players;
+    std::vector<Player*> players;
 };
 
 }

@@ -2,7 +2,7 @@
 #define GAMEROUND_H
 
 #include <vector>
-#include "pokerGame/PokerPlayer.h"
+#include "pokerGame/Player.h"
 #include "Deck.h"
 #include "BettingRound.h"
 #include "GameContext.h"
@@ -37,7 +37,7 @@ private:
     void showdown();
 
     void announcePhase(std::string phaseName);
-    void announceRoundWinner(PokerPlayer* winner, float moneyWon);
+    void announceRoundWinner(Player* winner, float moneyWon);
 
     float getTotalPot() const;
 

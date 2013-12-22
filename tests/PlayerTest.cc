@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "pokerGame/PokerPlayer.h"
+#include "pokerGame/Player.h"
 #include "PlayerControllerMock.h"
 #include "pokerGame/PlayerController.h"
 
@@ -10,7 +10,7 @@ class PlayerTest : public ::testing::Test
 {
 protected:
     test::PlayerControllerMock* aPlayerController;
-    pokerGame::PokerPlayer* aPlayer;
+    pokerGame::Player* aPlayer;
 
     std::vector<pokerGame::Card>* sharedCards;
 
@@ -26,7 +26,7 @@ protected:
     {
         aPlayerController = new test::PlayerControllerMock();
         sharedCards = new std::vector<pokerGame::Card>();
-        aPlayer = new pokerGame::PokerPlayer(aPlayerController, INITIAL_AMOUNT_MONEY);
+        aPlayer = new pokerGame::Player(aPlayerController, INITIAL_AMOUNT_MONEY);
     }
     virtual void TearDown()
     {

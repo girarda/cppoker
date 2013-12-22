@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "pokerGame/GameEngine.h"
-#include "PokerPlayermock.h"
+#include "PlayerMock.h"
 #include "GameRoundMock.h"
 
 using ::testing::Return;
@@ -28,6 +28,7 @@ protected:
         context = new pokerGame::GameContext(BIG_BLIND);
         game = new pokerGame::GameEngine(context, gameRound);
     }
+
     virtual void TearDown()
     {
         delete game;

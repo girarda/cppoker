@@ -1,4 +1,4 @@
-#include "pokerGame/PokerPlayer.h"
+#include "pokerGame/Player.h"
 #include "pokerGame/Deck.h"
 #include "network/OnlineRoom.h"
 #include "GameRound.h"
@@ -19,7 +19,7 @@ public:
 
     void playRound();
 
-    void addPlayer(PokerPlayer* player);
+    void addPlayer(Player* player);
 
     float getTotalPot() const;
 

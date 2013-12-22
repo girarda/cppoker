@@ -2,7 +2,7 @@
 #include <vector>
 #include "pokerGame/GameRound.h"
 #include "pokerGame/Card.h"
-#include "PokerPlayermock.h"
+#include "PlayerMock.h"
 #include "DeckMock.h"
 #include "BettingRoundMock.h"
 #include <string>
@@ -26,7 +26,7 @@ protected:
     test::BettingRoundMock* bettingRound;
     pokerGame::Card* aCard;
 
-    std::vector<pokerGame::PokerPlayer*> players;
+    std::vector<pokerGame::Player*> players;
 
     static const int BIG_BLIND;
     static const int DEALER_INDEX;
