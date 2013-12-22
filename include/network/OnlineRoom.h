@@ -4,11 +4,9 @@
 #include "pokerGame/PlayerController.h"
 #include <string>
 
-namespace network
-{
+namespace network {
 
-class OnlineRoom
-{
+class OnlineRoom {
 public:
     virtual ~OnlineRoom() {}
     virtual void join(pokerGame::PlayerController* player) = 0;

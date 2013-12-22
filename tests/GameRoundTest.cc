@@ -11,11 +11,9 @@ using ::testing::_;
 
 using ::testing::Return;
 
-namespace pokerGame
-{
+namespace pokerGame {
 
-class GameRoundTest : public ::testing::Test
-{
+class GameRoundTest : public ::testing::Test {
 protected:
     pokerGame::GameRound* gameRound;
     pokerGame::GameContext* gameContext;
@@ -41,24 +39,22 @@ protected:
     static std::string RIVER_PHASE;
     static std::string SHOWDOWN_PHASE;
 
-    virtual void SetUp()
-    {
+    virtual void SetUp() {
         aCard = new pokerGame::Card(2, pokerGame::CLUB);
         aPlayer = new test::PlayerMock();
         anotherPlayer = new test::PlayerMock();
         deck = new test::DeckMock();
         bettingRound = new test::BettingRoundMock();
         gameContext = new pokerGame::GameContext(BIG_BLIND);
-        gameContext->players.push_back(aPlayer);
-        gameContext->players.push_back(anotherPlayer);
-        gameContext->bigBlindIndex = BIG_BLIND_INDEX;
-        gameContext->smallBlindIndex = SMALL_BLIND_INDEX;
-        gameContext->dealerIndex = DEALER_INDEX;
+        gameContext->addPlayer(aPlayer);
+        gameContext->addPlayer(anotherPlayer);
+        gameContext->setBigBlindIndex(BIG_BLIND_INDEX);
+        gameContext->setSmallBlindIndex(SMALL_BLIND_INDEX);
+        gameContext->setDealerIndex(DEALER_INDEX);
         gameRound = new pokerGame::GameRound(deck, bettingRound);
         ON_CALL(*deck, draw()).WillByDefault(Return(*aCard));
     }
-    virtual void TearDown()
-    {
+    virtual void TearDown() {
         delete aCard;
         delete deck;
         delete bettingRound;
@@ -83,16 +79,14 @@ std::string GameRoundTest::TURN_PHASE("Turn");
 std::string GameRoundTest::RIVER_PHASE("River");
 std::string GameRoundTest::SHOWDOWN_PHASE("Showdown");
 
-TEST_F(GameRoundTest, bigAndSmallBlindPlayersAddTheirBlindsToTheirPotWhenBettingPot)
-{
+TEST_F(GameRoundTest, bigAndSmallBlindPlayersAddTheirBlindsToTheirPotWhenBettingPot) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*aPlayer, addToPot(BIG_BLIND/2));
     EXPECT_CALL(*anotherPlayer, addToPot(BIG_BLIND));
     gameRound->betBlinds();
 }
 
-TEST_F(GameRoundTest, twoCardsAreAddedToEachPlayingPlayersHoleWhenDistributingHoles)
-{
+TEST_F(GameRoundTest, twoCardsAreAddedToEachPlayingPlayersHoleWhenDistributingHoles) {
     gameRound->initialize(gameContext);
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
     ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(true));
@@ -102,8 +96,7 @@ TEST_F(GameRoundTest, twoCardsAreAddedToEachPlayingPlayersHoleWhenDistributingHo
     gameRound->distributeHoles();
 }
 
-TEST_F(GameRoundTest, holesAreNotDistributedToPlayersWhoAreNotPlaying)
-{
+TEST_F(GameRoundTest, holesAreNotDistributedToPlayersWhoAreNotPlaying) {
     gameRound->initialize(gameContext);
     ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
     ON_CALL(*deck, draw()).WillByDefault(Return(*aCard));
@@ -112,8 +105,7 @@ TEST_F(GameRoundTest, holesAreNotDistributedToPlayersWhoAreNotPlaying)
     gameRound->distributeHoles();
 }
 
-TEST_F(GameRoundTest, everyPlayerSeePhaseNameWhenAnnouncingPhase)
-{
+TEST_F(GameRoundTest, everyPlayerSeePhaseNameWhenAnnouncingPhase) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*anotherPlayer, seeGamePhase(A_GAME_PHASE));
     EXPECT_CALL(*aPlayer, seeGamePhase(A_GAME_PHASE));
@@ -121,24 +113,21 @@ TEST_F(GameRoundTest, everyPlayerSeePhaseNameWhenAnnouncingPhase)
 }
 
 
-TEST_F(GameRoundTest, everyPlayerSeeWinnerWhenAnnouncingRoundWinner)
-{
+TEST_F(GameRoundTest, everyPlayerSeeWinnerWhenAnnouncingRoundWinner) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*anotherPlayer, seeRoundWinner(_, MONEY_WON)); //TODO: Find a way to mock calls with const ref parameters
     EXPECT_CALL(*aPlayer, seeRoundWinner(_, MONEY_WON)); // _ should be aPlayer
     gameRound->announceRoundWinner(aPlayer, MONEY_WON);
 }
 
-TEST_F(GameRoundTest, preFlopPhaseIsAnnouncedWhenItBegins)
-{
+TEST_F(GameRoundTest, preFlopPhaseIsAnnouncedWhenItBegins) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*anotherPlayer, seeGamePhase(PRE_FLOP_PHASE));
     EXPECT_CALL(*aPlayer, seeGamePhase(PRE_FLOP_PHASE));
     gameRound->preFlop();
 }
 
-TEST_F(GameRoundTest, twoCardsAreDistributedInPreFlop)
-{
+TEST_F(GameRoundTest, twoCardsAreDistributedInPreFlop) {
     gameRound->initialize(gameContext);
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
     ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(true));
@@ -147,40 +136,35 @@ TEST_F(GameRoundTest, twoCardsAreDistributedInPreFlop)
     gameRound->preFlop();
 }
 
-TEST_F(GameRoundTest, flopPhaseIsAnnouncedWhenItBegins)
-{
+TEST_F(GameRoundTest, flopPhaseIsAnnouncedWhenItBegins) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*anotherPlayer, seeGamePhase(FLOP_PHASE));
     EXPECT_CALL(*aPlayer, seeGamePhase(FLOP_PHASE));
     gameRound->flop();
 }
 
-TEST_F(GameRoundTest, turnPhaseIsAnnouncedWhenItBegins)
-{
+TEST_F(GameRoundTest, turnPhaseIsAnnouncedWhenItBegins) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*anotherPlayer, seeGamePhase(TURN_PHASE));
     EXPECT_CALL(*aPlayer, seeGamePhase(TURN_PHASE));
     gameRound->turn();
 }
 
-TEST_F(GameRoundTest, riverPhaseIsAnnouncedWhenItBegins)
-{
+TEST_F(GameRoundTest, riverPhaseIsAnnouncedWhenItBegins) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*anotherPlayer, seeGamePhase(RIVER_PHASE));
     EXPECT_CALL(*aPlayer, seeGamePhase(RIVER_PHASE));
     gameRound->river();
 }
 
-TEST_F(GameRoundTest, showdownPhaseIsAnnouncedWhenItBegins)
-{
+TEST_F(GameRoundTest, showdownPhaseIsAnnouncedWhenItBegins) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*anotherPlayer, seeGamePhase(SHOWDOWN_PHASE));
     EXPECT_CALL(*aPlayer, seeGamePhase(SHOWDOWN_PHASE));
     gameRound->showdown();
 }
 
-TEST_F(GameRoundTest, theRoundWinnerWinsThePot)
-{
+TEST_F(GameRoundTest, theRoundWinnerWinsThePot) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*anotherPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
     EXPECT_CALL(*aPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
@@ -190,8 +174,7 @@ TEST_F(GameRoundTest, theRoundWinnerWinsThePot)
     gameRound->showdown();
 }
 
-TEST_F(GameRoundTest, theRoundWinnerIsAnnouncedInShowndown)
-{
+TEST_F(GameRoundTest, theRoundWinnerIsAnnouncedInShowndown) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*aPlayer, seeRoundWinner(_, 2* BIG_BLIND));
     EXPECT_CALL(*anotherPlayer, seeRoundWinner(_, 2* BIG_BLIND));
@@ -203,8 +186,7 @@ TEST_F(GameRoundTest, theRoundWinnerIsAnnouncedInShowndown)
     gameRound->showdown();
 }
 
-TEST_F(GameRoundTest, everyPlayersShowTheirCardsInShowdown)
-{
+TEST_F(GameRoundTest, everyPlayersShowTheirCardsInShowdown) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*anotherPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
     EXPECT_CALL(*aPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
@@ -216,8 +198,7 @@ TEST_F(GameRoundTest, everyPlayersShowTheirCardsInShowdown)
     gameRound->showdown();
 }
 
-TEST_F(GameRoundTest, everyPlayersSeeTheirOponnentsCardsAndMoney)
-{
+TEST_F(GameRoundTest, everyPlayersSeeTheirOponnentsCardsAndMoney) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*anotherPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
     EXPECT_CALL(*aPlayer, getPot()).Times(2).WillRepeatedly(Return(BIG_BLIND));
@@ -231,15 +212,13 @@ TEST_F(GameRoundTest, everyPlayersSeeTheirOponnentsCardsAndMoney)
     gameRound->showdown();
 }
 
-TEST_F(GameRoundTest, aBettingRoundStartsWhenExecutingNewBettingRound)
-{
+TEST_F(GameRoundTest, aBettingRoundStartsWhenExecutingNewBettingRound) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*bettingRound, start(gameContext, _)); //TODO: _ should be gameRound->sharedCards
     gameRound->executeNewBettingRound();
 }
 
-TEST_F(GameRoundTest, getNumberOfPlayingPlayersReturnsTheNumberOfPlayingPlayers)
-{
+TEST_F(GameRoundTest, getNumberOfPlayingPlayersReturnsTheNumberOfPlayingPlayers) {
     gameRound->initialize(gameContext);
     EXPECT_CALL(*anotherPlayer, isPlaying()).WillOnce(Return(false));
     EXPECT_CALL(*aPlayer, isPlaying()).WillOnce(Return(true));
@@ -249,18 +228,15 @@ TEST_F(GameRoundTest, getNumberOfPlayingPlayersReturnsTheNumberOfPlayingPlayers)
     ASSERT_EQ(1, numberOfPlayingPlayers);
 }
 
-TEST_F(GameRoundTest, deckIsShuffledWhenInitializingTheRound)
-{
+TEST_F(GameRoundTest, deckIsShuffledWhenInitializingTheRound) {
     EXPECT_CALL(*deck, shuffle());
     gameRound->initialize(gameContext);
 }
 
-TEST_F(GameRoundTest, everyPlayersSetupForNewRoundWhenInitializingGameRound)
-{
+TEST_F(GameRoundTest, everyPlayersSetupForNewRoundWhenInitializingGameRound) {
     EXPECT_CALL(*anotherPlayer, setupForNewRound());
     EXPECT_CALL(*aPlayer, setupForNewRound());
     gameRound->initialize(gameContext);
 }
 
 }
-

@@ -1,35 +1,27 @@
 #include "playerInterface/bot/SimpleBettingBluffStrategy.h"
 
-namespace playerInterface
-{
-namespace bot
-{
+namespace playerInterface {
+namespace bot {
 
-SimpleBettingBluffStrategy::SimpleBettingBluffStrategy()
-{
+SimpleBettingBluffStrategy::SimpleBettingBluffStrategy() {
 
 }
 
-SimpleBettingBluffStrategy::~SimpleBettingBluffStrategy()
-{
+SimpleBettingBluffStrategy::~SimpleBettingBluffStrategy() {
 
 }
 
-pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers)
-{
+pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers) {
     pokerGame::Hand hand(hole);
     pokerGame::Decision decision;
-    if(hand.getHandValue().type == pokerGame::HandType::PAIR || hand.getSumOfPower() < 9)
+    if(hand.getHandValue().type == pokerGame::HandType::PAIR || hand.getSumOfPower() < 9) {
+        decision.choice = pokerGame::RAISE;
+        decision.bet = minBet + bigBlind;
+    } else if(hand.getSumOfPower() > 16)
     {
         decision.choice = pokerGame::CALL;
-        decision.bet = minBet + bigBlind;
-    }
-    else if(hand.getSumOfPower() > 16)
-    {
-        decision.choice = pokerGame::CHECK;
         decision.bet = minBet;
-    }
-    else
+    } else
     {
         decision.choice = pokerGame::FOLD;
         decision.bet = 0;
@@ -37,22 +29,16 @@ pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(std::vector<
     return decision;
 }
 
-pokerGame::Decision SimpleBettingBluffStrategy::makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers)
-{
+pokerGame::Decision SimpleBettingBluffStrategy::makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers) {
     pokerGame::Hand hand(hole, sharedCards);
     pokerGame::Decision decision;
-    if(hand.getHandValue().type == pokerGame::HandType::HIGH_CARD || hand.getHandValue().type >= pokerGame::THREE_OF_A_KIND)
-    {
-        decision.choice = pokerGame::CALL;
+    if(hand.getHandValue().type == pokerGame::HandType::HIGH_CARD || hand.getHandValue().type >= pokerGame::THREE_OF_A_KIND) {
+        decision.choice = pokerGame::RAISE;
         decision.bet = minBet + bigBlind;
-    }
-    else if(minBet == 0)
-    {
-        decision.choice = pokerGame::CHECK;
+    } else if(minBet == 0) {
+        decision.choice = pokerGame::CALL;
         decision.bet = minBet;
-    }
-    else
-    {
+    } else {
         decision.choice = pokerGame::FOLD;
         decision.bet = 0;
     }

@@ -28,14 +28,13 @@ int main(int argc, char** argv) {
 
 
     pokerGame::GameEngine* room = new pokerGame::GameEngine(gameContext, gameRoundToUse);
-//    network::Server ts((network::OnlineRoom*) room);
-//    ts.initService(); //function does not return.
-//    while (true)
-//    {
-//        boost::this_thread::sleep(boost::posix_time::millisec(1000));
-//        if (room->getNumberOfPlayers() == 2)
-//            room->start();
-//    }
+    //    network::Server ts((network::OnlineRoom*) room);
+    //    ts.initService(); //function does not return.
+    //    while (true) {
+    //        boost::this_thread::sleep(boost::posix_time::millisec(1000));
+    //        if (room->getNumberOfPlayers() == 2)
+    //            room->start();
+    //    }
 
     playerInterface::bot::BettingStrategy* sbs1 = new playerInterface::bot::SimpleBettingStrategy();
     //playerInterface::bot::BettingStrategy* sbs2 = new playerInterface::bot::SimpleBettingStrategy();

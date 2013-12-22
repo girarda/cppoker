@@ -4,11 +4,9 @@
 #include "pokerGame/Hand.h"
 #include "pokerGame/Decision.h"
 
-namespace pokerGame
-{
+namespace pokerGame {
 
-class PlayerController
-{
+class PlayerController {
 public:
     PlayerController();
     virtual ~PlayerController();

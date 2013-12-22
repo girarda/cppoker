@@ -4,11 +4,9 @@
 #include "GameRound.h"
 #include "GameContext.h"
 
-namespace pokerGame
-{
+namespace pokerGame {
 
-class GameEngine : public network::OnlineRoom
-{
+class GameEngine : public network::OnlineRoom {
 public:
     GameEngine(GameContext* context, GameRound* gameRoundToUse);
     virtual ~GameEngine();
@@ -26,7 +24,6 @@ public:
     void announceWinner();
 
     int getNumberOfPlayers() const;
-    int getNumberOfPlayingPlayers() const;
 
     virtual void join(PlayerController* player);
     virtual void leave(PlayerController* player);

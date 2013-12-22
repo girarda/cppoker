@@ -1,11 +1,9 @@
 #include "pokerGame/PlayerController.h"
 #include <string>
 
-namespace playerInterface
-{
+namespace playerInterface {
 
-class ConsolePlayer : public pokerGame::PlayerController
-{
+class ConsolePlayer : public pokerGame::PlayerController {
 public:
     ConsolePlayer();
 

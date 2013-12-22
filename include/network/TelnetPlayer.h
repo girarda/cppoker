@@ -8,15 +8,14 @@
 #include "pokerGame/Hand.h"
 #include "pokerGame/PlayerController.h"
 
-namespace network
-{
+namespace network {
 
 using boost::asio::ip::tcp;
 
 enum SOCKET_READ_STATE {
     RS_WAITING_FOR_NAME,
     RS_WAITING_FOR_PLAY,
-    RS_WAITING_FOR_CALL_BET,
+    RS_WAITING_FOR_RAISE_BET,
     RS_NOT_WAITING
 };
 
@@ -27,7 +26,6 @@ public:
     ~TelnetPlayer();
 
     virtual void start();
-    //void ReadyForInput();
     virtual tcp::socket& getSocket();
 
     bool isPlaying() const;

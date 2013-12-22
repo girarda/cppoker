@@ -4,13 +4,10 @@
 #include "pokerGame/Hand.h"
 #include "pokerGame/Decision.h"
 
-namespace playerInterface
-{
-namespace bot
-{
+namespace playerInterface {
+namespace bot {
 
-class BettingStrategy
-{
+class BettingStrategy {
 public:
     BettingStrategy();
     virtual ~BettingStrategy();

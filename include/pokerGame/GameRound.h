@@ -8,11 +8,9 @@
 #include "GameContext.h"
 #include "gtest/gtest_prod.h"
 
-namespace pokerGame
-{
+namespace pokerGame {
 
-class GameRound
-{
+class GameRound {
 public:
     GameRound(Deck *deckToUse, BettingRound* bettingRoundToUse);
 
@@ -23,7 +21,6 @@ private:
     std::vector<Card> sharedCards;
     Deck* deck;
     BettingRound* bettingRound;
-    int currentPlayer;
 
     void initialize(GameContext* gameContext);
 
@@ -45,9 +42,6 @@ private:
 
     void executeNewBettingRound();
     int getNumberOfPlayingPlayers() const;
-
-    void nextPlayer();
-    int getNextPlayingPlayer(int player);
 
     FRIEND_TEST(GameRoundTest,bigAndSmallBlindPlayersAddTheirBlindsToTheirPotWhenBettingPot);
     FRIEND_TEST(GameRoundTest,twoCardsAreAddedToEachPlayingPlayersHoleWhenDistributingHoles);

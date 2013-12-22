@@ -4,29 +4,24 @@
 
 #include <iostream>
 
-namespace network
-{
+namespace network {
 
 Server::Server(OnlineRoom* onlineRoom) :
     ioService(),
     work(ioService),
     room(onlineRoom),
     connectionAcceptor(ioService, tcp::endpoint(tcp::v4(), TELNET_PORT_NUMBER)),
-    threads()
-{
+    threads() {
 }
 
-Server::~Server()
-{
+Server::~Server() {
     ioService.stop();
     threads.join_all();
 }
 
-void Server::initService()
-{
+void Server::initService() {
     startAccept();
-    for (int i = 0; i < 4; i++)
-    {
+    for (int i = 0; i < 4; i++) {
         threads.create_thread(
                     [&]()
         {

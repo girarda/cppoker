@@ -2,13 +2,10 @@
 #define SIMPLEBETTINGSTRATEGY_H
 #include "BettingStrategy.h"
 
-namespace playerInterface
-{
-namespace bot
-{
+namespace playerInterface {
+namespace bot {
 
-class SimpleBettingStrategy: public BettingStrategy
-{
+class SimpleBettingStrategy: public BettingStrategy {
 public:
     SimpleBettingStrategy();
     virtual ~SimpleBettingStrategy();

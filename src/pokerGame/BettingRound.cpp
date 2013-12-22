@@ -1,66 +1,58 @@
 #include "include/pokerGame/BettingRound.h"
 #include <iostream>
 
-namespace pokerGame
-{
+namespace pokerGame {
 
-BettingRound::BettingRound() : gameContext(0), sharedCards(), numberOfRaises(0), currentPlayer(0)
-{
+BettingRound::BettingRound() : gameContext(0), sharedCards(), numberOfRaises(0) {
 }
 
-void BettingRound::start(GameContext* gameContext, std::vector<Card> sharedCards)
-{
+void BettingRound::start(GameContext* gameContext, std::vector<Card> sharedCards) {
     initialize(gameContext, sharedCards);
-    float currentBet;
 
     bool entirePass = false;
 
     do {
-        nextPlayer();
-        if (currentPlayer == gameContext->dealerIndex) {
+        gameContext->nextPlayer();
+        if (gameContext->getCurrentPlayerIndex() == gameContext->getDealerIndex()) {
             entirePass = true;
         }
-        playerTurn(gameContext->players[currentPlayer]);
+        playerTurn(gameContext->getCurrentPlayer());
 
 
     } while (!(entirePass && allPotsAreEven()));
 }
 
-void BettingRound::initialize(GameContext* gameContext, std::vector<Card> sharedCards){
+void BettingRound::initialize(GameContext* gameContext, std::vector<Card> sharedCards) {
     this->gameContext = gameContext;
     this->sharedCards = sharedCards;
-    this->currentPlayer = gameContext->dealerIndex;
+    this->gameContext->setCurrentPlayerDealer();
 }
 
-void BettingRound::playerTurn(Player* player)
-{
+void BettingRound::playerTurn(Player* player) {
     announcePlayerTurn(player);
     announcements(player);
     if(player->isPlaying()) {
-        Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->bigBlind, sharedCards, numberOfRaises, gameContext->players.size());
-        if (d.choice == pokerGame::CALL) {
+        Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, numberOfRaises, gameContext->getPlayers().size());
+        if (d.choice == pokerGame::RAISE) {
             numberOfRaises++;
         }
     }
 }
 
-void BettingRound::announcePlayerTurn(Player* player)
-{
-    for (Player* p: gameContext->players) {
+void BettingRound::announcePlayerTurn(Player* player) {
+    for (Player* p: gameContext->getPlayers()) {
         p->seePlayerTurn(*player);
     }
 }
 
-void BettingRound::announcements(Player* player)
-{
-    player->seeDealer(*gameContext->players[gameContext->dealerIndex]);
-    player->seeBigBlind(*gameContext->players[gameContext->bigBlindIndex], gameContext->bigBlind);
+void BettingRound::announcements(Player* player) {
+    player->seeDealer(*gameContext->getPlayers()[gameContext->getDealerIndex()]);
+    player->seeBigBlind(*gameContext->getPlayers()[gameContext->getBigBlindIndex()], gameContext->getBigBlind());
 }
 
-float BettingRound::getCurrentMinimumBid() const
-{
-    float maxBid = gameContext->bigBlind;
-    for(Player* p: gameContext->players) {
+float BettingRound::getCurrentMinimumBid() const {
+    float maxBid = gameContext->getBigBlind();
+    for(Player* p: gameContext->getPlayers()) {
         if (p->getPot() > maxBid) {
             maxBid = p->getPot();
         }
@@ -68,33 +60,10 @@ float BettingRound::getCurrentMinimumBid() const
     return maxBid;
 }
 
-void BettingRound::nextPlayer() {
-    currentPlayer++;
-    if (currentPlayer == gameContext->players.size()) {
-        currentPlayer = 0;
-    }
-    currentPlayer = getNextPlayingPlayer(currentPlayer);
-
-}
-
-int BettingRound::getNextPlayingPlayer(int player) {
-    int tmp;
-    for (tmp = player; tmp < gameContext->players.size(); tmp++) {
-        if (gameContext->players[tmp]->isPlaying()) {
-            return tmp;
-        }
-    }
-    for (tmp = 0; tmp < player; tmp++) {
-        if (gameContext->players[tmp]->isPlaying()) {
-            return tmp;
-        }
-    }
-}
-
 bool BettingRound::allPotsAreEven() const {
     bool first = true;
     float pot;
-    for (Player* player: gameContext->players) {
+    for (Player* player: gameContext->getPlayers()) {
         if (player->isPlaying() && !player->isAllIn()) {
             if (first) {
                 pot = player->getPot();

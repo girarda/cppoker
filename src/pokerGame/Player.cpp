@@ -1,41 +1,34 @@
 #include "pokerGame/Player.h"
 
-namespace pokerGame
-{
+namespace pokerGame {
+
 Player::Player(PlayerController *aPlayerController, float initialMoney):
     playerController(aPlayerController),
     hole(),
     currentState(NOT_PLAYING),
     money(initialMoney),
-    pot(0)
-{
+    pot(0) {
 }
 
-Player::~Player()
-{
-    if (playerController)
-    {
+Player::~Player() {
+    if (playerController) {
         delete playerController;
     }
 }
 
-void Player::setMoney(float newValue)
-{
+void Player::setMoney(float newValue) {
     money = newValue;
 }
 
-void Player::startPlaying()
-{
+void Player::startPlaying() {
     currentState = PLAYING;
 }
 
-void Player::fold()
-{
+void Player::fold() {
     currentState =  FOLDED;
 }
 
-void Player::setupForNewRound()
-{
+void Player::setupForNewRound() {
     currentState = PLAYING;
     clearPot();
 }
@@ -44,42 +37,35 @@ void Player::discardCards() {
     hole.empty();
 }
 
-void Player::stopPlaying()
-{
+void Player::stopPlaying() {
     currentState = NOT_PLAYING;
     clearPot();
     discardCards();
 }
 
-void Player::clearPot()
-{
+void Player::clearPot() {
     pot = 0;
 }
 
-bool Player::hasBetterHand(const Player& other, std::vector<Card> sharedCards) const //TODO: test this method
-{
+bool Player::hasBetterHand(const Player& other, std::vector<Card> sharedCards) const {//TODO: test this method
     Hand hand(hole, sharedCards);
     Hand otherHand(other.hole, sharedCards);
     return hand > otherHand;
 }
 
-float Player::getPot() const
-{
+float Player::getPot() const {
     return pot;
 }
 
-bool Player::isPlaying() const
-{
+bool Player::isPlaying() const {
     return currentState == PLAYING;
 }
 
-bool Player::isFolded() const
-{
+bool Player::isFolded() const {
     return currentState == FOLDED;
 }
 
-bool Player::lost() const
-{
+bool Player::lost() const {
     return currentState == NOT_PLAYING;
 }
 
@@ -87,16 +73,14 @@ bool Player::isAllIn() const {
     return isPlaying() && getMoney() == 0;
 }
 
-void Player::addCardToHole(Card card)
-{
+void Player::addCardToHole(Card card) {
     if (hole.empty()) {
         card.hide();
     }
     hole.push_back(card);
 }
 
-void Player::addToPot(float moneyToAdd)
-{
+void Player::addToPot(float moneyToAdd) {
     if (money < moneyToAdd) {
         pot += money;
         money = 0;
@@ -106,44 +90,31 @@ void Player::addToPot(float moneyToAdd)
     }
 }
 
-void Player::winMoney(float gainedMoney)
-{
+void Player::winMoney(float gainedMoney) {
     money += gainedMoney;
 }
 
-Decision Player::makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards, int numberOfRaises, int numberOfPlayers)
-{
+Decision Player::makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards, int numberOfRaises, int numberOfPlayers) {
     Decision decision;
 
     float diffToAdd = minBet - pot;;
     decision = playerController->makeDecision(hole, sharedCards, minBet, bigBlind, numberOfRaises, numberOfPlayers);
-    if (decision.choice == FOLD)
-    {
+    if (decision.choice == FOLD) {
         fold();
-    }
-    else if (decision.choice == CHECK)
-    {
-        if (money >= diffToAdd)
-        {
+    } else if (decision.choice == CALL) {
+        if (money >= diffToAdd) {
             addToPot(diffToAdd);
-        }
-        else
-        {
-            decision.choice = CHECK;
+        } else {
+            decision.choice = CALL;
             decision.bet = minBet;
             addToPot(money);
         }
-    }
-    else
-    {
+    } else {
         diffToAdd = decision.bet - pot;
-        if (money >= diffToAdd)
-        {
+        if (money >= diffToAdd) {
             addToPot(diffToAdd);
-        }
-        else
-        {
-            decision.choice = CHECK;
+        } else {
+            decision.choice = CALL;
             decision.bet = minBet;
             addToPot(money);
         }
@@ -151,8 +122,7 @@ Decision Player::makeDecision(float minBet, float bigBlind, std::vector<Card> sh
     return decision;
 }
 
-void Player::showCards()
-{
+void Player::showCards() {
     hole[0].show();
     hole[1].show();
 }
@@ -167,73 +137,59 @@ std::vector<Card> Player::getVisibleHole() const {
     return visibleHole;
 }
 
-void Player::seeGamePhase(std::string phaseName)
-{
+void Player::seeGamePhase(std::string phaseName) {
     playerController->seeGamePhase(phaseName);
 }
 
-void Player::seePlayerTurn(const Player& player)
-{
+void Player::seePlayerTurn(const Player& player) {
     playerController->seePlayerTurn(player.getName());
 }
 
-void Player::seeDealer(const Player& dealer)
-{
+void Player::seeDealer(const Player& dealer) {
     playerController->seeDealer(dealer.getName());
 }
 
-void Player::seeBigBlind(const Player& player, float bigBlind)
-{
+void Player::seeBigBlind(const Player& player, float bigBlind) {
     playerController->seeBigBlind(player.getName(), bigBlind);
 }
 
-void Player::seeSmallBlind(const Player& player, float smallBlind)
-{
+void Player::seeSmallBlind(const Player& player, float smallBlind) {
     playerController->seeSmallBlind(player.getName(), smallBlind);
 }
 
-void Player::seeRoundWinner(const Player& winner, float moneyWon)
-{
+void Player::seeRoundWinner(const Player& winner, float moneyWon) {
     playerController->seeRoundWinner(winner.getName(), moneyWon);
 }
 
-void Player::seeWinner(const Player& winner)
-{
+void Player::seeWinner(const Player& winner) {
     playerController->seeWinner(winner.getName());
 }
 
-void Player::seeOpponentHole(const Player& opponent)
-{
+void Player::seeOpponentHole(const Player& opponent) {
     playerController->seeOpponentHole(opponent.getName(), opponent.getVisibleHole());
 }
 
-void Player::seeOpponentMoney(const Player& opponent)
-{
+void Player::seeOpponentMoney(const Player& opponent) {
     playerController->seeOpponentMoney(opponent.getName(), opponent.money);
 }
 
-void Player::seeHole()
-{
+void Player::seeHole() {
     playerController->seeHole(hole);
 }
 
-void Player::seeMoney()
-{
+void Player::seeMoney() {
     playerController->seeMoney(money);
 }
 
-std::string Player::getName() const
-{
+std::string Player::getName() const {
     return playerController->getName();
 }
 
-void Player::deliver(const std::string& msg)
-{
+void Player::deliver(const std::string& msg) {
     playerController->deliver(msg);
 }
 
-float Player::getMoney() const
-{
+float Player::getMoney() const {
     return money;
 }
 

@@ -4,11 +4,9 @@
 #include<vector>
 #include"Card.h"
 
-namespace pokerGame
-{
+namespace pokerGame {
 
-class HandStrengthEvaluator
-{
+class HandStrengthEvaluator {
 public:
     HandStrengthEvaluator();
     virtual ~HandStrengthEvaluator();

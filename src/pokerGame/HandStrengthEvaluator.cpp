@@ -3,15 +3,12 @@
 #include "pokerGame/Hand.h"
 #include <cmath>
 
-namespace pokerGame
-{
+namespace pokerGame {
 
-HandStrengthEvaluator::HandStrengthEvaluator()
-{
+HandStrengthEvaluator::HandStrengthEvaluator() {
 }
 
-HandStrengthEvaluator::~HandStrengthEvaluator()
-{
+HandStrengthEvaluator::~HandStrengthEvaluator() {
 }
 
 double HandStrengthEvaluator::evaluate(std::vector<Card> hole, std::vector<Card> sharedCards, int numberOfPlayers) {

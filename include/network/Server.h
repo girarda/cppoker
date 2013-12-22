@@ -6,8 +6,7 @@
 #include "network/OnlineRoom.h"
 #include "network/OnlineUser.h"
 
-namespace network
-{
+namespace network {
 
 using boost::asio::ip::tcp;
 

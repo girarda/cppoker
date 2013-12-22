@@ -2,40 +2,33 @@
 #include "pokerGame/Hand.h"
 #include <vector>
 
-class HandTest : public ::testing::Test
-{
+class HandTest : public ::testing::Test {
 protected:
-    virtual void SetUp()
-    {
+    virtual void SetUp() {
 
     }
-    virtual void TearDown()
-    {
+    virtual void TearDown() {
     }
 
     pokerGame::Hand h;
 };
 
-TEST_F(HandTest, newHandHasNoCard)
-{
+TEST_F(HandTest, newHandHasNoCard) {
     ASSERT_EQ(0, h.getSize());
 }
 
-TEST_F(HandTest, addingCardToHandIncreasesItsSize)
-{
+TEST_F(HandTest, addingCardToHandIncreasesItsSize) {
     pokerGame::Card A_CARD(pokerGame::ACE, pokerGame::DIAMOND);
     h.addCard(A_CARD);
     ASSERT_EQ(1, h.getSize());
 }
 
-TEST_F(HandTest, newHandAsNoHandValue)
-{
+TEST_F(HandTest, newHandAsNoHandValue) {
     pokerGame::HandValue handValue = h.getHandValue();
     ASSERT_EQ(pokerGame::NO_HAND_VALUE.type, handValue.type);
 }
 
-TEST_F(HandTest, handValueIsRightHighCardWhenNoHand)
-{
+TEST_F(HandTest, handValueIsRightHighCardWhenNoHand) {
     pokerGame::Card A_CARD(pokerGame::ACE, pokerGame::DIAMOND);
     pokerGame::HandValue highAceHand = {pokerGame::HIGH_CARD, {pokerGame::ACE, 0, 0, 0, 0}};
     h.addCard(A_CARD);
@@ -46,35 +39,31 @@ TEST_F(HandTest, handValueIsRightHighCardWhenNoHand)
     ASSERT_EQ(highAceHand.ranks[0], handValue.ranks[0]);
 }
 
-TEST_F(HandTest, handValueContainsFiveHighestCardsInDescendingOrderWhenHighHand)
-{
+TEST_F(HandTest, handValueContainsFiveHighestCardsInDescendingOrderWhenHighHand) {
     std::vector<pokerGame::Card> descendingOrderCards;
-    
+
     descendingOrderCards.push_back(pokerGame::Card(pokerGame::ACE, pokerGame::DIAMOND));
     descendingOrderCards.push_back(pokerGame::Card(pokerGame::KING, pokerGame::DIAMOND));
     descendingOrderCards.push_back(pokerGame::Card(pokerGame::QUEEN, pokerGame::SPADE));
     descendingOrderCards.push_back(pokerGame::Card(8, pokerGame::SPADE));
     descendingOrderCards.push_back(pokerGame::Card(6, pokerGame::SPADE));
-    
+
     pokerGame::Card secondLowestCard(5, pokerGame::HEART);
     pokerGame::Card lowestCard(3, pokerGame::HEART);
 
     h.addCard(lowestCard);
-    for (int i = 0; i < pokerGame::HAND_SIZE; i++)
-    {
+    for (int i = 0; i < pokerGame::HAND_SIZE; i++) {
         h.addCard(descendingOrderCards[i]);
     }
     h.addCard(secondLowestCard);
 
     pokerGame::HandValue handValue = h.getHandValue();
 
-    for (int i = 0; i < pokerGame::HAND_SIZE; i++)
-    {
+    for (int i = 0; i < pokerGame::HAND_SIZE; i++) {
         ASSERT_EQ(descendingOrderCards[i].getRank(), handValue.ranks[i]);
     }
 }
-TEST_F(HandTest, handValueIsPairWhenHandContainsPair)
-{ 
+TEST_F(HandTest, handValueIsPairWhenHandContainsPair) {
     int PAIR_RANK = 6;
     h.addCard(pokerGame::Card(PAIR_RANK, pokerGame::SPADE));
     h.addCard(pokerGame::Card(PAIR_RANK, pokerGame::HEART));
@@ -86,8 +75,7 @@ TEST_F(HandTest, handValueIsPairWhenHandContainsPair)
     ASSERT_EQ(pairHandValue, handValue);
 }
 
-TEST_F(HandTest, handValueStoresThreeHighestCardsNotInPairWhenContainPair)
-{
+TEST_F(HandTest, handValueStoresThreeHighestCardsNotInPairWhenContainPair) {
     int PAIR_RANK = 6;
     h.addCard(pokerGame::Card(PAIR_RANK, pokerGame::SPADE));
     h.addCard(pokerGame::Card(PAIR_RANK, pokerGame::HEART));
@@ -103,8 +91,7 @@ TEST_F(HandTest, handValueStoresThreeHighestCardsNotInPairWhenContainPair)
     ASSERT_EQ(pairHandValue, handValue);
 }
 
-TEST_F(HandTest, handValueIsTwoPairsWhenHandContainsTwoPairs)
-{
+TEST_F(HandTest, handValueIsTwoPairsWhenHandContainsTwoPairs) {
     int FIRST_PAIR_RANK = 6;
     int SECOND_PAIR_RANK = 4;
     h.addCard(pokerGame::Card(FIRST_PAIR_RANK, pokerGame::SPADE));
@@ -119,8 +106,7 @@ TEST_F(HandTest, handValueIsTwoPairsWhenHandContainsTwoPairs)
     ASSERT_EQ(pairHandValue, handValue);
 }
 
-TEST_F(HandTest, handValueStoresHighestCardNotInPairsWhenContainsTwoPairs)
-{
+TEST_F(HandTest, handValueStoresHighestCardNotInPairsWhenContainsTwoPairs) {
     int FIRST_PAIR_RANK = 6;
     int SECOND_PAIR_RANK = 4;
     h.addCard(pokerGame::Card(FIRST_PAIR_RANK, pokerGame::SPADE));
@@ -137,8 +123,7 @@ TEST_F(HandTest, handValueStoresHighestCardNotInPairsWhenContainsTwoPairs)
     ASSERT_EQ(pairHandValue, handValue);
 }
 
-TEST_F(HandTest, handValueIsThreeOfAKindWhenHandContainsThreeOfAKind)
-{
+TEST_F(HandTest, handValueIsThreeOfAKindWhenHandContainsThreeOfAKind) {
     int A_RANK = 8;
     h.addCard(pokerGame::Card(A_RANK, pokerGame::SPADE));
     h.addCard(pokerGame::Card(A_RANK, pokerGame::HEART));
@@ -151,8 +136,7 @@ TEST_F(HandTest, handValueIsThreeOfAKindWhenHandContainsThreeOfAKind)
     ASSERT_EQ(threeOfAKindHandValue, handValue);
 }
 
-TEST_F(HandTest, handValueStoresTwoHighestCardsNotInToaKWhenContainsThreeOfAKind)
-{
+TEST_F(HandTest, handValueStoresTwoHighestCardsNotInToaKWhenContainsThreeOfAKind) {
     int A_RANK = 8;
     int HIGHEST_RANK_NOT_IN_TOAK = pokerGame::KING;
     int SECOND_HIGHEST_RANK_NOT_IN_TOAK = 10;
@@ -173,8 +157,7 @@ TEST_F(HandTest, handValueStoresTwoHighestCardsNotInToaKWhenContainsThreeOfAKind
     ASSERT_EQ(threeOfAKindHandValue, handValue);
 }
 
-TEST_F(HandTest, serieOf4CardsIsNotAStraight)
-{
+TEST_F(HandTest, serieOf4CardsIsNotAStraight) {
     h.addCard(pokerGame::Card(10, pokerGame::SPADE));
     h.addCard(pokerGame::Card(9, pokerGame::HEART));
     h.addCard(pokerGame::Card(8, pokerGame::DIAMOND));
@@ -187,8 +170,7 @@ TEST_F(HandTest, serieOf4CardsIsNotAStraight)
     ASSERT_FALSE(straightValue == handValue);
 }
 
-TEST_F(HandTest, handValueIsStraightWhenHandContainsStraight)
-{
+TEST_F(HandTest, handValueIsStraightWhenHandContainsStraight) {
     h.addCard(pokerGame::Card(10, pokerGame::SPADE));
     h.addCard(pokerGame::Card(9, pokerGame::HEART));
     h.addCard(pokerGame::Card(8, pokerGame::DIAMOND));
@@ -202,8 +184,7 @@ TEST_F(HandTest, handValueIsStraightWhenHandContainsStraight)
     ASSERT_EQ(straightValue, handValue);
 }
 
-TEST_F(HandTest, handValueDoesNotStoreHighCardsNotInStraightWhenContainStraight)
-{
+TEST_F(HandTest, handValueDoesNotStoreHighCardsNotInStraightWhenContainStraight) {
     h.addCard(pokerGame::Card(10, pokerGame::SPADE));
     h.addCard(pokerGame::Card(9, pokerGame::HEART));
     h.addCard(pokerGame::Card(8, pokerGame::DIAMOND));
@@ -218,8 +199,7 @@ TEST_F(HandTest, handValueDoesNotStoreHighCardsNotInStraightWhenContainStraight)
     ASSERT_EQ(straightValue,handValue);
 }
 
-TEST_F(HandTest, handValueStoresHighestInStraight)
-{
+TEST_F(HandTest, handValueStoresHighestInStraight) {
     h.addCard(pokerGame::Card(10, pokerGame::SPADE));
     h.addCard(pokerGame::Card(9, pokerGame::HEART));
     h.addCard(pokerGame::Card(8, pokerGame::DIAMOND));
@@ -234,8 +214,7 @@ TEST_F(HandTest, handValueStoresHighestInStraight)
     ASSERT_FALSE(straightValue == handValue);
 }
 
-TEST_F(HandTest, FourCardsOfSameSuitIsNotFlush)
-{
+TEST_F(HandTest, FourCardsOfSameSuitIsNotFlush) {
     h.addCard(pokerGame::Card(10, pokerGame::SPADE));
     h.addCard(pokerGame::Card(9, pokerGame::SPADE));
     h.addCard(pokerGame::Card(8, pokerGame::SPADE));
@@ -248,8 +227,7 @@ TEST_F(HandTest, FourCardsOfSameSuitIsNotFlush)
     ASSERT_FALSE(flushValue == handValue);
 }
 
-TEST_F(HandTest, handValueIsFlushWhenHandContainsFlush)
-{
+TEST_F(HandTest, handValueIsFlushWhenHandContainsFlush) {
     h.addCard(pokerGame::Card(10, pokerGame::SPADE));
     h.addCard(pokerGame::Card(9, pokerGame::SPADE));
     h.addCard(pokerGame::Card(8, pokerGame::SPADE));
@@ -263,8 +241,7 @@ TEST_F(HandTest, handValueIsFlushWhenHandContainsFlush)
     ASSERT_EQ(flushValue, handValue);
 }
 
-TEST_F(HandTest, handValueDoesNotStoreHighCardsNotInFlushWhenContainFlush)
-{
+TEST_F(HandTest, handValueDoesNotStoreHighCardsNotInFlushWhenContainFlush) {
     h.addCard(pokerGame::Card(10, pokerGame::SPADE));
     h.addCard(pokerGame::Card(9, pokerGame::SPADE));
     h.addCard(pokerGame::Card(8, pokerGame::SPADE));
@@ -279,8 +256,7 @@ TEST_F(HandTest, handValueDoesNotStoreHighCardsNotInFlushWhenContainFlush)
     ASSERT_EQ(flushValue, handValue);
 }
 
-TEST_F(HandTest, handValueFlushTakesHighestOfSameSuit)
-{
+TEST_F(HandTest, handValueFlushTakesHighestOfSameSuit) {
     h.addCard(pokerGame::Card(10, pokerGame::SPADE));
     h.addCard(pokerGame::Card(9, pokerGame::SPADE));
     h.addCard(pokerGame::Card(8, pokerGame::SPADE));
@@ -295,8 +271,7 @@ TEST_F(HandTest, handValueFlushTakesHighestOfSameSuit)
     ASSERT_EQ(flushValue, handValue);
 }
 
-TEST_F(HandTest, handValueIsFullHouseWhenHandContainsFullHouse)
-{
+TEST_F(HandTest, handValueIsFullHouseWhenHandContainsFullHouse) {
     h.addCard(pokerGame::Card(7, pokerGame::SPADE));
     h.addCard(pokerGame::Card(7, pokerGame::HEART));
     h.addCard(pokerGame::Card(2, pokerGame::DIAMOND));
@@ -310,8 +285,7 @@ TEST_F(HandTest, handValueIsFullHouseWhenHandContainsFullHouse)
     ASSERT_EQ(fullHouseValue, handValue);
 }
 
-TEST_F(HandTest, handValueIsFourOfAKindWhenHandContainsFourOfAKind)
-{
+TEST_F(HandTest, handValueIsFourOfAKindWhenHandContainsFourOfAKind) {
     int A_RANK = 8;
     h.addCard(pokerGame::Card(A_RANK, pokerGame::SPADE));
     h.addCard(pokerGame::Card(A_RANK, pokerGame::HEART));
@@ -325,8 +299,7 @@ TEST_F(HandTest, handValueIsFourOfAKindWhenHandContainsFourOfAKind)
     ASSERT_EQ(fourOfAKindHandValue, handValue);
 }
 
-TEST_F(HandTest, handValueStoresHighestCardsNotInFoaKWhenContainsFoutOfAKind)
-{
+TEST_F(HandTest, handValueStoresHighestCardsNotInFoaKWhenContainsFoutOfAKind) {
     int A_RANK = 8;
     int HIGHEST_RANK_NOT_IN_TOAK = pokerGame::KING;
     int SECOND_HIGHEST_RANK_NOT_IN_TOAK = 10;
@@ -346,8 +319,7 @@ TEST_F(HandTest, handValueStoresHighestCardsNotInFoaKWhenContainsFoutOfAKind)
     ASSERT_EQ(fourOfAKindHandValue, handValue);
 }
 
-TEST_F(HandTest, handValueIsStraightFlushWhenContainsStraightFlush)
-{
+TEST_F(HandTest, handValueIsStraightFlushWhenContainsStraightFlush) {
     h.addCard(pokerGame::Card(8, pokerGame::SPADE));
     h.addCard(pokerGame::Card(7, pokerGame::SPADE));
     h.addCard(pokerGame::Card(6, pokerGame::SPADE));
@@ -361,8 +333,7 @@ TEST_F(HandTest, handValueIsStraightFlushWhenContainsStraightFlush)
     ASSERT_EQ(straightFlush, handValue);
 }
 
-TEST_F(HandTest, handValueIsNotStraightFlushIfContainsUnrelatedStraightAndFlush)
-{
+TEST_F(HandTest, handValueIsNotStraightFlushIfContainsUnrelatedStraightAndFlush) {
     h.addCard(pokerGame::Card(8, pokerGame::SPADE));
     h.addCard(pokerGame::Card(7, pokerGame::SPADE));
     h.addCard(pokerGame::Card(6, pokerGame::HEART));

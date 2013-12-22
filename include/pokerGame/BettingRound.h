@@ -5,11 +5,9 @@
 #include "pokerGame/Player.h"
 #include "GameContext.h"
 
-namespace pokerGame
-{
+namespace pokerGame {
 
-class BettingRound
-{
+class BettingRound {
 public:
     BettingRound();
 
@@ -23,15 +21,11 @@ private:
 
     void initialize(GameContext* gameContext, std::vector<Card> sharedCards);
 
-    void nextPlayer();
-    int getNextPlayingPlayer(int player);
-
     bool allPotsAreEven() const;
 
     GameContext* gameContext;
     std::vector<Card> sharedCards;
     int numberOfRaises;
-    int currentPlayer;
 };
 
 }

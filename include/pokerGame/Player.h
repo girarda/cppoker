@@ -5,11 +5,9 @@
 #include "pokerGame/Hand.h"
 #include "pokerGame/PlayerController.h"
 
-namespace pokerGame
-{
+namespace pokerGame {
 
-class Player
-{
+class Player {
 public:
 
     Player(PlayerController *aPlayerController, float initialMoney);

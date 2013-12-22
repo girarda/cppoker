@@ -5,13 +5,11 @@
 #include <vector>
 #include <deque>
 
-namespace pokerGame
-{
+namespace pokerGame {
 
 const int DECK_SIZE(52);
 
-class Deck
-{
+class Deck {
 public:
     Deck();
     virtual void burn();
@@ -27,7 +25,6 @@ private:
     void init();
 
     std::deque<Card> cards;
-    int currentPosition;
 };
 
 }

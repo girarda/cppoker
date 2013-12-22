@@ -3,8 +3,8 @@
 
 #include <string>
 
-namespace pokerGame
-{
+namespace pokerGame {
+
 enum Face {JACK = 11, QUEEN = 12, KING = 13, ACE = 14};
 enum Suit {DIAMOND, HEART, CLUB, SPADE};
 
@@ -13,8 +13,7 @@ const int MIN_RANK(2);
 const int MAX_SUIT(SPADE);
 const int MIN_SUIT(DIAMOND);
 
-class Card
-{
+class Card {
 public:
     Card(int rank, int suit);
     int getRank() const;

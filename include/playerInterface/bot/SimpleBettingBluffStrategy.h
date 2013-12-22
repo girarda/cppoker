@@ -3,13 +3,10 @@
 
 #include "BettingStrategy.h"
 
-namespace playerInterface
-{
-namespace bot
-{
+namespace playerInterface {
+namespace bot {
 
-class SimpleBettingBluffStrategy: public BettingStrategy
-{
+class SimpleBettingBluffStrategy: public BettingStrategy {
 public:
     SimpleBettingBluffStrategy();
     virtual ~SimpleBettingBluffStrategy();

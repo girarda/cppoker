@@ -3,11 +3,9 @@
 #include "pokerGame/Hand.h"
 #include "playerInterface/bot/BettingStrategy.h"
 
-namespace playerInterface
-{
+namespace playerInterface {
 
-class BotPlayerController : public pokerGame::PlayerController
-{
+class BotPlayerController : public pokerGame::PlayerController {
 public:
     BotPlayerController(bot::BettingStrategy* botBettingStrategy);
     ~BotPlayerController();

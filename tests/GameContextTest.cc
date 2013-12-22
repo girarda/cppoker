@@ -2,8 +2,8 @@
 #include "pokerGame/GameContext.h"
 
 
-class GameContextTest : public ::testing::Test
-{
+class GameContextTest : public ::testing::Test {
+
 protected:
     pokerGame::GameContext* context;
 
@@ -12,12 +12,10 @@ protected:
     static const int BIG_BLIND_INDEX;
     static const int SMALL_BLIND_INDEX;
 
-    virtual void SetUp()
-    {
+    virtual void SetUp() {
         context = new pokerGame::GameContext(BIG_BLIND);
     }
-    virtual void TearDown()
-    {
+    virtual void TearDown() {
         delete context;
     }
 
@@ -28,7 +26,6 @@ const int GameContextTest::DEALER_INDEX(0);
 const int GameContextTest::BIG_BLIND_INDEX(1);
 const int GameContextTest::SMALL_BLIND_INDEX(0);
 
-TEST_F(GameContextTest, newGameHasNoPlayers)
-{
+TEST_F(GameContextTest, newGameHasNoPlayers) {
 
 }

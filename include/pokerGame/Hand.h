@@ -4,8 +4,7 @@
 #include "Card.h"
 #include <vector>
 
-namespace pokerGame
-{
+namespace pokerGame {
 
 enum HandType {NO_HAND, HIGH_CARD, PAIR, TWO_PAIRS, THREE_OF_A_KIND,
                STRAIGHT, FLUSH, FULL_HOUSE, FOUR_OF_A_KIND, STRAIGHT_FLUSH};
@@ -13,8 +12,7 @@ enum HandType {NO_HAND, HIGH_CARD, PAIR, TWO_PAIRS, THREE_OF_A_KIND,
 const static int HAND_MAX_CARDS(7);
 const static int HAND_SIZE(5);
 
-typedef struct HandValue
-{
+typedef struct HandValue {
     HandType type;
     int ranks[HAND_SIZE];
 } HandValue;
@@ -25,8 +23,7 @@ const HandValue NO_HAND_VALUE = {
     NO_HAND, {0,0,0,0,0}
 };
 
-class Hand
-{
+class Hand {
 public:
     Hand();
     Hand(std::vector<Card> hole);

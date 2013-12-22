@@ -15,16 +15,13 @@ TelnetPlayer::TelnetPlayer(boost::asio::io_service& io_service, OnlineRoom* game
     buffer(),
     read_state(RS_NOT_WAITING),
     room(gameRoom),
-    choice("")
-{
+    choice("") {
 }
 
-TelnetPlayer::~TelnetPlayer()
-{
+TelnetPlayer::~TelnetPlayer() {
 }
 
-void TelnetPlayer::start()
-{
+void TelnetPlayer::start() {
     deliver("Please enter your name: ");
     read_state = RS_WAITING_FOR_NAME;
 
@@ -36,13 +33,11 @@ void TelnetPlayer::start()
                 );
 }
 
-tcp::socket& TelnetPlayer::getSocket()
-{
+tcp::socket& TelnetPlayer::getSocket() {
     return socket;
 }
 
-void TelnetPlayer::deliver(const std::string& message)
-{
+void TelnetPlayer::deliver(const std::string& message) {
     std::string msg = message + TELNET_NEWLINE;
     boost::asio::async_write(
                 socket,
@@ -51,15 +46,13 @@ void TelnetPlayer::deliver(const std::string& message)
                 );
 }
 
-void TelnetPlayer::handleRead(const boost::system::error_code& error)
-{
+void TelnetPlayer::handleRead(const boost::system::error_code& error) {
     std::string message = utils::toString(&buffer);
 
     buffer.consume(buffer.size()); //clear buffer
     utils::trimString(message, TELNET_NEWLINE);
 
-    switch (read_state)
-    {
+    switch (read_state) {
     case (RS_WAITING_FOR_NAME):
         setName(message);
         room->join((PlayerController*)this);
@@ -70,7 +63,7 @@ void TelnetPlayer::handleRead(const boost::system::error_code& error)
     case (RS_WAITING_FOR_PLAY):
         choice = message;
         break;
-    case (RS_WAITING_FOR_CALL_BET):
+    case (RS_WAITING_FOR_RAISE_BET):
         choice = message;
         break;
     }
@@ -83,107 +76,90 @@ void TelnetPlayer::handleRead(const boost::system::error_code& error)
                 );
 }
 
-void TelnetPlayer::handleWrite(const boost::system::error_code& error)
-{
+void TelnetPlayer::handleWrite(const boost::system::error_code& error) {
 }
 
-void TelnetPlayer::seeMoney(float money)
-{
+void TelnetPlayer::seeMoney(float money) {
     std::stringstream ss;
     ss <<  "You currently have " << money << "$.";
     deliver(ss.str());
 }
 
-void TelnetPlayer::seeGamePhase(std::string gamePhase)
-{
+void TelnetPlayer::seeGamePhase(std::string gamePhase) {
     std::string msg = "--- Entering " + gamePhase + " ---";
     deliver(msg);
 }
 
-void TelnetPlayer::seePlayerTurn(std::string player)
-{
+void TelnetPlayer::seePlayerTurn(std::string player) {
     std::string msg = "It is now " + player + "'s turn.";
     deliver(msg);
 }
 
-void TelnetPlayer::seeDealer(std::string dealer)
-{
+void TelnetPlayer::seeDealer(std::string dealer) {
     std::string msg = "Dealer is " + dealer;
     deliver(msg);
 }
 
-void TelnetPlayer::seeSmallBlind(std::string payer, float amount)
-{
+void TelnetPlayer::seeSmallBlind(std::string payer, float amount) {
     std::stringstream ss;
     ss << "Small Blind is " << payer << " with amount " << utils::toString(amount);
     deliver(ss.str());
 }
 
-void TelnetPlayer::seeBigBlind(std::string payer, float amount)
-{
+void TelnetPlayer::seeBigBlind(std::string payer, float amount) {
     std::stringstream ss;
     ss << "Big Blind is " << payer + " with amount " << utils::toString(amount);
     deliver(ss.str());
 }
 
-void TelnetPlayer::seeOpponentMoney(std::string player, float money)
-{
+void TelnetPlayer::seeOpponentMoney(std::string player, float money) {
     std::stringstream ss;
     ss << "Player " << player << " has " << money << "$.";
     deliver(ss.str());
 }
 
-void TelnetPlayer::seeOpponentHole(std::string player, const pokerGame::Hand& playersHand)
-{
+void TelnetPlayer::seeOpponentHole(std::string player, const pokerGame::Hand& playersHand) {
     std::string msg = "Player " + player + " has " + playersHand.toString() + ".";
     deliver(msg);
 }
 
-void TelnetPlayer::seeRoundWinner(std::string player, float moneyWon)
-{
+void TelnetPlayer::seeRoundWinner(std::string player, float moneyWon) {
     std::stringstream ss;
     ss << "player " << player + " won " << moneyWon << "$ this round.";
     deliver(ss.str());
 }
 
-void TelnetPlayer::seeWinner(std::string player)
-{
+void TelnetPlayer::seeWinner(std::string player) {
     std::string msg = "player " + player + " won the game.";
     deliver(msg);
 }
 
-void TelnetPlayer::sendChatMessage(std::string sender, std::string message)
-{
+void TelnetPlayer::sendChatMessage(std::string sender, std::string message) {
     std::string msg = "Chat: " + sender + ": " + message;
     room->sendChatMessage(msg);
 }
 
-void TelnetPlayer::seeHole(std::vector<pokerGame::Card> hole)
-{
+void TelnetPlayer::seeHole(std::vector<pokerGame::Card> hole) {
     std::string msg = "You cards are: " + hole[0].toString() + " ," + hole[1].toString();
     deliver(msg);
 }
 
-pokerGame::Decision TelnetPlayer::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers)
-{
+pokerGame::Decision TelnetPlayer::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers) {
     read_state = RS_WAITING_FOR_PLAY;
     decision.choice = pokerGame::WAITING;
-    while (decision.choice == pokerGame::WAITING)
-    {
+    while (decision.choice == pokerGame::WAITING) {
         std::stringstream ss;
         ss << "The minimum bet is " << minBet << "." << TELNET_NEWLINE
-              << "To make a choice, enter:\n\"\"CALL\", \"CHECK\", or \"FOLD\"\n";
+           << "To make a choice, enter:\n\"\"RAISE\", \"CALL\", or \"FOLD\"\n";
         deliver(ss.str());
-        while (choice == "")
-        {
+        while (choice == "") {
             boost::this_thread::sleep(boost::posix_time::milliseconds(100));
         }
-        if (choice == "CALL")
-        {
-            read_state = RS_WAITING_FOR_CALL_BET;
-            decision.choice = pokerGame::CALL;
+        if (choice == "RAISE") {
+            read_state = RS_WAITING_FOR_RAISE_BET;
+            decision.choice = pokerGame::RAISE;
             float newBet(-1);
-            deliver("How much do you want to call?");
+            deliver("How much do you want to raise?");
             choice = "";
             do {
                 boost::this_thread::sleep(boost::posix_time::milliseconds(100));
@@ -191,15 +167,10 @@ pokerGame::Decision TelnetPlayer::makeDecision(std::vector<pokerGame::Card> hole
                 ss >> newBet;
             } while (newBet < minBet);
             decision.bet = newBet;
-        }
-
-        else if (choice == "CHECK")
-        {
-            decision.choice = pokerGame::CHECK;
+        } else if (choice == "CALL") {
+            decision.choice = pokerGame::CALL;
             decision.bet = 0;
-        }
-        else if (choice == "FOLD")
-        {
+        } else if (choice == "FOLD") {
             decision.choice = pokerGame::FOLD;
             decision.bet = 0;
         }

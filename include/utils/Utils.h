@@ -4,8 +4,7 @@
 #include <sstream>
 #include <string>
 
-namespace utils
-{
+namespace utils {
 
 template <class T>
 std::string toString(const T& obj) {

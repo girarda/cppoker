@@ -4,13 +4,10 @@
 #include "BettingStrategy.h"
 #include "pokerGame/HandStrengthEvaluator.h"
 
-namespace playerInterface
-{
-namespace bot
-{
+namespace playerInterface {
+namespace bot {
 
-class ProbabilisticBettingStrategy : public BettingStrategy
-{
+class ProbabilisticBettingStrategy : public BettingStrategy {
 public:
     ProbabilisticBettingStrategy(pokerGame::HandStrengthEvaluator* handEvaluator);
     ~ProbabilisticBettingStrategy();
