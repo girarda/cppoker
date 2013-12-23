@@ -59,8 +59,6 @@ protected:
         delete deck;
         delete bettingRound;
         delete gameRound;
-        delete anotherPlayer;
-        delete aPlayer;
         delete gameContext;
     }
 

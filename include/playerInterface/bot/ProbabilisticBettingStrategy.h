@@ -3,13 +3,14 @@
 
 #include "BettingStrategy.h"
 #include "pokerGame/HandStrengthEvaluator.h"
+#include "pokerGame/simulator/PreFlopStatistics.h"
 
 namespace playerInterface {
 namespace bot {
 
 class ProbabilisticBettingStrategy : public BettingStrategy {
 public:
-    ProbabilisticBettingStrategy(pokerGame::HandStrengthEvaluator* handEvaluator);
+    ProbabilisticBettingStrategy(pokerGame::HandStrengthEvaluator* handEvaluator, pokerGame::simulator::PreFlopStatistics* statistics);
     ~ProbabilisticBettingStrategy();
 
 protected:
@@ -18,7 +19,13 @@ protected:
     virtual double calculateCoefficient(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, int numberOfRaises, int numberOfPlayers);
 
 private:
+    pokerGame::Decision makeDecisionBasedOnProbabilities(double p, float minBet, float bigBlind);
+
     pokerGame::HandStrengthEvaluator* handStrengthEvaluator;
+    pokerGame::simulator::PreFlopStatistics* preFlopStatistics;
+
+    static const double RAISE_THRESHOLD;
+    static const double CALL_THRESHOLD;
 };
 
 }

@@ -1,6 +1,7 @@
 #include "playerInterface/BotPlayerController.h"
 
 namespace playerInterface {
+
 BotPlayerController::BotPlayerController(bot::BettingStrategy* botBettingStrategy) : bettingStrategy(botBettingStrategy) {
 }
 

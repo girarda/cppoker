@@ -5,8 +5,20 @@ namespace pokerGame {
 GameContext::GameContext(float initialBigBlind) : bigBlind(initialBigBlind), dealerIndex(-1), bigBlindIndex(-1), smallBlindIndex(-1), players(), currentPlayerIndex(dealerIndex) {
 }
 
+GameContext::~GameContext() {
+    for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
+        if (*it) {
+            delete *it;
+        }
+    }
+}
+
 void GameContext::addPlayer(Player* player) {
     players.push_back(player);
+}
+
+void GameContext::removePlayer(int index) {
+    players.erase(players.begin() + index);
 }
 
 void GameContext::doubleBigBlind() {

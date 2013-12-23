@@ -91,44 +91,27 @@ void GameRound::river() {
 
 void GameRound::showdown() {
     announcePhase("Showdown");
-    for (int i = gameContext->getBigBlindIndex(); i < gameContext->getPlayers().size(); i++) {
-        gameContext->getPlayers()[i]->showCards();
-    }
-    for (int i = 0; i < gameContext->getBigBlindIndex(); i++) {
-        gameContext->getPlayers()[i]->showCards();
-    }
-    for (Player* p : gameContext->getPlayers()) {
-        for(Player* other: gameContext->getPlayers()) {
-            p->seeOpponentHole(*other);
-            p->seeOpponentMoney(*other);
-        }
-    }
-    Player* winner = gameContext->getPlayers()[0];
-    for (Player* p: gameContext->getPlayers()) {
-        if (p->hasBetterHand(*winner, sharedCards)) {
-            winner = p;
-        }
-    }
+    Player* winner = getWinner();
     winner->winMoney(getTotalPot());
     announceRoundWinner(winner, getTotalPot());
 }
 
 void GameRound::announcePhase(std::string phaseName) {
-    std::cout<< phaseName << std::endl;
+    //std::cout<< phaseName << std::endl;
     for (Player* p: gameContext->getPlayers()) {
         p->seeGamePhase(phaseName);
     }
 }
 
 void GameRound::announceRoundWinner(Player* winner, float moneyWon) {
-    std::cout << "The round winner is " << winner << " who won " << moneyWon << std::endl;
+    //std::cout << "The round winner is " << winner << " who won " << moneyWon << std::endl;
     for (Player* p: gameContext->getPlayers()) {
         p->seeRoundWinner(*winner, moneyWon);
     }
 }
 
 void GameRound::executeNewBettingRound() {
-    std::cout << "new betting round" << std::endl;
+    //std::cout << "new betting round" << std::endl;
     bettingRound->start(gameContext, sharedCards);
 }
 
@@ -148,6 +131,28 @@ int GameRound::getNumberOfPlayingPlayers() const {
         }
     }
     return nbPlayingPlayers;
+}
+
+Player* GameRound::getWinner() {
+    for (int i = gameContext->getBigBlindIndex(); i < gameContext->getPlayers().size(); i++) {
+        gameContext->getPlayers()[i]->showCards();
+    }
+    for (int i = 0; i < gameContext->getBigBlindIndex(); i++) {
+        gameContext->getPlayers()[i]->showCards();
+    }
+    for (Player* p : gameContext->getPlayers()) {
+        for(Player* other: gameContext->getPlayers()) {
+            p->seeOpponentHole(*other);
+            p->seeOpponentMoney(*other);
+        }
+    }
+    Player* winner = gameContext->getPlayers()[0];
+    for (Player* p: gameContext->getPlayers()) {
+        if (p->hasBetterHand(*winner, sharedCards)) {
+            winner = p;
+        }
+    }
+    return winner;
 }
 
 }

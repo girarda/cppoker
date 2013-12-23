@@ -16,17 +16,22 @@ public:
 
     virtual void playRound(GameContext* gameContext);
 
-private:
-    GameContext* gameContext;
-    std::vector<Card> sharedCards;
+    Player* getWinner();
+
+protected:
+    virtual void distributeHoles();
+    void distributeOneCard();
+
     Deck* deck;
+    GameContext* gameContext;
+
+private:
+    std::vector<Card> sharedCards;
     BettingRound* bettingRound;
 
     void initialize(GameContext* gameContext);
 
     void betBlinds();
-    void distributeHoles();
-    void distributeOneCard();
     void addOneCardToBoard();
 
     void preFlop();

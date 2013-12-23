@@ -31,8 +31,6 @@ protected:
         delete game;
         delete gameRound;
         delete context;
-        delete aPlayer;
-        delete anotherPlayer;
     }
 
 };
@@ -46,6 +44,8 @@ TEST_F(GameEngineTest, newGameHasNoPlayers) {
     int nbOfPlayers = game->getNumberOfPlayers();
 
     ASSERT_EQ(0, nbOfPlayers);
+    delete aPlayer;
+    delete anotherPlayer;
 }
 
 TEST_F(GameEngineTest, addingAPlayerToTheGameIncreasesTheNuberOfPlayerInTheGame) {
@@ -54,6 +54,7 @@ TEST_F(GameEngineTest, addingAPlayerToTheGameIncreasesTheNuberOfPlayerInTheGame)
     int nbOfPlayers = game->getNumberOfPlayers();
 
     ASSERT_EQ(1, nbOfPlayers);
+    delete anotherPlayer;
 }
 
 TEST_F(GameEngineTest, gameRoundPlaysRoundWhen) {
@@ -81,6 +82,7 @@ TEST_F(GameEngineTest, theWinnerIsAnnouncedAfterPlayingTheGame) {
     game->addPlayer(aPlayer); // _ should be *player
 
     game->start();
+    delete anotherPlayer;
 }
 
 TEST_F(GameEngineTest, ifThereAreMoreThanOnePlayerStillPlayingThenPlayARound) {

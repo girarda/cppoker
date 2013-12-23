@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "HandStrengthEvaluatorMock.h"
 #include "playerInterface/bot/ProbabilisticBettingStrategy.h"
+#include "tests/mocks/PreFlopStatisticsMock.h"
 
 using ::testing::Return;
 using ::testing::_;
@@ -11,7 +12,9 @@ protected:
     std::vector<pokerGame::Card>* sharedCards;
     playerInterface::bot::BettingStrategy* probabilisticBettingStrategy;
     test::HandStrengthEvaluatorMock* handEvaluator;
+    test::PreFlopStatisticsMock* preFlopStatistics;
 
+    void initPreFlopHand();
     void initPostFlopHand();
 
     static const float A_BET;
@@ -27,13 +30,15 @@ protected:
         hole = new std::vector<pokerGame::Card>();
         sharedCards = new std::vector<pokerGame::Card>();
         handEvaluator = new test::HandStrengthEvaluatorMock();
-        probabilisticBettingStrategy = new playerInterface::bot::ProbabilisticBettingStrategy(handEvaluator);
+        preFlopStatistics = new test::PreFlopStatisticsMock();
+        probabilisticBettingStrategy = new playerInterface::bot::ProbabilisticBettingStrategy(handEvaluator, preFlopStatistics);
     }
     virtual void TearDown() {
         delete hole;
         delete sharedCards;
         delete probabilisticBettingStrategy;
         delete handEvaluator;
+        delete preFlopStatistics;
     }
 };
 
@@ -47,6 +52,54 @@ const double ProbabilisticBettingStrategyTest::HIGHER_THAN_LOW_THRESHOLD(0.41);
 const double ProbabilisticBettingStrategyTest::LOWER_THAN_LOW_THRESHOLD(0.39);
 
 // TODO add tests for preFlop
+
+TEST_F(ProbabilisticBettingStrategyTest, whenPreFlopIfHandStrengthIsHigherThanHighThresholdThenRaise) {
+    initPreFlopHand();
+    EXPECT_CALL(*preFlopStatistics, load(_));
+    EXPECT_CALL(*preFlopStatistics, getWinningProbability(_, NUMBER_OF_PLAYERS)).WillOnce(Return(HIGHER_THAN_HIGH_THRESHOLD));
+    pokerGame::Choice choice = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).choice;
+    ASSERT_EQ(pokerGame::RAISE, choice);
+}
+
+TEST_F(ProbabilisticBettingStrategyTest, whenPreFlopIfHandStrengthIsHigherThanHighThresholdNewBetEqualsSumOfMinBetAndBigBlind) {
+    initPreFlopHand();
+    EXPECT_CALL(*preFlopStatistics, load(_));
+    EXPECT_CALL(*preFlopStatistics, getWinningProbability(_, NUMBER_OF_PLAYERS)).WillOnce(Return(HIGHER_THAN_HIGH_THRESHOLD));
+    float newBet = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
+    ASSERT_EQ(A_BET+BIG_BLIND, newBet);
+}
+
+TEST_F(ProbabilisticBettingStrategyTest, whenPreFlopIfHandStrengthIsHigherThanLowThresholdThenCall) {
+    initPreFlopHand();
+    EXPECT_CALL(*preFlopStatistics, load(_));
+    EXPECT_CALL(*preFlopStatistics, getWinningProbability(_, NUMBER_OF_PLAYERS)).WillOnce(Return(HIGHER_THAN_LOW_THRESHOLD));
+    pokerGame::Choice choice = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).choice;
+    ASSERT_EQ(pokerGame::CALL, choice);
+}
+
+TEST_F(ProbabilisticBettingStrategyTest, whenPreFlopIfHandStrengthIsHigherThanLowThresholdNewBetEqualsMinBet) {
+    initPreFlopHand();
+    EXPECT_CALL(*preFlopStatistics, load(_));
+    EXPECT_CALL(*preFlopStatistics, getWinningProbability(_, NUMBER_OF_PLAYERS)).WillOnce(Return(HIGHER_THAN_LOW_THRESHOLD));
+    float newBet = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
+    ASSERT_EQ(A_BET, newBet);
+}
+
+TEST_F(ProbabilisticBettingStrategyTest, whenPreFlopIfHandStrengthIsLowerThanLowThresholdThenFold) {
+    initPreFlopHand();
+    EXPECT_CALL(*preFlopStatistics, load(_));
+    EXPECT_CALL(*preFlopStatistics, getWinningProbability(_, NUMBER_OF_PLAYERS)).WillOnce(Return(LOWER_THAN_LOW_THRESHOLD));
+    pokerGame::Choice choice = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).choice;
+    ASSERT_EQ(pokerGame::FOLD, choice);
+}
+
+TEST_F(ProbabilisticBettingStrategyTest, whenPreFlopIfHandStrengthIsLowerThanLowThresholdNewBetEqualsZero) {
+    initPreFlopHand();
+    EXPECT_CALL(*preFlopStatistics, load(_));
+    EXPECT_CALL(*preFlopStatistics, getWinningProbability(_, NUMBER_OF_PLAYERS)).WillOnce(Return(LOWER_THAN_LOW_THRESHOLD));
+    float newBet = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
+    ASSERT_EQ(0, newBet);
+}
 
 TEST_F(ProbabilisticBettingStrategyTest, whenPostFlopIfHandStrengthIsHigherThanHighThresholdThenRaise) {
     initPostFlopHand();
@@ -102,6 +155,13 @@ TEST_F(ProbabilisticBettingStrategyTest, whenPostFlopIfHandStrengthIsLowerThanLo
     EXPECT_CALL(*handEvaluator, evaluate(_, _, NUMBER_OF_PLAYERS)).WillOnce(Return(LOWER_THAN_LOW_THRESHOLD));
     float newBet = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS).bet;
     ASSERT_EQ(0, newBet);
+}
+
+void ProbabilisticBettingStrategyTest::initPreFlopHand() {
+    pokerGame::Card c1(2, pokerGame::SPADE);
+    pokerGame::Card c2(3, pokerGame::HEART);
+    hole->push_back(c1);
+    hole->push_back(c2);
 }
 
 void ProbabilisticBettingStrategyTest::initPostFlopHand() {

@@ -9,8 +9,11 @@ namespace pokerGame {
 class GameContext {
 public:
     GameContext(float initialBigBlind);
+    virtual ~GameContext();
 
     void addPlayer(Player* player);
+    void removePlayer(int index);
+
     void doubleBigBlind();
 
     int getNumberOfPlayers() const;
