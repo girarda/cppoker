@@ -37,19 +37,18 @@ void PreFlopSimulator::simulate() {
     gameContext->addPlayer(player1);
     gameContext->chooseNextDealer();
 
-    for(int numberOfPlayers = 2; numberOfPlayers <= 10; numberOfPlayers++) {
+    for(int numberOfPlayers = 2; numberOfPlayers <= MAX_NUMBER_OF_PLAYERS; numberOfPlayers++) {
         gameContext->addPlayer(new Player(new playerInterface::BotPlayerController(new playerInterface::bot::SimpleBettingStrategy()), 10));
 
         for (HoleCardsEquivalence* equivalence: holeCardsEquivalences) {
-            statisticsController.initializeStatistics();
-            for (int i = 0; i < 1; i++) {
+            statisticsController.reset();
+            for (int i = 0; i < NUMBER_OF_SIMULATIONS; i++) {
                 deck->shuffle();
                 gameRoundSimulator = new GameRoundPreFlopSimulator(deck, bettingRound, equivalence);
                 gameRoundSimulator->playRound(gameContext);
-                statisticsController.storeWinner(gameRoundSimulator->getWinner());
+                statisticsController.incrementWins(gameRoundSimulator->getWinner());
             }
             double p = (double) statisticsController.getPlayerWins(player1) / 100;
-            std::cout << p << std::endl;
             statistics.addWinningProbability(equivalence, numberOfPlayers, p);
         }
     }
@@ -68,6 +67,9 @@ void PreFlopSimulator::generateAllHoleCardsEquivalences() {
         }
     }
 }
+
+const int PreFlopSimulator::MAX_NUMBER_OF_PLAYERS(10);
+const int PreFlopSimulator::NUMBER_OF_SIMULATIONS(100);
 
 }
 }

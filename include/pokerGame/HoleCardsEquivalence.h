@@ -15,10 +15,10 @@ class HoleCardsEquivalence {
 public:
     HoleCardsEquivalence(int cardValue1, int cardValue2);
 
-    int getNumber1() const;
-    int getNumber2() const;
+    virtual int getNumber1() const;
+    virtual int getNumber2() const;
 
-    virtual std::vector<Card> equivalenceToCards();
+    virtual std::vector<Card> equivalenceToCards() const;
 
     template<class Archive>
     void serialize(Archive & ar, unsigned int file_version)

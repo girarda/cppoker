@@ -12,9 +12,9 @@ class StatisticsController {
 public:
     StatisticsController();
 
-    void initializeStatistics();
+    void reset();
 
-    void storeWinner(Player* winner);
+    void incrementWins(Player* winner);
 
     int getPlayerWins(Player* player);
 

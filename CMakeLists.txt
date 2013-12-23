@@ -19,7 +19,7 @@ set(USE_TESTS true)
 
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
-find_package(Boost REQUIRED system thread )
+find_package(Boost REQUIRED system thread serialization)
 find_package(Threads REQUIRED)
 
 set(VERSION "${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}")

@@ -1,5 +1,5 @@
-#ifndef IPLAYERMOCK_H_
-#define IPLAYERMOCK_H_
+#ifndef BETTINGROUNDMOCK_H_
+#define BETTINGROUNDMOCK_H_
 
 #include "pokerGame/BettingRound.h"
 #include "gmock/gmock.h"

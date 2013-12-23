@@ -37,6 +37,9 @@ private:
     BettingRound* bettingRound;
     PreFlopStatistics statistics;
     std::map<std::pair<HoleCardsEquivalence*, int>, double> percentageOfWinning;
+
+    static const int MAX_NUMBER_OF_PLAYERS;
+    static const int NUMBER_OF_SIMULATIONS;
 };
 
 }

@@ -13,7 +13,7 @@ int HoleCardsEquivalence::getNumber2() const {
     return number2;
 }
 
-std::vector<Card> HoleCardsEquivalence::equivalenceToCards() {
+std::vector<Card> HoleCardsEquivalence::equivalenceToCards() const {
     std::vector<Card> cards;
     Card c1(this->number1, SPADE);
     cards.push_back(c1);
@@ -21,7 +21,7 @@ std::vector<Card> HoleCardsEquivalence::equivalenceToCards() {
         Card c2(this->number2, HEART);
         cards.push_back(c2);
     } else {
-        Card c2(this->number2, HEART);
+        Card c2(this->number2, SPADE);
         cards.push_back(c2);
     }
     return cards;

@@ -7,11 +7,11 @@ StatisticsController::StatisticsController() : wins()
 {
 }
 
-void StatisticsController::initializeStatistics() {
+void StatisticsController::reset() {
     wins.clear();
 }
 
-void StatisticsController::storeWinner(Player* winner) {
+void StatisticsController::incrementWins(Player* winner) {
     wins[winner]++;
 }
 

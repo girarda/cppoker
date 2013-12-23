@@ -12,14 +12,31 @@
 #include "playerInterface/bot/SimpleBettingStrategy.h"
 #include "playerInterface/bot/ProbabilisticBettingStrategy.h"
 #include "pokerGame/HandStrengthEvaluator.h"
+#include "pokerGame/simulator/PreFlopSimulator.h"
 
 #include "boost/thread/thread.hpp"
 
 void initRandom();
 
-int main(int argc, char** argv) {
+void runServer() {
+    pokerGame::GameContext* gameContext = new pokerGame::GameContext(2);
+    pokerGame::Deck* deckToUse = new pokerGame::Deck();
+    pokerGame::BettingRound* bettingRoundToUse = new pokerGame::BettingRound();
+    pokerGame::GameRound* gameRoundToUse = new pokerGame::GameRound(deckToUse, bettingRoundToUse);
 
-    initRandom();
+
+    pokerGame::GameEngine* room = new pokerGame::GameEngine(gameContext, gameRoundToUse);
+        network::Server ts((network::OnlineRoom*) room);
+        ts.initService(); //function does not return.
+        while (true) {
+            boost::this_thread::sleep(boost::posix_time::millisec(1000));
+            if (room->getNumberOfPlayers() == 2)
+                room->start();
+        }
+
+}
+
+void runBotSimulation() {
 
     pokerGame::GameContext* gameContext = new pokerGame::GameContext(2);
     pokerGame::Deck* deckToUse = new pokerGame::Deck();
@@ -28,27 +45,25 @@ int main(int argc, char** argv) {
 
 
     pokerGame::GameEngine* room = new pokerGame::GameEngine(gameContext, gameRoundToUse);
-    //    network::Server ts((network::OnlineRoom*) room);
-    //    ts.initService(); //function does not return.
-    //    while (true) {
-    //        boost::this_thread::sleep(boost::posix_time::millisec(1000));
-    //        if (room->getNumberOfPlayers() == 2)
-    //            room->start();
-    //    }
+
+    pokerGame::simulator::PreFlopStatistics* preFlopStatistics = new pokerGame::simulator::PreFlopStatistics();
+
 
     playerInterface::bot::BettingStrategy* sbs1 = new playerInterface::bot::SimpleBettingStrategy();
-    //playerInterface::bot::BettingStrategy* sbs2 = new playerInterface::bot::SimpleBettingStrategy();
     pokerGame::HandStrengthEvaluator* handStrengthEvaluator = new pokerGame::HandStrengthEvaluator();
-    playerInterface::bot::ProbabilisticBettingStrategy* sbs2 = new playerInterface::bot::ProbabilisticBettingStrategy(handStrengthEvaluator);
+    playerInterface::bot::ProbabilisticBettingStrategy* sbs2 = new playerInterface::bot::ProbabilisticBettingStrategy(handStrengthEvaluator, preFlopStatistics);
+    playerInterface::bot::ProbabilisticBettingStrategy* sbs3 = new playerInterface::bot::ProbabilisticBettingStrategy(handStrengthEvaluator, preFlopStatistics);
 
 
     std::string n1("bot1");
     std::string n2("bot2");
     playerInterface::BotPlayerController* botCtrl1 = new playerInterface::BotPlayerController(sbs1);
     playerInterface::BotPlayerController* botCtrl2 = new playerInterface::BotPlayerController(sbs2);
+    playerInterface::BotPlayerController* botCtrl3 = new playerInterface::BotPlayerController(sbs3);
 
     pokerGame::Player* bot1 = new pokerGame::Player(botCtrl1,10);
     pokerGame::Player* bot2 = new pokerGame::Player(botCtrl2,10);
+    pokerGame::Player* bot3 = new pokerGame::Player(botCtrl3,10);
 
     room->addPlayer(bot1);
     room->addPlayer(bot2);
@@ -59,10 +74,20 @@ int main(int argc, char** argv) {
     delete bettingRoundToUse;
     delete gameRoundToUse;
     delete room;
-    delete bot1;
-    delete bot2;
     delete handStrengthEvaluator;
+    delete preFlopStatistics;
+}
 
+void runPreFlopSimulation() {
+    pokerGame::simulator::PreFlopSimulator simulator;
+    simulator.simulate();
+}
+
+int main(int argc, char** argv) {
+
+    initRandom();
+    runPreFlopSimulation();
+    //runBotSimulation();
     return 0;
 }
 

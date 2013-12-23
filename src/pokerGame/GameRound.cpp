@@ -34,7 +34,7 @@ void GameRound::initialize(GameContext* gameContext) {
 
 
 void GameRound::betBlinds() {
-    std::cout << "blinds bet" << std::endl;
+    //std::cout << "blinds bet" << std::endl;
     //std::cout << "big blind is: " << gameContext->bigBlind << " bidded by: " << gameContext->players[gameContext->bigBlindIndex]->getName() << std::endl;
     //std::cout << "small blind is: " << gameContext->bigBlind/2 << " bidded by: " << gameContext->players[gameContext->smallBlindIndex]->getName() << std::endl;
     gameContext->getPlayers()[gameContext->getBigBlindIndex()]->addToPot(gameContext->getBigBlind());
