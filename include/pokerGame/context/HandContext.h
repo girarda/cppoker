@@ -9,11 +9,11 @@ namespace context {
 class HandContext
 {
 public:
-    HandContext(ActionContext actionCtx, double handEvaluatedStrength);
+    HandContext(const ActionContext &actionCtx, double handEvaluatedStrength);
 
     double getHandStrength() const;
 
-    bool hasSameBettingAction(ActionContext actionContext) const;
+    bool hasSameActionContext(const ActionContext &actionContext) const;
 
 private:
     ActionContext actionContext;

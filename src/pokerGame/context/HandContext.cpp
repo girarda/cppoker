@@ -3,14 +3,14 @@
 namespace pokerGame {
 namespace context {
 
-HandContext::HandContext(ActionContext actionCtx, double handEvaluatedStrength) : actionContext(actionCtx), handStrength(handEvaluatedStrength) {
+HandContext::HandContext(const ActionContext &actionCtx, double handEvaluatedStrength) : actionContext(actionCtx), handStrength(handEvaluatedStrength) {
 }
 
 double HandContext::getHandStrength() const {
     return handStrength;
 }
 
-bool HandContext::hasSameBettingAction(ActionContext actionContext) const {
+bool HandContext::hasSameActionContext(const ActionContext &actionContext) const {
     return this->actionContext == actionContext;
 }
 

@@ -4,14 +4,14 @@ namespace pokerGame {
 
 OpponentModel::OpponentModel(context::ActionContext lastActionContext, std::vector<context::HandContext> handContexts) : numberOfOccurrences(0), handStrengthAverage(0), handStrengthDeviation(0) {
     for (std::vector<context::HandContext>::iterator it = handContexts.begin(); it != handContexts.end(); it++) {
-        if(it->hasSameBettingAction(lastActionContext)) {
+        if(it->hasSameActionContext(lastActionContext)) {
             numberOfOccurrences++;
             handStrengthAverage+= it->getHandStrength();
         }
     }
     double variance = 0;
     for (std::vector<context::HandContext>::iterator it = handContexts.begin(); it != handContexts.end(); it++) {
-        if(it->hasSameBettingAction(lastActionContext)) {
+        if(it->hasSameActionContext(lastActionContext)) {
             variance += pow(it->getHandStrength()- handStrengthAverage, 2);
         }
     }
