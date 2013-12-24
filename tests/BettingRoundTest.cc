@@ -15,7 +15,7 @@ protected:
 
     test::PlayerMock* aPlayer;
     test::PlayerMock* anotherPlayer;
-    pokerGame::BettingContext* bettingContext;
+    pokerGame::context::BettingContext* bettingContext;
 
     std::vector<pokerGame::Card> sharedCards;
     pokerGame::GameContext* gameContext;
@@ -38,7 +38,7 @@ protected:
         gameContext->setSmallBlindIndex(SMALL_BLIND_INDEX);
         gameContext->setDealerIndex(DEALER_INDEX);
         bettingRound = new pokerGame::BettingRound();
-        bettingContext = new pokerGame::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, gameContext->getNumberOfPlayers());
+        bettingContext = new pokerGame::context::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, gameContext->getNumberOfPlayers());
 
         ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
         ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(true));

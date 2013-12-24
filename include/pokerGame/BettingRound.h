@@ -5,7 +5,7 @@
 #include <map>
 #include "pokerGame/Player.h"
 #include "GameContext.h"
-#include "BettingAction.h"
+#include "pokerGame/context/ActionContext.h"
 #include "pokerGame/BettingRoundType.h"
 
 namespace pokerGame {
@@ -17,7 +17,7 @@ public:
     virtual void start(GameContext* gameContext, std::vector<Card> sharedCards, BettingRoundType bettingRoundType);
     virtual float getCurrentMinimumBid() const;
 
-    virtual std::map<Player*,BettingAction> getBettingActions();
+    virtual std::map<Player*,context::ActionContext> getActionContexts();
 
 private:
     void playerTurn(Player* player);
@@ -32,7 +32,7 @@ private:
     std::vector<Card> sharedCards;
     int numberOfRaises;
     BettingRoundType bettingRoundType;
-    std::map<Player*, BettingAction> bettingActions;
+    std::map<Player*, context::ActionContext> actionContexts;
 };
 
 }

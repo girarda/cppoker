@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "HandMock.h"
 #include "playerInterface/bot/SimpleBettingBluffStrategy.h"
-#include "pokerGame/BettingContext.h"
+#include "pokerGame/context/BettingContext.h"
 
 using ::testing::Return;
 
@@ -10,7 +10,7 @@ protected:
     std::vector<pokerGame::Card>* hole;
     std::vector<pokerGame::Card>* sharedCards;
     playerInterface::bot::BettingStrategy* simpleBettingBluffStrategy;
-    pokerGame::BettingContext* bettingContext;
+    pokerGame::context::BettingContext* bettingContext;
 
     static const float A_BET;
     static const float ZERO_BET;
@@ -31,7 +31,7 @@ protected:
         simpleBettingBluffStrategy = new playerInterface::bot::SimpleBettingBluffStrategy();
         hole = new std::vector<pokerGame::Card>();
         sharedCards = new std::vector<pokerGame::Card>();
-        bettingContext = new pokerGame::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);
+        bettingContext = new pokerGame::context::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);
     }
     virtual void TearDown() {
         delete hole;

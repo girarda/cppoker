@@ -8,7 +8,7 @@ namespace test {
 
 class PlayerControllerMock : public pokerGame::PlayerController {
 public:
-    MOCK_METHOD6(makeDecision, pokerGame::Decision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents));
+    MOCK_METHOD6(makeDecision, pokerGame::Decision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents));
 
     MOCK_METHOD1(deliver, void(const std::string& msg));
 

@@ -1,15 +1,15 @@
 #ifndef OPPONENTMODEL_H
 #define OPPONENTMODEL_H
 
-#include "HandContext.h"
-#include "BettingAction.h"
+#include "pokerGame/context/HandContext.h"
+#include "pokerGame/context/ActionContext.h"
 #include <vector>
 
 namespace pokerGame {
 
 class OpponentModel {
 public:
-    OpponentModel(BettingAction lastBettingAction, std::vector<HandContext> handContexts);
+    OpponentModel(context::ActionContext actionContext, std::vector<context::HandContext> handContexts);
 
     int getNumberOfOccurrences() const;
     double getHandStrengthAverage() const;

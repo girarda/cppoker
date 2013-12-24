@@ -2,8 +2,8 @@
 #define GAMECONTEXT_H
 
 #include "Player.h"
-#include "pokerGame/BettingAction.h"
-#include "pokerGame/HandContext.h"
+#include "pokerGame/context/ActionContext.h"
+#include "pokerGame/context/HandContext.h"
 #include "pokerGame/OpponentModel.h"
 #include <vector>
 #include <map>
@@ -42,8 +42,8 @@ public:
 
     std::vector<Player*> getPlayers() const;
 
-    void addHandContext(Player* player, std::vector<BettingAction>, double handStrength);
-    std::vector<OpponentModel> getCurrentOpponentModels(std::map<Player*, BettingAction> bettingActions) const;
+    void addHandContext(Player* player, std::vector<context::ActionContext>, double handStrength);
+    std::vector<OpponentModel> getCurrentOpponentModels(std::map<Player*, context::ActionContext> bettingActions) const;
 
 private:
     int dealerIndex;
@@ -52,7 +52,7 @@ private:
     int currentPlayerIndex;
     float bigBlind;
     std::vector<Player*> players;
-    std::map<Player*, std::vector<HandContext> > handContexts;
+    std::map<Player*, std::vector<context::HandContext> > handContexts;
 
     int getNextPlayingPlayer(int player);
 };

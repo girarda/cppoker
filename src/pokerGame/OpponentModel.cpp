@@ -2,16 +2,16 @@
 #include <cmath>
 namespace pokerGame {
 
-OpponentModel::OpponentModel(BettingAction lastBettingAction, std::vector<HandContext> handContexts) : numberOfOccurrences(0), handStrengthAverage(0), handStrengthDeviation(0) {
-    for (std::vector<HandContext>::iterator it = handContexts.begin(); it != handContexts.end(); it++) {
-        if(it->hasSameBettingAction(lastBettingAction)) {
+OpponentModel::OpponentModel(context::ActionContext lastActionContext, std::vector<context::HandContext> handContexts) : numberOfOccurrences(0), handStrengthAverage(0), handStrengthDeviation(0) {
+    for (std::vector<context::HandContext>::iterator it = handContexts.begin(); it != handContexts.end(); it++) {
+        if(it->hasSameBettingAction(lastActionContext)) {
             numberOfOccurrences++;
             handStrengthAverage+= it->getHandStrength();
         }
     }
     double variance = 0;
-    for (std::vector<HandContext>::iterator it = handContexts.begin(); it != handContexts.end(); it++) {
-        if(it->hasSameBettingAction(lastBettingAction)) {
+    for (std::vector<context::HandContext>::iterator it = handContexts.begin(); it != handContexts.end(); it++) {
+        if(it->hasSameBettingAction(lastActionContext)) {
             variance += pow(it->getHandStrength()- handStrengthAverage, 2);
         }
     }

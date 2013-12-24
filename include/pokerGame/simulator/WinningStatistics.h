@@ -8,9 +8,9 @@
 namespace pokerGame {
 namespace simulator {
 
-class StatisticsController {
+class WinningStatistics {
 public:
-    StatisticsController();
+    WinningStatistics();
 
     void reset();
 

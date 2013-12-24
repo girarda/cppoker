@@ -7,7 +7,7 @@ namespace playerInterface {
 ConsolePlayer::ConsolePlayer() {
 }
 
-pokerGame::Decision ConsolePlayer::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
+pokerGame::Decision ConsolePlayer::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
 
     std::string choice;
     pokerGame::Decision decision;

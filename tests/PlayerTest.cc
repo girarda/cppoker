@@ -2,7 +2,7 @@
 #include "pokerGame/Player.h"
 #include "PlayerControllerMock.h"
 #include "pokerGame/PlayerController.h"
-#include "pokerGame/BettingContext.h"
+#include "pokerGame/context/BettingContext.h"
 
 using ::testing::Return;
 using ::testing::_;
@@ -11,7 +11,7 @@ class PlayerTest : public ::testing::Test {
 protected:
     test::PlayerControllerMock* aPlayerController;
     pokerGame::Player* aPlayer;
-    pokerGame::BettingContext* bettingContext;
+    pokerGame::context::BettingContext* bettingContext;
     std::vector<pokerGame::Card>* sharedCards;
 
     static const float NO_MONEY;
@@ -28,7 +28,7 @@ protected:
         sharedCards = new std::vector<pokerGame::Card>();
         aPlayer = new pokerGame::Player(aPlayerController, INITIAL_AMOUNT_MONEY);
         aPlayer->startPlaying();
-        bettingContext = new pokerGame::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);
+        bettingContext = new pokerGame::context::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);
     }
     virtual void TearDown() {
         delete aPlayer;

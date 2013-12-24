@@ -2,7 +2,7 @@
 #include "HandStrengthEvaluatorMock.h"
 #include "playerInterface/bot/ProbabilisticBettingStrategy.h"
 #include "tests/mocks/PreFlopStatisticsMock.h"
-#include "pokerGame/BettingContext.h"
+#include "pokerGame/context/BettingContext.h"
 
 using ::testing::Return;
 using ::testing::_;
@@ -14,7 +14,7 @@ protected:
     playerInterface::bot::BettingStrategy* probabilisticBettingStrategy;
     test::HandStrengthEvaluatorMock* handEvaluator;
     test::PreFlopStatisticsMock* preFlopStatistics;
-    pokerGame::BettingContext* bettingContext;
+    pokerGame::context::BettingContext* bettingContext;
 
     void initPreFlopHand();
     void initPostFlopHand();
@@ -35,7 +35,7 @@ protected:
         handEvaluator = new test::HandStrengthEvaluatorMock();
         preFlopStatistics = new test::PreFlopStatisticsMock();
         probabilisticBettingStrategy = new playerInterface::bot::ProbabilisticBettingStrategy(handEvaluator, preFlopStatistics);
-        bettingContext = new pokerGame::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);
+        bettingContext = new pokerGame::context::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);
     }
     virtual void TearDown() {
         delete hole;

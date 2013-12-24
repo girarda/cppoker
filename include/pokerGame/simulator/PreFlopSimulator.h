@@ -2,7 +2,7 @@
 #define PREFLOPSIMULATOR_H
 
 #include "pokerGame/HoleCardsEquivalence.h"
-#include "pokerGame/simulator/StatisticsController.h"
+#include "pokerGame/simulator/WinningStatistics.h"
 #include "pokerGame/PlayerController.h"
 #include "pokerGame/BettingRound.h"
 #include "pokerGame/GameRound.h"
@@ -27,7 +27,7 @@ private:
     void generateNotPairEquivalences();
 
     std::vector<HoleCardsEquivalence*> holeCardsEquivalences;
-    StatisticsController statisticsController;
+    WinningStatistics statisticsController;
     PlayerController* playerController;
     GameRound* gameRoundSimulator;
     Deck* deck;

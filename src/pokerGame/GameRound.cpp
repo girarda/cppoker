@@ -96,7 +96,7 @@ void GameRound::showdown() {
     winner->winMoney(getTotalPot());
     announceRoundWinner(winner, getTotalPot());
 
-    for (std::map<Player*, std::vector<BettingAction> >::iterator it = bettingActions.begin(); it != bettingActions.end(); it++) {
+    for (std::map<Player*, std::vector<context::ActionContext> >::iterator it = bettingActions.begin(); it != bettingActions.end(); it++) {
         if (it->first->isPlaying()) {
             gameContext->addHandContext(it->first, it->second, handEvaluator.evaluate(it->first->getVisibleHole(), sharedCards, gameContext->getNumberOfPlayingPlayers()));
         }
@@ -123,7 +123,7 @@ void GameRound::executeNewBettingRound(BettingRoundType bettingRoundType) {
     std::vector<Player*> players = gameContext->getPlayers();
     for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
         if ((*it)->isPlaying()) {
-            bettingActions[*it].push_back(bettingRound->getBettingActions().find(*it)->second);
+            bettingActions[*it].push_back(bettingRound->getActionContexts().find(*it)->second);
 
         }
     }

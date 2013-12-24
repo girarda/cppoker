@@ -4,7 +4,7 @@
 
 namespace pokerGame {
 
-BettingRound::BettingRound() : gameContext(0), sharedCards(), numberOfRaises(0), bettingActions() {
+BettingRound::BettingRound() : gameContext(0), sharedCards(), numberOfRaises(0), actionContexts() {
 }
 
 void BettingRound::start(GameContext* gameContext, std::vector<Card> sharedCards, BettingRoundType bettingRoundType) {
@@ -28,19 +28,19 @@ void BettingRound::initialize(GameContext* gameContext, std::vector<Card> shared
     this->sharedCards = sharedCards;
     this->gameContext->setCurrentPlayerDealer();
     this->bettingRoundType = bettingRoundType;
-    this->bettingActions.clear();
+    this->actionContexts.clear();
 }
 
 void BettingRound::playerTurn(Player* player) {
     announcePlayerTurn(player);
     announcements(player);
     if(player->isPlaying()) {
-        BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers());
-        Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, &bettingContext, gameContext->getCurrentOpponentModels(bettingActions));
+        context::BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers());
+        Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, &bettingContext, gameContext->getCurrentOpponentModels(actionContexts));
         if (d.choice == pokerGame::RAISE) {
             numberOfRaises++;
         }
-        bettingActions.insert(std::make_pair(player, BettingAction(bettingContext, d)));
+        actionContexts.insert(std::make_pair(player, context::ActionContext(bettingContext, d)));
     }
 }
 
@@ -83,8 +83,8 @@ bool BettingRound::allPotsAreEven() const {
     return true;
 }
 
-std::map<Player*, BettingAction> BettingRound::getBettingActions() {
-    return bettingActions;
+std::map<Player*, context::ActionContext> BettingRound::getActionContexts() {
+    return actionContexts;
 }
 
 

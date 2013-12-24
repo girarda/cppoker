@@ -6,7 +6,7 @@
 #include "pokerGame/OpponentModel.h"
 #include "pokerGame/Hand.h"
 #include "pokerGame/PlayerController.h"
-#include "pokerGame/BettingContext.h"
+#include "pokerGame/context/BettingContext.h"
 
 namespace pokerGame {
 
@@ -16,7 +16,7 @@ public:
     Player(PlayerController *aPlayerController, float initialMoney);
     virtual ~Player();
 
-    virtual Decision makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards, BettingContext* bettingContext, std::vector<OpponentModel> opponents);
+    virtual Decision makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards, context::BettingContext* bettingContext, std::vector<OpponentModel> opponents);
 
     virtual void setMoney(float newValue);
 

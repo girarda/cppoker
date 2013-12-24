@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "PlayerMock.h"
-#include "pokerGame/simulator/StatisticsController.h"
+#include "pokerGame/simulator/WinningStatistics.h"
 
 using ::testing::Return;
 using ::testing::_;
@@ -8,7 +8,7 @@ using ::testing::_;
 class StatisticsControllerTest : public ::testing::Test {
 protected:
     test::PlayerMock* aPlayer;
-    pokerGame::simulator::StatisticsController statisticsController;
+    pokerGame::simulator::WinningStatistics statisticsController;
 
     static const int ZERO_WIN;
     static const int ONE_WIN;
