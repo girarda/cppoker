@@ -5,6 +5,7 @@
 #include "PlayerMock.h"
 #include "DeckMock.h"
 #include "BettingRoundMock.h"
+#include "pokerGame/BettingRoundType.h"
 #include <string>
 
 using ::testing::_;
@@ -32,12 +33,13 @@ protected:
     static const int SMALL_BLIND_INDEX;
     static const int MONEY_WON;
     static const int A_BET;
-    static std::string A_GAME_PHASE;
-    static std::string PRE_FLOP_PHASE;
-    static std::string FLOP_PHASE;
-    static std::string TURN_PHASE;
-    static std::string RIVER_PHASE;
-    static std::string SHOWDOWN_PHASE;
+    static const std::string A_GAME_PHASE;
+    static const std::string PRE_FLOP_PHASE;
+    static const std::string FLOP_PHASE;
+    static const std::string TURN_PHASE;
+    static const std::string RIVER_PHASE;
+    static const std::string SHOWDOWN_PHASE;
+    static const pokerGame::BettingRoundType A_BETTING_ROUND_TYPE;
 
     virtual void SetUp() {
         aCard = new pokerGame::Card(2, pokerGame::CLUB);
@@ -70,12 +72,14 @@ const int GameRoundTest::BIG_BLIND_INDEX(1);
 const int GameRoundTest::SMALL_BLIND_INDEX(0);
 const int GameRoundTest::A_BET(2);
 const int GameRoundTest::MONEY_WON(2);
-std::string GameRoundTest::A_GAME_PHASE("PHASE");
-std::string GameRoundTest::PRE_FLOP_PHASE("PreFlop");
-std::string GameRoundTest::FLOP_PHASE("Flop");
-std::string GameRoundTest::TURN_PHASE("Turn");
-std::string GameRoundTest::RIVER_PHASE("River");
-std::string GameRoundTest::SHOWDOWN_PHASE("Showdown");
+const std::string GameRoundTest::A_GAME_PHASE("PHASE");
+const std::string GameRoundTest::PRE_FLOP_PHASE("PreFlop");
+const std::string GameRoundTest::FLOP_PHASE("Flop");
+const std::string GameRoundTest::TURN_PHASE("Turn");
+const std::string GameRoundTest::RIVER_PHASE("River");
+const std::string GameRoundTest::SHOWDOWN_PHASE("Showdown");
+const pokerGame::BettingRoundType GameRoundTest::A_BETTING_ROUND_TYPE(pokerGame::PRE_FLOP);
+
 
 TEST_F(GameRoundTest, bigAndSmallBlindPlayersAddTheirBlindsToTheirPotWhenBettingPot) {
     gameRound->initialize(gameContext);
@@ -212,8 +216,8 @@ TEST_F(GameRoundTest, everyPlayersSeeTheirOponnentsCardsAndMoney) {
 
 TEST_F(GameRoundTest, aBettingRoundStartsWhenExecutingNewBettingRound) {
     gameRound->initialize(gameContext);
-    EXPECT_CALL(*bettingRound, start(gameContext, _)); //TODO: _ should be gameRound->sharedCards
-    gameRound->executeNewBettingRound();
+    EXPECT_CALL(*bettingRound, start(gameContext, _, A_BETTING_ROUND_TYPE)); //TODO: _ should be gameRound->sharedCards
+    gameRound->executeNewBettingRound(A_BETTING_ROUND_TYPE);
 }
 
 TEST_F(GameRoundTest, getNumberOfPlayingPlayersReturnsTheNumberOfPlayingPlayers) {

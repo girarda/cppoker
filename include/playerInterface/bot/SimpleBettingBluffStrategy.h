@@ -2,6 +2,7 @@
 #define SIMPLEBETTINGBLUFFSTRATEGY_H
 
 #include "BettingStrategy.h"
+#include "pokerGame/BettingContext.h"
 
 namespace playerInterface {
 namespace bot {
@@ -12,8 +13,8 @@ public:
     virtual ~SimpleBettingBluffStrategy();
 
 protected:
-    virtual pokerGame::Decision makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers);
-    virtual pokerGame::Decision makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers);
+    virtual pokerGame::Decision makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind, pokerGame::BettingContext* bettingContext);
+    virtual pokerGame::Decision makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::BettingContext* bettingContext);
 };
 
 }

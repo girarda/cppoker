@@ -10,28 +10,28 @@ ProbabilisticBettingStrategy::ProbabilisticBettingStrategy(pokerGame::HandStreng
 ProbabilisticBettingStrategy::~ProbabilisticBettingStrategy() {
 }
 
-pokerGame::Decision ProbabilisticBettingStrategy::makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers) {
+pokerGame::Decision ProbabilisticBettingStrategy::makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind, pokerGame::BettingContext* bettingContext) {
     preFlopStatistics->load("../preflop_simulation.data");
     pokerGame::HoleCardsEquivalence equivalence(hole[0].getRank(), hole[1].getRank());
-    double p = preFlopStatistics->getWinningProbability(&equivalence, numberOfPlayers);
+    double p = preFlopStatistics->getWinningProbability(&equivalence, bettingContext->getNumberOfPlayers());
     return makeDecisionBasedOnProbabilities(p, minBet, bigBlind);
 }
 
-pokerGame::Decision ProbabilisticBettingStrategy::makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers) {
-    double p = calculateCoefficient(hole, sharedCards, numberOfRaises, numberOfPlayers);
+pokerGame::Decision ProbabilisticBettingStrategy::makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::BettingContext* bettingContext) {
+    double p = calculateCoefficient(hole, sharedCards, bettingContext);
     return makeDecisionBasedOnProbabilities(p, minBet, bigBlind);
 }
 
-double ProbabilisticBettingStrategy::calculateCoefficient(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, int numberOfRaises, int numberOfPlayers) {
-    double p = handStrengthEvaluator->evaluate(hole, sharedCards, numberOfPlayers);
+double ProbabilisticBettingStrategy::calculateCoefficient(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, pokerGame::BettingContext* bettingContext) {
+    double p = handStrengthEvaluator->evaluate(hole, sharedCards, bettingContext->getNumberOfPlayers());
 
     // Decision depends on the number of players
-    p *= (1 + numberOfPlayers/20);
+    p *= (1 + bettingContext->getNumberOfPlayers()/20);
 
     // Be riskier in further rounds?
 
     // Be more careful if there are lots of raises
-    if(numberOfRaises > 3) {
+    if(bettingContext->getNumberOfRaises() > 3) {
         p -= 0.3;
     }
     return p;

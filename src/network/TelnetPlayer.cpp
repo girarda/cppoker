@@ -144,7 +144,7 @@ void TelnetPlayer::seeHole(std::vector<pokerGame::Card> hole) {
     deliver(msg);
 }
 
-pokerGame::Decision TelnetPlayer::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers) {
+pokerGame::Decision TelnetPlayer::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::BettingContext* bettingContext) {
     read_state = RS_WAITING_FOR_PLAY;
     decision.choice = pokerGame::WAITING;
     while (decision.choice == pokerGame::WAITING) {

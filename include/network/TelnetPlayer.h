@@ -44,7 +44,7 @@ public:
 
     void sendChatMessage(std::string sender, std::string message);
     void seeCardDealt(const pokerGame::Hand& hand, const pokerGame::Card& new_card);
-    virtual pokerGame::Decision makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, int numberOfRaises, int numberOfPlayers);
+    virtual pokerGame::Decision makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::BettingContext* bettingContext);
 
     virtual void deliver(const std::string& message);
 

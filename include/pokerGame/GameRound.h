@@ -6,6 +6,7 @@
 #include "Deck.h"
 #include "BettingRound.h"
 #include "GameContext.h"
+#include "BettingRoundType.h"
 #include "gtest/gtest_prod.h"
 
 namespace pokerGame {
@@ -45,7 +46,7 @@ private:
 
     float getTotalPot() const;
 
-    void executeNewBettingRound();
+    void executeNewBettingRound(BettingRoundType bettingRoundType);
     int getNumberOfPlayingPlayers() const;
 
     FRIEND_TEST(GameRoundTest,bigAndSmallBlindPlayersAddTheirBlindsToTheirPotWhenBettingPot);

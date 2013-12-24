@@ -10,7 +10,7 @@ class PlayerMock : public pokerGame::Player {
 public:
     PlayerMock(): Player(NULL, 0){};
 
-    MOCK_METHOD5(makeDecision, pokerGame::Decision(float minBet, float bigBlind, std::vector<pokerGame::Card> sharedCards, int numberOfRaises, int numberOfPlayers));
+    MOCK_METHOD4(makeDecision, pokerGame::Decision(float minBet, float bigBlind, std::vector<pokerGame::Card> sharedCards, pokerGame::BettingContext *bettingContext));
 
     MOCK_METHOD1(setMoney, void(float newValue));
 

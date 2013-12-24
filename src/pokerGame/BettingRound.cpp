@@ -6,8 +6,8 @@ namespace pokerGame {
 BettingRound::BettingRound() : gameContext(0), sharedCards(), numberOfRaises(0) {
 }
 
-void BettingRound::start(GameContext* gameContext, std::vector<Card> sharedCards) {
-    initialize(gameContext, sharedCards);
+void BettingRound::start(GameContext* gameContext, std::vector<Card> sharedCards, BettingRoundType bettingRoundType) {
+    initialize(gameContext, sharedCards, bettingRoundType);
 
     bool entirePass = false;
 
@@ -22,17 +22,19 @@ void BettingRound::start(GameContext* gameContext, std::vector<Card> sharedCards
     } while (!(entirePass && allPotsAreEven()));
 }
 
-void BettingRound::initialize(GameContext* gameContext, std::vector<Card> sharedCards) {
+void BettingRound::initialize(GameContext* gameContext, std::vector<Card> sharedCards, BettingRoundType bettingRoundType) {
     this->gameContext = gameContext;
     this->sharedCards = sharedCards;
     this->gameContext->setCurrentPlayerDealer();
+    this->bettingRoundType = bettingRoundType;
 }
 
 void BettingRound::playerTurn(Player* player) {
     announcePlayerTurn(player);
     announcements(player);
     if(player->isPlaying()) {
-        Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, numberOfRaises, gameContext->getPlayers().size());
+        BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers());
+        Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, &bettingContext);
         if (d.choice == pokerGame::RAISE) {
             numberOfRaises++;
         }

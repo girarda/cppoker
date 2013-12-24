@@ -66,7 +66,7 @@ void GameRound::addOneCardToBoard() {
 void GameRound::preFlop() {
     announcePhase("PreFlop");
     distributeHoles();
-    executeNewBettingRound();
+    executeNewBettingRound(PRE_FLOP);
 }
 
 void GameRound::flop() {
@@ -74,19 +74,19 @@ void GameRound::flop() {
     addOneCardToBoard();
     addOneCardToBoard();
     addOneCardToBoard();
-    executeNewBettingRound();
+    executeNewBettingRound(POST_FLOP);
 }
 
 void GameRound::turn() {
     announcePhase("Turn");
     addOneCardToBoard();
-    executeNewBettingRound();
+    executeNewBettingRound(POST_TURN);
 }
 
 void GameRound::river() {
     announcePhase("River");
     addOneCardToBoard();
-    executeNewBettingRound();
+    executeNewBettingRound(POST_RIVER);
 }
 
 void GameRound::showdown() {
@@ -110,9 +110,9 @@ void GameRound::announceRoundWinner(Player* winner, float moneyWon) {
     }
 }
 
-void GameRound::executeNewBettingRound() {
+void GameRound::executeNewBettingRound(BettingRoundType bettingRoundType) {
     //std::cout << "new betting round" << std::endl;
-    bettingRound->start(gameContext, sharedCards);
+    bettingRound->start(gameContext, sharedCards, bettingRoundType);
 }
 
 float GameRound::getTotalPot() const {
