@@ -13,7 +13,7 @@
 #include "playerInterface/bot/ProbabilisticBettingStrategy.h"
 #include "pokerGame/HandStrengthEvaluator.h"
 #include "pokerGame/simulator/PreFlopSimulator.h"
-#include "playerInterface/bot/ConservativeBettingStrategy.h"
+#include "playerInterface/bot/AgressiveBettingStrategy.h"
 
 #include "boost/thread/thread.hpp"
 
@@ -92,7 +92,7 @@ void runContextBotSimulation() {
     playerInterface::bot::BettingStrategy* sbs1 = new playerInterface::bot::SimpleBettingStrategy();
     pokerGame::HandStrengthEvaluator* handStrengthEvaluator = new pokerGame::HandStrengthEvaluator();
 
-    playerInterface::bot::ConservativeBettingStrategy* sbs2 = new playerInterface::bot::ConservativeBettingStrategy(handStrengthEvaluator, sbs1);
+    playerInterface::bot::AgressiveBettingStrategy* sbs2 = new playerInterface::bot::AgressiveBettingStrategy(handStrengthEvaluator, sbs1);
 
     std::string n1("bot1");
     std::string n2("bot2");

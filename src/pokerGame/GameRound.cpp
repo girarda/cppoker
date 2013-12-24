@@ -26,6 +26,7 @@ void GameRound::playRound(GameContext* gameContext) { // TODO: test this method
 void GameRound::initialize(GameContext* gameContext) {
     this->gameContext = gameContext;
     this->gameContext->setCurrentPlayerDealer();
+    sharedCards.clear();
     deck->shuffle();
     for (Player* p: gameContext->getPlayers()) {
         p->setupForNewRound();

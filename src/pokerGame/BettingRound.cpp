@@ -14,7 +14,7 @@ void BettingRound::start(GameContext* gameContext, std::vector<Card> sharedCards
 
     do {
         gameContext->nextPlayer();
-        if (gameContext->getCurrentPlayerIndex() == gameContext->getDealerIndex()) {
+        if (gameContext->getCurrentPlayerIndex() == gameContext->getDealerIndex() || gameContext->getPlayers()[gameContext->getDealerIndex()]->isFolded()) {
             entirePass = true;
         }
         playerTurn(gameContext->getCurrentPlayer());
