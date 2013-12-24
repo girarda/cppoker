@@ -7,6 +7,7 @@
 #include "BettingRound.h"
 #include "GameContext.h"
 #include "BettingRoundType.h"
+#include "pokerGame/HandStrengthEvaluator.h"
 #include "gtest/gtest_prod.h"
 
 namespace pokerGame {
@@ -29,6 +30,7 @@ protected:
 private:
     std::vector<Card> sharedCards;
     BettingRound* bettingRound;
+    HandStrengthEvaluator handEvaluator;
 
     void initialize(GameContext* gameContext);
 

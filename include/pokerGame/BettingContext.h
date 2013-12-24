@@ -11,15 +11,17 @@ class BettingContext {
 public:
     BettingContext(BettingRoundType curentBettingRoundType, int nbOfRaises, int nbOfPlayers);
 
-    int getNumberOfRaises() const;
-    int getNumberOfPlayers() const;
+    Quantity getNumberOfRaises() const;
+    Quantity getNumberOfPlayers() const;
 
     bool operator==(const BettingContext& other) const;
 
 private:
     BettingRoundType bettingRoundType;
-    int numberOfRaises;
-    int numberOfPlayers;
+    Quantity numberOfRaises;
+    Quantity numberOfPlayers;
+
+    Quantity valueFor(int number);
 };
 
 }

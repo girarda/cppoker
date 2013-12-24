@@ -2,7 +2,13 @@
 
 namespace pokerGame {
 
-GameContext::GameContext(float initialBigBlind) : bigBlind(initialBigBlind), dealerIndex(-1), bigBlindIndex(-1), smallBlindIndex(-1), players(), currentPlayerIndex(dealerIndex) {
+GameContext::GameContext(float initialBigBlind) :
+    bigBlind(initialBigBlind), dealerIndex(-1),
+    bigBlindIndex(-1),
+    smallBlindIndex(-1),
+    players(),
+    currentPlayerIndex(dealerIndex),
+    handContexts() {
 }
 
 GameContext::~GameContext() {
@@ -115,6 +121,23 @@ int GameContext::getNextPlayingPlayer(int player) {
             return tmp;
         }
     }
+}
+
+void GameContext::addHandContext(Player* player, std::vector<BettingAction> actions, double handStrength) {
+    for(std::vector<BettingAction>::iterator it = actions.begin(); it != actions.end(); it++) {
+        handContexts[player].push_back(HandContext(*it, handStrength));
+    }
+}
+
+std::vector<OpponentModel> GameContext::getCurrentOpponentModels(BettingContext currentContext) const {
+    std::vector<OpponentModel> opponents;
+    for (std::map<Player*, std::vector<HandContext> >::const_iterator it = handContexts.begin(); it != handContexts.end(); it++) {
+        if (it->first->isPlaying()) {
+            OpponentModel op(currentContext, it->second);
+            opponents.push_back(op);
+        }
+    }
+    return opponents;
 }
 
 }

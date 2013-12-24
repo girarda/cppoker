@@ -2,6 +2,8 @@
 #define Player_H
 
 #include <string>
+#include <vector>
+#include "pokerGame/OpponentModel.h"
 #include "pokerGame/Hand.h"
 #include "pokerGame/PlayerController.h"
 #include "pokerGame/BettingContext.h"
@@ -14,7 +16,7 @@ public:
     Player(PlayerController *aPlayerController, float initialMoney);
     virtual ~Player();
 
-    virtual Decision makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards, BettingContext* bettingContext);
+    virtual Decision makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards, BettingContext* bettingContext, std::vector<OpponentModel> opponents);
 
     virtual void setMoney(float newValue);
 

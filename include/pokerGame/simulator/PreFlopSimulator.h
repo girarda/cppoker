@@ -26,9 +26,6 @@ private:
     void generateAllPairsEquivalences();
     void generateNotPairEquivalences();
 
-    void save();
-    void load();
-
     std::vector<HoleCardsEquivalence*> holeCardsEquivalences;
     StatisticsController statisticsController;
     PlayerController* playerController;

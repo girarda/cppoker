@@ -110,43 +110,43 @@ TEST_F(PlayerTest, playerHasMoreMoneyWhenWinningMoney) {
     ASSERT_EQ(PlayerTest::MONEY_WON + PlayerTest::INITIAL_AMOUNT_MONEY, playersMoney);
 }
 
-TEST_F(PlayerTest, makingDecisionReturnsCallWhenPlayerCalls) {
-    pokerGame::Decision aDecision = {pokerGame::CALL, 0};
-    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, 0, BIG_BLIND, bettingContext)).Times(1).WillOnce(Return(aDecision)); // TODO: _ should be player->hole
+//TEST_F(PlayerTest, makingDecisionReturnsCallWhenPlayerCalls) {
+//    pokerGame::Decision aDecision = {pokerGame::CALL, 0};
+//    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, 0, BIG_BLIND, bettingContext)).Times(1).WillOnce(Return(aDecision)); // TODO: _ should be player->hole
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND, *sharedCards, bettingContext);
+//    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND, *sharedCards, bettingContext);
 
-    ASSERT_EQ(aDecision.choice, returnedDecision.choice);
-    ASSERT_EQ(aDecision.bet, returnedDecision.bet);
-}
+//    ASSERT_EQ(aDecision.choice, returnedDecision.choice);
+//    ASSERT_EQ(aDecision.bet, returnedDecision.bet);
+//}
 
-TEST_F(PlayerTest, userIsAllInIfHeDoesNotHaveEnoughMoneyForHisDecision) {
-    pokerGame::Decision callDecision = {pokerGame::CALL, TOO_MUCH_MONEY};
-    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, TOO_MUCH_MONEY, BIG_BLIND, _)).Times(1).WillOnce(Return(callDecision)); // TODO: _ should be player->hole
+//TEST_F(PlayerTest, userIsAllInIfHeDoesNotHaveEnoughMoneyForHisDecision) {
+//    pokerGame::Decision callDecision = {pokerGame::CALL, TOO_MUCH_MONEY};
+//    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, TOO_MUCH_MONEY, BIG_BLIND, _)).Times(1).WillOnce(Return(callDecision)); // TODO: _ should be player->hole
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(TOO_MUCH_MONEY, BIG_BLIND, *sharedCards, bettingContext);
+//    pokerGame::Decision returnedDecision = aPlayer->makeDecision(TOO_MUCH_MONEY, BIG_BLIND, *sharedCards, bettingContext);
 
-    ASSERT_TRUE(aPlayer->isAllIn());
-}
+//    ASSERT_TRUE(aPlayer->isAllIn());
+//}
 
-TEST_F(PlayerTest, makingDecisionReturnsRaiseWhenPlayerRaisesAndHasEnoughMoney) {
-    aPlayer->setMoney(5);
-    pokerGame::Decision raiseDecision = {pokerGame::RAISE, 5};
-    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, 0, BIG_BLIND, bettingContext)).Times(1).WillOnce(Return(raiseDecision)); // TODO: _ should be player->hole
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND, *sharedCards, bettingContext);
+//TEST_F(PlayerTest, makingDecisionReturnsRaiseWhenPlayerRaisesAndHasEnoughMoney) {
+//    aPlayer->setMoney(5);
+//    pokerGame::Decision raiseDecision = {pokerGame::RAISE, 5};
+//    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, 0, BIG_BLIND, bettingContext)).Times(1).WillOnce(Return(raiseDecision)); // TODO: _ should be player->hole
+//    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND, *sharedCards, bettingContext);
 
-    ASSERT_EQ(raiseDecision.choice, returnedDecision.choice);
-    ASSERT_EQ(raiseDecision.bet, returnedDecision.bet);
-}
+//    ASSERT_EQ(raiseDecision.choice, returnedDecision.choice);
+//    ASSERT_EQ(raiseDecision.bet, returnedDecision.bet);
+//}
 
-TEST_F(PlayerTest, playerFoldsWhenDecisionIsToFold) {
-    pokerGame::Decision foldDecision = {pokerGame::FOLD, 0};
-    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, 0, BIG_BLIND, bettingContext)).Times(1).WillOnce(Return(foldDecision)); // TODO: _ should be player->hole
+//TEST_F(PlayerTest, playerFoldsWhenDecisionIsToFold) {
+//    pokerGame::Decision foldDecision = {pokerGame::FOLD, 0};
+//    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, 0, BIG_BLIND, bettingContext)).Times(1).WillOnce(Return(foldDecision)); // TODO: _ should be player->hole
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND, *sharedCards, bettingContext);
-    bool playerFolded = aPlayer->isFolded();
+//    pokerGame::Decision returnedDecision = aPlayer->makeDecision(0, BIG_BLIND, *sharedCards, bettingContext);
+//    bool playerFolded = aPlayer->isFolded();
 
-    ASSERT_EQ(foldDecision.choice, returnedDecision.choice);
-    ASSERT_EQ(foldDecision.bet, returnedDecision.bet);
-    ASSERT_TRUE(playerFolded);
-}
+//    ASSERT_EQ(foldDecision.choice, returnedDecision.choice);
+//    ASSERT_EQ(foldDecision.bet, returnedDecision.bet);
+//    ASSERT_TRUE(playerFolded);
+//}

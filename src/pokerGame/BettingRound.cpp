@@ -3,7 +3,7 @@
 
 namespace pokerGame {
 
-BettingRound::BettingRound() : gameContext(0), sharedCards(), numberOfRaises(0) {
+BettingRound::BettingRound() : gameContext(0), sharedCards(), numberOfRaises(0), bettingActions() {
 }
 
 void BettingRound::start(GameContext* gameContext, std::vector<Card> sharedCards, BettingRoundType bettingRoundType) {
@@ -34,10 +34,13 @@ void BettingRound::playerTurn(Player* player) {
     announcements(player);
     if(player->isPlaying()) {
         BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers());
-        Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, &bettingContext);
+        Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, &bettingContext, gameContext->getCurrentOpponentModels(bettingContext));
         if (d.choice == pokerGame::RAISE) {
             numberOfRaises++;
         }
+        std::vector<BettingAction> ba= bettingActions[player];
+        ba.push_back(BettingAction(bettingContext, d));
+        bettingActions[player] = ba;
     }
 }
 
@@ -79,5 +82,10 @@ bool BettingRound::allPotsAreEven() const {
     }
     return true;
 }
+
+std::map<Player*, std::vector<BettingAction> > BettingRound::getBettingActions() {
+    return bettingActions;
+}
+
 
 }

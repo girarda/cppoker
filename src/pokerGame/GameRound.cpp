@@ -3,7 +3,7 @@
 
 namespace pokerGame {
 
-GameRound::GameRound(Deck *deckToUse, BettingRound* bettingRoundToUse): gameContext(0), deck(deckToUse), bettingRound(bettingRoundToUse), sharedCards() {
+GameRound::GameRound(Deck *deckToUse, BettingRound* bettingRoundToUse): gameContext(0), deck(deckToUse), bettingRound(bettingRoundToUse), sharedCards(), handEvaluator() {
 }
 
 void GameRound::playRound(GameContext* gameContext) { // TODO: test this method
@@ -94,6 +94,16 @@ void GameRound::showdown() {
     Player* winner = getWinner();
     winner->winMoney(getTotalPot());
     announceRoundWinner(winner, getTotalPot());
+
+    std::map<Player*, std::vector<BettingAction> > bettingActions;
+    for (std::map<Player*, std::vector<BettingAction> >::iterator it = bettingRound->getBettingActions().begin(); it != bettingRound->getBettingActions().end(); it++) {
+        if (it->first->isPlaying()) {
+            bettingActions.insert(*it);
+        }
+    }
+    for (std::map<Player*, std::vector<BettingAction> >::iterator it = bettingActions.begin(); it != bettingActions.end(); it++) {
+        gameContext->addHandContext(it->first, it->second, handEvaluator.evaluate(it->first->getVisibleHole(), sharedCards, gameContext->getNumberOfPlayingPlayers()));
+    }
 }
 
 void GameRound::announcePhase(std::string phaseName) {

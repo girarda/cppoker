@@ -2,8 +2,10 @@
 #define BETTINGROUND_H
 
 #include <vector>
+#include <map>
 #include "pokerGame/Player.h"
 #include "GameContext.h"
+#include "BettingAction.h"
 #include "pokerGame/BettingRoundType.h"
 
 namespace pokerGame {
@@ -14,6 +16,8 @@ public:
 
     virtual void start(GameContext* gameContext, std::vector<Card> sharedCards, BettingRoundType bettingRoundType);
     virtual float getCurrentMinimumBid() const;
+
+    virtual std::map<Player*, std::vector<BettingAction> > getBettingActions();
 
 private:
     void playerTurn(Player* player);
@@ -28,6 +32,7 @@ private:
     std::vector<Card> sharedCards;
     int numberOfRaises;
     BettingRoundType bettingRoundType;
+    std::map<Player*, std::vector<BettingAction> > bettingActions;
 };
 
 }

@@ -10,7 +10,7 @@ class PlayerMock : public pokerGame::Player {
 public:
     PlayerMock(): Player(NULL, 0){};
 
-    MOCK_METHOD4(makeDecision, pokerGame::Decision(float minBet, float bigBlind, std::vector<pokerGame::Card> sharedCards, pokerGame::BettingContext *bettingContext));
+    MOCK_METHOD5(makeDecision, pokerGame::Decision(float minBet, float bigBlind, std::vector<pokerGame::Card> sharedCards, pokerGame::BettingContext *bettingContext, std::vector<pokerGame::OpponentModel> opponents));
 
     MOCK_METHOD1(setMoney, void(float newValue));
 
@@ -19,7 +19,7 @@ public:
     MOCK_METHOD0(fold, void());
     MOCK_METHOD0(setupForNewRound, void());
 
-    MOCK_CONST_METHOD2(hasBetterHand, bool(const Player& other, std::vector<pokerGame::Card> sharedCards));
+    MOCK_CONST_METHOD2(hasBetterHand, bool(const pokerGame::Player& other, std::vector<pokerGame::Card> sharedCards));
     MOCK_CONST_METHOD0(getPot, float());
     MOCK_CONST_METHOD0(getVisibleHole, std::vector<pokerGame::Card>());
 
