@@ -13,6 +13,7 @@
 #include "playerInterface/bot/ProbabilisticBettingStrategy.h"
 #include "pokerGame/HandStrengthEvaluator.h"
 #include "pokerGame/simulator/PreFlopSimulator.h"
+#include "playerInterface/bot/ConservativeBettingStrategy.h"
 
 #include "boost/thread/thread.hpp"
 
@@ -78,6 +79,51 @@ void runBotSimulation() {
     delete preFlopStatistics;
 }
 
+void runContextBotSimulation() {
+
+    pokerGame::GameContext* gameContext = new pokerGame::GameContext(2);
+    pokerGame::Deck* deckToUse = new pokerGame::Deck();
+    pokerGame::BettingRound* bettingRoundToUse = new pokerGame::BettingRound();
+    pokerGame::GameRound* gameRoundToUse = new pokerGame::GameRound(deckToUse, bettingRoundToUse);
+
+
+    pokerGame::GameEngine* room = new pokerGame::GameEngine(gameContext, gameRoundToUse);
+
+    playerInterface::bot::BettingStrategy* sbs1 = new playerInterface::bot::SimpleBettingStrategy();
+    pokerGame::HandStrengthEvaluator* handStrengthEvaluator = new pokerGame::HandStrengthEvaluator();
+
+    playerInterface::bot::ConservativeBettingStrategy* sbs2 = new playerInterface::bot::ConservativeBettingStrategy(handStrengthEvaluator, sbs1);
+
+    std::string n1("bot1");
+    std::string n2("bot2");
+    playerInterface::BotPlayerController* botCtrl1 = new playerInterface::BotPlayerController(sbs1);
+    playerInterface::BotPlayerController* botCtrl2 = new playerInterface::BotPlayerController(sbs2);
+    playerInterface::BotPlayerController* botCtrl3 = new playerInterface::BotPlayerController(sbs1);
+    playerInterface::BotPlayerController* botCtrl4 = new playerInterface::BotPlayerController(sbs2);
+    playerInterface::BotPlayerController* botCtrl5 = new playerInterface::BotPlayerController(sbs2);
+
+    pokerGame::Player* bot1 = new pokerGame::Player(botCtrl1,100);
+    pokerGame::Player* bot2 = new pokerGame::Player(botCtrl2,100);
+    pokerGame::Player* bot3 = new pokerGame::Player(botCtrl3,100);
+    pokerGame::Player* bot4 = new pokerGame::Player(botCtrl4,100);
+    pokerGame::Player* bot5 = new pokerGame::Player(botCtrl5,100);
+
+    room->addPlayer(bot1);
+    room->addPlayer(bot2);
+    room->addPlayer(bot3);
+    room->addPlayer(bot4);
+    room->addPlayer(bot5);
+
+    room->start();
+
+    delete gameContext;
+    delete deckToUse;
+    delete bettingRoundToUse;
+    delete gameRoundToUse;
+    delete room;
+    delete handStrengthEvaluator;
+}
+
 void runPreFlopSimulation() {
     pokerGame::simulator::PreFlopSimulator simulator;
     simulator.simulate();
@@ -86,8 +132,9 @@ void runPreFlopSimulation() {
 int main(int argc, char** argv) {
 
     initRandom();
-    runPreFlopSimulation();
-    //runBotSimulation();
+    //runPreFlopSimulation();
+//    runBotSimulation();
+    runContextBotSimulation();
     return 0;
 }
 

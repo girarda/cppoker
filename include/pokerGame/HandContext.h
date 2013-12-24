@@ -12,7 +12,7 @@ public:
 
     double getHandStrength() const;
 
-    bool hasSameBettingContext(BettingContext bettingContext) const;
+    bool hasSameBettingAction(BettingAction bettingAction) const;
 
 private:
     BettingAction bettingAction;

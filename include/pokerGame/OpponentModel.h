@@ -2,14 +2,14 @@
 #define OPPONENTMODEL_H
 
 #include "HandContext.h"
-#include "BettingContext.h"
+#include "BettingAction.h"
 #include <vector>
 
 namespace pokerGame {
 
 class OpponentModel {
 public:
-    OpponentModel(BettingContext currentContext, std::vector<HandContext> handContexts);
+    OpponentModel(BettingAction lastBettingAction, std::vector<HandContext> handContexts);
 
     int getNumberOfOccurrences() const;
     double getHandStrengthAverage() const;

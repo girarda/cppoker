@@ -129,11 +129,11 @@ void GameContext::addHandContext(Player* player, std::vector<BettingAction> acti
     }
 }
 
-std::vector<OpponentModel> GameContext::getCurrentOpponentModels(BettingContext currentContext) const {
+std::vector<OpponentModel> GameContext::getCurrentOpponentModels(std::map<Player*, BettingAction> bettingActions) const {
     std::vector<OpponentModel> opponents;
     for (std::map<Player*, std::vector<HandContext> >::const_iterator it = handContexts.begin(); it != handContexts.end(); it++) {
         if (it->first->isPlaying()) {
-            OpponentModel op(currentContext, it->second);
+            OpponentModel op(bettingActions.find(it->first)->second, it->second);
             opponents.push_back(op);
         }
     }

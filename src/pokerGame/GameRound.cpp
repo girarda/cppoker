@@ -95,14 +95,10 @@ void GameRound::showdown() {
     winner->winMoney(getTotalPot());
     announceRoundWinner(winner, getTotalPot());
 
-    std::map<Player*, std::vector<BettingAction> > bettingActions;
-    for (std::map<Player*, std::vector<BettingAction> >::iterator it = bettingRound->getBettingActions().begin(); it != bettingRound->getBettingActions().end(); it++) {
-        if (it->first->isPlaying()) {
-            bettingActions.insert(*it);
-        }
-    }
     for (std::map<Player*, std::vector<BettingAction> >::iterator it = bettingActions.begin(); it != bettingActions.end(); it++) {
-        gameContext->addHandContext(it->first, it->second, handEvaluator.evaluate(it->first->getVisibleHole(), sharedCards, gameContext->getNumberOfPlayingPlayers()));
+        if (it->first->isPlaying()) {
+            gameContext->addHandContext(it->first, it->second, handEvaluator.evaluate(it->first->getVisibleHole(), sharedCards, gameContext->getNumberOfPlayingPlayers()));
+        }
     }
 }
 
@@ -123,6 +119,13 @@ void GameRound::announceRoundWinner(Player* winner, float moneyWon) {
 void GameRound::executeNewBettingRound(BettingRoundType bettingRoundType) {
     //std::cout << "new betting round" << std::endl;
     bettingRound->start(gameContext, sharedCards, bettingRoundType);
+    std::vector<Player*> players = gameContext->getPlayers();
+    for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
+        if ((*it)->isPlaying()) {
+            bettingActions[*it].push_back(bettingRound->getBettingActions().find(*it)->second);
+
+        }
+    }
 }
 
 float GameRound::getTotalPot() const {
@@ -158,7 +161,7 @@ Player* GameRound::getWinner() {
     }
     Player* winner = gameContext->getPlayers()[0];
     for (Player* p: gameContext->getPlayers()) {
-        if (p->hasBetterHand(*winner, sharedCards)) {
+        if (p->hasBetterHand(*winner, sharedCards) && p->isPlaying()) {
             winner = p;
         }
     }

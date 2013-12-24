@@ -9,8 +9,8 @@ double HandContext::getHandStrength() const {
     return handStrength;
 }
 
-bool HandContext::hasSameBettingContext(BettingContext bettingContext) const {
-    return this->bettingAction.hasSameBettingContext(bettingContext);
+bool HandContext::hasSameBettingAction(BettingAction bettingAction) const {
+    return this->bettingAction == bettingAction;
 }
 
 }

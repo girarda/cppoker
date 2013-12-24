@@ -17,7 +17,7 @@ public:
     virtual void start(GameContext* gameContext, std::vector<Card> sharedCards, BettingRoundType bettingRoundType);
     virtual float getCurrentMinimumBid() const;
 
-    virtual std::map<Player*, std::vector<BettingAction> > getBettingActions();
+    virtual std::map<Player*,BettingAction> getBettingActions();
 
 private:
     void playerTurn(Player* player);
@@ -32,7 +32,7 @@ private:
     std::vector<Card> sharedCards;
     int numberOfRaises;
     BettingRoundType bettingRoundType;
-    std::map<Player*, std::vector<BettingAction> > bettingActions;
+    std::map<Player*, BettingAction> bettingActions;
 };
 
 }

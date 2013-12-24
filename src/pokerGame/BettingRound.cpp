@@ -1,5 +1,6 @@
 #include "include/pokerGame/BettingRound.h"
 #include <iostream>
+#include <utility>
 
 namespace pokerGame {
 
@@ -27,6 +28,7 @@ void BettingRound::initialize(GameContext* gameContext, std::vector<Card> shared
     this->sharedCards = sharedCards;
     this->gameContext->setCurrentPlayerDealer();
     this->bettingRoundType = bettingRoundType;
+    this->bettingActions.clear();
 }
 
 void BettingRound::playerTurn(Player* player) {
@@ -34,13 +36,11 @@ void BettingRound::playerTurn(Player* player) {
     announcements(player);
     if(player->isPlaying()) {
         BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers());
-        Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, &bettingContext, gameContext->getCurrentOpponentModels(bettingContext));
+        Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, &bettingContext, gameContext->getCurrentOpponentModels(bettingActions));
         if (d.choice == pokerGame::RAISE) {
             numberOfRaises++;
         }
-        std::vector<BettingAction> ba= bettingActions[player];
-        ba.push_back(BettingAction(bettingContext, d));
-        bettingActions[player] = ba;
+        bettingActions.insert(std::make_pair(player, BettingAction(bettingContext, d)));
     }
 }
 
@@ -83,7 +83,7 @@ bool BettingRound::allPotsAreEven() const {
     return true;
 }
 
-std::map<Player*, std::vector<BettingAction> > BettingRound::getBettingActions() {
+std::map<Player*, BettingAction> BettingRound::getBettingActions() {
     return bettingActions;
 }
 

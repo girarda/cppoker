@@ -31,6 +31,7 @@ void Player::fold() {
 void Player::setupForNewRound() {
     currentState = PLAYING;
     clearPot();
+    discardCards();
 }
 
 void Player::discardCards() {

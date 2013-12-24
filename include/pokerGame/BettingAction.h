@@ -11,7 +11,7 @@ class BettingAction
 public:
     BettingAction(BettingContext currentContext, Decision decisionMade);
 
-    bool hasSameBettingContext(BettingContext bettingContext) const;
+    bool operator==(const BettingAction& other) const;
 
 private:
     BettingContext bettingContext;

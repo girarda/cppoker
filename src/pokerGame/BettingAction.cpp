@@ -6,8 +6,9 @@ BettingAction::BettingAction(BettingContext currentContext, Decision decisionMad
 {
 }
 
-bool BettingAction::hasSameBettingContext(BettingContext bettingContext) const {
-    return this->bettingContext ==bettingContext;
+bool BettingAction::operator==(const BettingAction& other) const {
+    return this->bettingContext == other.bettingContext && this->decision.choice == other.decision.choice;
 }
+
 
 }

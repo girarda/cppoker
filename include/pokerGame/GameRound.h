@@ -31,6 +31,7 @@ private:
     std::vector<Card> sharedCards;
     BettingRound* bettingRound;
     HandStrengthEvaluator handEvaluator;
+    std::map<Player*, std::vector<BettingAction> > bettingActions;
 
     void initialize(GameContext* gameContext);
 
