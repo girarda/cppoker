@@ -2,7 +2,7 @@
 #include <vector>
 #include "pokerGame/GameRound.h"
 #include "pokerGame/card/Card.h"
-#include "PlayerMock.h"
+#include "mocks/pokerGame/PlayerMock.h"
 #include "mocks/pokerGame/card/DeckMock.h"
 #include "BettingRoundMock.h"
 #include "pokerGame/BettingRoundType.h"

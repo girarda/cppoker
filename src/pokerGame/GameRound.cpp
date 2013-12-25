@@ -98,7 +98,7 @@ void GameRound::showdown() {
 
     for (std::map<Player*, std::vector<context::ActionContext> >::iterator it = bettingActions.begin(); it != bettingActions.end(); it++) {
         if (it->first->isPlaying()) {
-            gameContext->addHandContext(it->first, it->second, handEvaluator.evaluate(it->first->getVisibleHole(), sharedCards, gameContext->getNumberOfPlayingPlayers()));
+            gameContext->addHandContext(it->first, it->second, handEvaluator.evaluate(it->first->getVisibleHoleCards(), sharedCards, gameContext->getNumberOfPlayingPlayers()));
         }
     }
 }
@@ -156,7 +156,7 @@ Player* GameRound::getWinner() {
     }
     for (Player* p : gameContext->getPlayers()) {
         for(Player* other: gameContext->getPlayers()) {
-            p->seeOpponentHole(*other);
+            p->seeOpponentHoleCards(*other);
             p->seeOpponentMoney(*other);
         }
     }

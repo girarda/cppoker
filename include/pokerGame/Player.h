@@ -27,7 +27,7 @@ public:
 
     virtual bool hasBetterHand(const Player& other, std::vector<card::Card> sharedCards) const;
     virtual float getPot() const;
-    virtual std::vector<card::Card> getVisibleHole() const;
+    virtual std::vector<card::Card> getVisibleHoleCards() const;
 
     virtual bool isPlaying() const;
     virtual bool isFolded() const;
@@ -48,9 +48,9 @@ public:
     virtual void seeSmallBlind(const Player& player, float smallBlind);
     virtual void seeRoundWinner(const Player& winner, float moneyWon);
     virtual void seeWinner(const Player& winner);
-    virtual void seeOpponentHole(const Player& opponent);
+    virtual void seeOpponentHoleCards(const Player& opponent);
     virtual void seeOpponentMoney(const Player& opponnent);
-    virtual void seeHole();
+    virtual void seeHoleCards();
     virtual void seeMoney();
 
 
@@ -71,7 +71,7 @@ private:
 
     void discardCards();
 
-    std::vector<card::Card> hole;
+    std::vector<card::Card> holeCards;
 
     PlayerController *playerController;
 

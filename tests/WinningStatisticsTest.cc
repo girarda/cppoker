@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "PlayerMock.h"
+#include "mocks/pokerGame/PlayerMock.h"
 #include "pokerGame/simulator/WinningStatistics.h"
 
 using ::testing::Return;

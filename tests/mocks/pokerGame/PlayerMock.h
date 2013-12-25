@@ -21,7 +21,7 @@ public:
 
     MOCK_CONST_METHOD2(hasBetterHand, bool(const pokerGame::Player& other, std::vector<pokerGame::card::Card> sharedCards));
     MOCK_CONST_METHOD0(getPot, float());
-    MOCK_CONST_METHOD0(getVisibleHole, std::vector<pokerGame::card::Card>());
+    MOCK_CONST_METHOD0(getVisibleHoleCards, std::vector<pokerGame::card::Card>());
 
 
     MOCK_CONST_METHOD0(isPlaying, bool());
@@ -43,9 +43,9 @@ public:
     MOCK_METHOD2(seeSmallBlind, void(const pokerGame::Player& player, float smallBlind));
     MOCK_METHOD2(seeRoundWinner, void(const pokerGame::Player& winner, float moneyWon));
     MOCK_METHOD1(seeWinner, void(const pokerGame::Player& winner));
-    MOCK_METHOD1(seeOpponentHole, void(const pokerGame::Player& opponent));
+    MOCK_METHOD1(seeOpponentHoleCards, void(const pokerGame::Player& opponent));
     MOCK_METHOD1(seeOpponentMoney, void(const pokerGame::Player& opponent));
-    MOCK_METHOD0(seeHole, void());
+    MOCK_METHOD0(seeHoleCards, void());
     MOCK_METHOD0(seeMoney, void());
 
     MOCK_CONST_METHOD0(getMoney, float());
