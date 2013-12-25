@@ -29,30 +29,8 @@ void Hand::addCard(const Card &aCard) {
     calculateBestHand();
 }
 
-void Hand::empty() {
-    cards.clear();
-    bestHand = NO_HAND_VALUE;
-}
-
-void Hand::showCards() {
-    for (std::vector<Card>::iterator it = cards.begin(); it != cards.end(); it++) {
-        it->show();
-    }
-}
-
 HandValue Hand::getHandValue() const {
     return bestHand;
-}
-
-Hand Hand::getVisibleHand() const {
-    Hand visibleHand;
-    for (Card c: cards) {
-        if (c.isVisible()) {
-            visibleHand.addCard(c);
-        }
-    }
-    visibleHand.showCards();
-    return visibleHand;
 }
 
 bool Hand::hasPair() const {

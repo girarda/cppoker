@@ -63,7 +63,67 @@ TEST_F(HandTest, handValueContainsFiveHighestCardsInDescendingOrderWhenHighHand)
         ASSERT_EQ(descendingOrderCards[i].getRank(), handValue.ranks[i]);
     }
 }
+
 TEST_F(HandTest, handValueIsPairWhenHandContainsPair) {
+    int PAIR_RANK = 6;
+    h.addCard(pokerGame::card::Card(PAIR_RANK, pokerGame::card::SPADE));
+    h.addCard(pokerGame::card::Card(PAIR_RANK, pokerGame::card::HEART));
+
+    bool hasPair = h.hasPair();
+
+    ASSERT_TRUE(hasPair);
+}
+
+TEST_F(HandTest, handValueIsPairWhenHandContainsTwoPairs) {
+    int FIRST_PAIR_RANK = 6;
+    int SECOND_PAIR_RANK = 4;h.addCard(pokerGame::card::Card(FIRST_PAIR_RANK, pokerGame::card::SPADE));
+    h.addCard(pokerGame::card::Card(FIRST_PAIR_RANK, pokerGame::card::SPADE));
+    h.addCard(pokerGame::card::Card(SECOND_PAIR_RANK, pokerGame::card::HEART));
+    h.addCard(pokerGame::card::Card(SECOND_PAIR_RANK, pokerGame::card::HEART));
+
+    bool hasPair = h.hasPair();
+
+    ASSERT_TRUE(hasPair);
+}
+
+TEST_F(HandTest, handValueIsPairWhenHandContainsThreeOfAKind) {
+    int A_RANK = 5;
+    h.addCard(pokerGame::card::Card(A_RANK, pokerGame::card::SPADE));
+    h.addCard(pokerGame::card::Card(A_RANK, pokerGame::card::HEART));
+    h.addCard(pokerGame::card::Card(A_RANK, pokerGame::card::DIAMOND));
+
+    bool hasPair = h.hasPair();
+
+    ASSERT_TRUE(hasPair);
+}
+
+TEST_F(HandTest, handValueIsPairWhenHandContainsFullHouse) {
+    int PAIR_RANK = 6;
+    int A_RANK = 5;
+    h.addCard(pokerGame::card::Card(A_RANK, pokerGame::card::SPADE));
+    h.addCard(pokerGame::card::Card(A_RANK, pokerGame::card::HEART));
+    h.addCard(pokerGame::card::Card(A_RANK, pokerGame::card::DIAMOND));
+    h.addCard(pokerGame::card::Card(PAIR_RANK, pokerGame::card::SPADE));
+    h.addCard(pokerGame::card::Card(PAIR_RANK, pokerGame::card::HEART));
+
+    bool hasPair = h.hasPair();
+
+    ASSERT_TRUE(hasPair);
+}
+
+TEST_F(HandTest, handValueIsPairWhenHandContainsFourOfAKind) {
+    int A_RANK = 5;
+    h.addCard(pokerGame::card::Card(A_RANK, pokerGame::card::SPADE));
+    h.addCard(pokerGame::card::Card(A_RANK, pokerGame::card::HEART));
+    h.addCard(pokerGame::card::Card(A_RANK, pokerGame::card::DIAMOND));
+    h.addCard(pokerGame::card::Card(A_RANK, pokerGame::card::CLUB));
+
+    bool hasPair = h.hasPair();
+
+    ASSERT_TRUE(hasPair);
+}
+
+TEST_F(HandTest, hasPairReturnsTrueIfHandContainsAPair) {
     int PAIR_RANK = 6;
     h.addCard(pokerGame::card::Card(PAIR_RANK, pokerGame::card::SPADE));
     h.addCard(pokerGame::card::Card(PAIR_RANK, pokerGame::card::HEART));
@@ -347,4 +407,18 @@ TEST_F(HandTest, handValueIsNotStraightFlushIfContainsUnrelatedStraightAndFlush)
     pokerGame::card::HandValue handValue = h.getHandValue();
 
     ASSERT_FALSE(straightFlush.type ==  handValue.type);
+}
+
+TEST_F(HandTest, sumOfPowerReturnsTheSumOfTheCardsRanks) {
+    h.addCard(pokerGame::card::Card(8, pokerGame::card::SPADE));
+    h.addCard(pokerGame::card::Card(7, pokerGame::card::SPADE));
+    h.addCard(pokerGame::card::Card(6, pokerGame::card::HEART));
+    h.addCard(pokerGame::card::Card(3, pokerGame::card::HEART));
+    h.addCard(pokerGame::card::Card(2, pokerGame::card::HEART));
+    h.addCard(pokerGame::card::Card(pokerGame::card::JACK, pokerGame::card::HEART));
+    h.addCard(pokerGame::card::Card(pokerGame::card::QUEEN, pokerGame::card::HEART));
+
+    int sumOfPower = h.getSumOfPower();
+
+    ASSERT_EQ(49 , sumOfPower);
 }

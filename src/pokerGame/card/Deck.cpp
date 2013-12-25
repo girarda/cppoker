@@ -34,8 +34,8 @@ void Deck::shuffle() {
 }
 
 void Deck::removeCard(Card card) {
-    for(std::deque<Card>::iterator it = cards.begin(); it != cards.end(); ++it) {
-        if (*it == card) {
+    for (std::vector<Card>::iterator it = cards.begin(); it != cards.end(); it++) {
+        if ((*it) == card && it->isSameSuit(card)) {
             cards.erase(it);
             break;
         }
@@ -46,7 +46,7 @@ int Deck::getCount() const {
     return cards.size();
 }
 
-std::vector<std::vector<Card> > Deck::toCouples() {
+std::vector<std::vector<Card> > Deck::toCouples() const {
     std::vector<std::vector<Card> > couplesOfCards;
     for (int i = 0; i < cards.size(); i++) {
         for (int j = i+1; j < cards.size(); j++) {

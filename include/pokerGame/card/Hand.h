@@ -32,13 +32,9 @@ public:
     int getSize() const;
     void addCard(const Card &aCard);
     HandValue getHandValue() const;
-    Hand getVisibleHand() const;
 
     bool hasPair() const;
     int getSumOfPower() const;
-
-    void empty();
-    void showCards();
 
     bool operator<(const Hand& other) const;
     bool operator>(const Hand& other) const;

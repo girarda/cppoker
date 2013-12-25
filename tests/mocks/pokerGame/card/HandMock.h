@@ -12,7 +12,6 @@ public:
     MOCK_CONST_METHOD0(getSize, int());
     MOCK_CONST_METHOD0(getSumOfPower, int());
     MOCK_CONST_METHOD0(hasPair, bool());
-    MOCK_CONST_METHOD0(getVisibleHand, pokerGame::card::Hand());
     MOCK_CONST_METHOD0(getHandValue, pokerGame::card::HandValue());
 };
 

@@ -3,7 +3,6 @@
 
 #include "pokerGame/card/Card.h"
 #include <vector>
-#include <deque>
 
 namespace pokerGame {
 namespace card {
@@ -19,13 +18,13 @@ public:
 
     virtual void removeCard(Card card);
 
-    std::vector<std::vector<Card> > toCouples();
+    std::vector<std::vector<Card> > toCouples() const;
 
     int getCount() const;
 private:
     void init();
 
-    std::deque<Card> cards;
+    std::vector<Card> cards;
 };
 
 }

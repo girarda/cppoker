@@ -31,9 +31,17 @@ TEST_F(DeckTest, drawingACardRemovesTheCardFromTheDeck) {
     ASSERT_EQ(d.getCount(), 51);
 }
 
-TEST_F(DeckTest, shuffle) {
-    // No UT present for shuffle
-    // For a shuffle test, see src/main.cpp
-    // TODO : Add Shuffle UT
-    ASSERT_TRUE(true);
+TEST_F(DeckTest, removeCardRemovesOneCardFromTheDeck) {
+    pokerGame::card::Card card(2, pokerGame::card::CLUB);
+    d.removeCard(card);
+    ASSERT_EQ(d.getCount(), 51);
+}
+
+TEST_F(DeckTest, aRemovedCardIsNotPresentInTheDeck) {
+    pokerGame::card::Card card(2, pokerGame::card::CLUB);
+    d.removeCard(card);
+    while (d.getCount() > 0) {
+        pokerGame::card::Card c = d.draw();
+        ASSERT_FALSE(c == card && card.isSameSuit(c));
+    }
 }

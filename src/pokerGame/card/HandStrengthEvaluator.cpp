@@ -1,6 +1,4 @@
 #include "pokerGame/card/HandStrengthEvaluator.h"
-#include "pokerGame/card/Deck.h"
-#include "pokerGame/card/Hand.h"
 #include <cmath>
 
 namespace pokerGame {
@@ -12,32 +10,25 @@ HandStrengthEvaluator::HandStrengthEvaluator() {
 HandStrengthEvaluator::~HandStrengthEvaluator() {
 }
 
-double HandStrengthEvaluator::evaluate(std::vector<Card> hole, std::vector<Card> sharedCards, int numberOfPlayers) {
-    int wins = 0;
-    int losses = 0;
-    int ties = 0;
-    Deck deck;
-    for(Card c: hole) {
-        deck.removeCard(c);
-    }
-    for(Card c: sharedCards) {
-        deck.removeCard(c);
-    }
+double HandStrengthEvaluator::evaluate(const std::vector<Card> &holeCards, const std::vector<Card> &sharedCards, int numberOfPlayers) {
+    Deck deck = getDeckWithoutRemovedCards(holeCards, sharedCards);
+    return evaluateHandStrength(deck, holeCards, sharedCards, numberOfPlayers);
+}
 
+double HandStrengthEvaluator::evaluateHandStrength(const Deck &deck, const std::vector<Card> &holeCards, const std::vector<Card> &sharedCards, int numberOfPlayers) {
+    int losses, ties, wins = 0;
+    Hand hand(holeCards, sharedCards);
     std::vector<std::vector<Card> > couples = deck.toCouples();
-
-    Hand playerHand(hole, sharedCards);
     for(std::vector<Card> couple: couples) {
         Hand opponentHand(couple, sharedCards);
-        if (playerHand < opponentHand) {
+        if (hand < opponentHand) {
             losses++;
-        } else if(playerHand == opponentHand) {
+        } else if(hand == opponentHand) {
             ties++;
         } else {
             wins++;
         }
     }
-
     return calculateHandStrength(wins, ties, losses, numberOfPlayers);
 }
 
@@ -46,6 +37,21 @@ double HandStrengthEvaluator::calculateHandStrength(int wins, int ties, int loss
     double totalNumber = (wins + losses + ties);
     return pow(numberOfWins/totalNumber, numberOfPlayers);
 }
+
+Deck HandStrengthEvaluator::getDeckWithoutRemovedCards(const std::vector<Card> &holeCards, const std::vector<Card> &sharedCards) {
+    Deck deck;
+    removeCards(deck, holeCards);
+    removeCards(deck, sharedCards);
+    return deck;
+}
+
+void HandStrengthEvaluator::removeCards(Deck& deck, const std::vector<Card> &cards)
+{
+    for(Card c: cards) {
+        deck.removeCard(c);
+    }
+}
+
 
 }
 }
