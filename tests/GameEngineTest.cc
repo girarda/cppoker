@@ -77,9 +77,9 @@ TEST_F(GameEngineTest, startingANewGameMakesEveryPlayersStart) {
 }
 
 TEST_F(GameEngineTest, theWinnerIsAnnouncedAfterPlayingTheGame) {
-    EXPECT_CALL(*aPlayer, isPlaying()).WillOnce(Return(true)); //TODO: find a way to mock with const ref
-    EXPECT_CALL(*aPlayer, seeWinner(_)); //TODO: find a way to mock with const ref
-    game->addPlayer(aPlayer); // _ should be *player
+    EXPECT_CALL(*aPlayer, isPlaying()).WillOnce(Return(true));
+    EXPECT_CALL(*aPlayer, seeWinner(_));
+    game->addPlayer(aPlayer);
 
     game->start();
     delete anotherPlayer;

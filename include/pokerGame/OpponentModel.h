@@ -15,6 +15,8 @@ public:
     double getHandStrengthAverage() const;
     double getHandStrengthDeviation() const;
 
+    bool operator==(const OpponentModel& other) const;
+
 private:
     int numberOfOccurrences;
     double handStrengthAverage;

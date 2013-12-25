@@ -32,4 +32,10 @@ double OpponentModel::getHandStrengthDeviation() const {
     return handStrengthDeviation;
 }
 
+bool OpponentModel::operator==(const OpponentModel& other) const {
+    return numberOfOccurrences == other.numberOfOccurrences &&
+            handStrengthAverage == other.handStrengthAverage &&
+            handStrengthDeviation == other.handStrengthDeviation;
+}
+
 }

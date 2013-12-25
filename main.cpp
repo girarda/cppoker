@@ -132,7 +132,8 @@ int main(int argc, char** argv) {
     initRandom();
     //runPreFlopSimulation();
 //    runBotSimulation();
-    runContextBotSimulation();
+//    runContextBotSimulation();
+    runServer();
     return 0;
 }
 
