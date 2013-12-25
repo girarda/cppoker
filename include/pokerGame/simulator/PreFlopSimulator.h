@@ -6,7 +6,7 @@
 #include "pokerGame/PlayerController.h"
 #include "pokerGame/BettingRound.h"
 #include "pokerGame/GameRound.h"
-#include "pokerGame/Deck.h"
+#include "pokerGame/card/Deck.h"
 #include "pokerGame/simulator/PreFlopStatistics.h"
 #include <vector>
 
@@ -30,7 +30,7 @@ private:
     WinningStatistics statisticsController;
     PlayerController* playerController;
     GameRound* gameRoundSimulator;
-    Deck* deck;
+    card::Deck* deck;
     BettingRound* bettingRound;
     PreFlopStatistics statistics;
     std::map<std::pair<HoleCardsEquivalence*, int>, double> percentageOfWinning;

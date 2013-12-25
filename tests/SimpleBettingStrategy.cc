@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "HandMock.h"
+#include "mocks/pokerGame/card/HandMock.h"
 #include "playerInterface/bot/SimpleBettingStrategy.h"
 #include "pokerGame/context/BettingContext.h"
 
@@ -7,8 +7,8 @@ using ::testing::Return;
 
 class SimpleBettingStrategy : public ::testing::Test {
 protected:
-    std::vector<pokerGame::Card>* hole;
-    std::vector<pokerGame::Card>* sharedCards;
+    std::vector<pokerGame::card::Card>* hole;
+    std::vector<pokerGame::card::Card>* sharedCards;
     playerInterface::bot::BettingStrategy* simpleBettingStrategy;
     pokerGame::context::BettingContext* bettingContext;
 
@@ -27,8 +27,8 @@ protected:
     void initPostFlopPair();
 
     virtual void SetUp() {
-        hole = new std::vector<pokerGame::Card>();
-        sharedCards = new std::vector<pokerGame::Card>();
+        hole = new std::vector<pokerGame::card::Card>();
+        sharedCards = new std::vector<pokerGame::card::Card>();
         simpleBettingStrategy = new playerInterface::bot::SimpleBettingStrategy();
         bettingContext = new pokerGame::context::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);
     }
@@ -132,32 +132,32 @@ const pokerGame::BettingRoundType SimpleBettingStrategy::A_BETTING_ROUND_TYPE(po
 //}
 
 void SimpleBettingStrategy::initPreFlopPair() {
-    pokerGame::Card c1(pokerGame::ACE, pokerGame::SPADE);
-    pokerGame::Card c2(pokerGame::ACE, pokerGame::HEART);
+    pokerGame::card::Card c1(pokerGame::card::ACE, pokerGame::card::SPADE);
+    pokerGame::card::Card c2(pokerGame::card::ACE, pokerGame::card::HEART);
     hole->push_back(c1);
     hole->push_back(c2);
 }
 
 void SimpleBettingStrategy::initPreFlopSumOfPowerHigherThan16() {
-    pokerGame::Card c1(pokerGame::KING, pokerGame::SPADE);
-    pokerGame::Card c2(pokerGame::QUEEN, pokerGame::HEART);
+    pokerGame::card::Card c1(pokerGame::card::KING, pokerGame::card::SPADE);
+    pokerGame::card::Card c2(pokerGame::card::QUEEN, pokerGame::card::HEART);
     hole->push_back(c1);
     hole->push_back(c2);
 }
 
 void SimpleBettingStrategy::initPreFlopSumOfPowerLowerThan16() {
-    pokerGame::Card c1(2, pokerGame::SPADE);
-    pokerGame::Card c2(3, pokerGame::HEART);
+    pokerGame::card::Card c1(2, pokerGame::card::SPADE);
+    pokerGame::card::Card c2(3, pokerGame::card::HEART);
     hole->push_back(c1);
     hole->push_back(c2);
 }
 
 void SimpleBettingStrategy::initPostFlopStraight() {
-    pokerGame::Card c1(2, pokerGame::SPADE);
-    pokerGame::Card c2(3, pokerGame::HEART);
-    pokerGame::Card c3(4, pokerGame::HEART);
-    pokerGame::Card c4(5, pokerGame::HEART);
-    pokerGame::Card c5(6, pokerGame::HEART);
+    pokerGame::card::Card c1(2, pokerGame::card::SPADE);
+    pokerGame::card::Card c2(3, pokerGame::card::HEART);
+    pokerGame::card::Card c3(4, pokerGame::card::HEART);
+    pokerGame::card::Card c4(5, pokerGame::card::HEART);
+    pokerGame::card::Card c5(6, pokerGame::card::HEART);
     hole->push_back(c1);
     hole->push_back(c2);
     sharedCards->push_back(c3);
@@ -166,18 +166,18 @@ void SimpleBettingStrategy::initPostFlopStraight() {
 }
 
 void SimpleBettingStrategy::initPostFlopHighCard() {
-    pokerGame::Card c1(2, pokerGame::SPADE);
-    pokerGame::Card c2(3, pokerGame::HEART);
-    pokerGame::Card c3(4, pokerGame::HEART);
+    pokerGame::card::Card c1(2, pokerGame::card::SPADE);
+    pokerGame::card::Card c2(3, pokerGame::card::HEART);
+    pokerGame::card::Card c3(4, pokerGame::card::HEART);
     hole->push_back(c1);
     hole->push_back(c2);
     sharedCards->push_back(c3);
 }
 
 void SimpleBettingStrategy::initPostFlopPair() {
-    pokerGame::Card c1(2, pokerGame::SPADE);
-    pokerGame::Card c2(2, pokerGame::HEART);
-    pokerGame::Card c3(4, pokerGame::HEART);
+    pokerGame::card::Card c1(2, pokerGame::card::SPADE);
+    pokerGame::card::Card c2(2, pokerGame::card::HEART);
+    pokerGame::card::Card c3(4, pokerGame::card::HEART);
     hole->push_back(c1);
     hole->push_back(c2);
     sharedCards->push_back(c3);

@@ -1,8 +1,10 @@
-#include "pokerGame/Hand.h"
+#include "pokerGame/card/Hand.h"
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 
 namespace pokerGame {
+namespace card {
+
 Hand::Hand(): size(0) ,cards(), bestHand(NO_HAND_VALUE) {
 }
 
@@ -22,7 +24,7 @@ int Hand::getSize() const {
     return cards.size();
 }
 
-void Hand::addCard(const pokerGame::Card &aCard) {
+void Hand::addCard(const Card &aCard) {
     cards.push_back(aCard);
     calculateBestHand();
 }
@@ -299,7 +301,7 @@ bool Hand::operator<(const Hand& other) const {
         return bestHand.type < other.getHandValue().type;
     }
 
-    for( int i(0) ; i < pokerGame::HAND_SIZE ; i++ ) {
+    for( int i(0) ; i < HAND_SIZE ; i++ ) {
         if (bestHand.ranks[i] != other.getHandValue().ranks[i]) {
             return  bestHand.ranks[i] < other.getHandValue().ranks[i];
         }
@@ -335,4 +337,5 @@ std::string Hand::toString() const {
     return str;
 }
 
+}
 }

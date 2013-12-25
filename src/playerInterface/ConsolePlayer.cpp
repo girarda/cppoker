@@ -7,7 +7,7 @@ namespace playerInterface {
 ConsolePlayer::ConsolePlayer() {
 }
 
-pokerGame::Decision ConsolePlayer::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
+pokerGame::Decision ConsolePlayer::makeDecision(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
 
     std::string choice;
     pokerGame::Decision decision;
@@ -54,7 +54,7 @@ void ConsolePlayer::seeWinner(std::string winner) {
     deliver(message);
 }
 
-void ConsolePlayer::seeOpponentHole(std::string opponent, const pokerGame::Hand& hand) {
+void ConsolePlayer::seeOpponentHole(std::string opponent, const pokerGame::card::Hand& hand) {
     std::string msg = "Player " + opponent + " has " + hand.toString() + ".";
     deliver(msg);
 }
@@ -65,7 +65,7 @@ void ConsolePlayer::seeOpponentMoney(std::string opponent, float money) {
     deliver(ss.str());
 }
 
-void ConsolePlayer::seeHole(std::vector<pokerGame::Card> hole) {
+void ConsolePlayer::seeHole(std::vector<pokerGame::card::Card> hole) {
     std::string msg = "You cards are: " + hole[0].toString() + " ," + hole[1].toString();
     deliver(msg);
 }

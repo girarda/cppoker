@@ -3,7 +3,7 @@
 namespace pokerGame {
 namespace simulator {
 
-GameRoundPreFlopSimulator::GameRoundPreFlopSimulator(Deck *deckToUse, BettingRound* bettingRoundToUse, HoleCardsEquivalence* equivalence) : GameRound(deckToUse, bettingRoundToUse), holeCardsEquivalence(equivalence)
+GameRoundPreFlopSimulator::GameRoundPreFlopSimulator(card::Deck *deckToUse, BettingRound* bettingRoundToUse, HoleCardsEquivalence* equivalence) : GameRound(deckToUse, bettingRoundToUse), holeCardsEquivalence(equivalence)
 {
 }
 
@@ -11,8 +11,8 @@ void GameRoundPreFlopSimulator::distributeHoles() {
     Player* player1 = gameContext->getPlayers()[0];
     gameContext->removePlayer(0);
 
-    std::vector<Card> holeCards = holeCardsEquivalence->equivalenceToCards();
-    for (Card c: holeCards) {
+    std::vector<card::Card> holeCards = holeCardsEquivalence->equivalenceToCards();
+    for (card::Card c: holeCards) {
         player1->addCardToHole(c);
         deck->removeCard(c);
     }

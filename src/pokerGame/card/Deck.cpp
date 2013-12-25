@@ -1,8 +1,9 @@
-#include "pokerGame/Deck.h"
+#include "pokerGame/card/Deck.h"
 #include <assert.h>
 #include <algorithm>
 
 namespace pokerGame {
+namespace card {
 
 Deck::Deck() : cards() {
     init();
@@ -58,4 +59,5 @@ std::vector<std::vector<Card> > Deck::toCouples() {
     return couplesOfCards;
 }
 
+}
 }

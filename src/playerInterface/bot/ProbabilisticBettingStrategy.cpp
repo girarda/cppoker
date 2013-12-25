@@ -4,25 +4,25 @@
 namespace playerInterface {
 namespace bot {
 
-ProbabilisticBettingStrategy::ProbabilisticBettingStrategy(pokerGame::HandStrengthEvaluator* handEvaluator, pokerGame::simulator::PreFlopStatistics* statistics) : handStrengthEvaluator(handEvaluator), preFlopStatistics(statistics) {
+ProbabilisticBettingStrategy::ProbabilisticBettingStrategy(pokerGame::card::HandStrengthEvaluator* handEvaluator, pokerGame::simulator::PreFlopStatistics* statistics) : handStrengthEvaluator(handEvaluator), preFlopStatistics(statistics) {
 }
 
 ProbabilisticBettingStrategy::~ProbabilisticBettingStrategy() {
 }
 
-pokerGame::Decision ProbabilisticBettingStrategy::makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
+pokerGame::Decision ProbabilisticBettingStrategy::makePreFlopDecision(std::vector<pokerGame::card::Card> hole, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
     preFlopStatistics->load("../preflop_simulation.data");
     pokerGame::HoleCardsEquivalence equivalence(hole[0].getRank(), hole[1].getRank());
     double p = preFlopStatistics->getWinningProbability(&equivalence, bettingContext->getNumberOfPlayers());
     return makeDecisionBasedOnProbabilities(p, minBet, bigBlind);
 }
 
-pokerGame::Decision ProbabilisticBettingStrategy::makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
+pokerGame::Decision ProbabilisticBettingStrategy::makePostFlopDecision(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
     double p = calculateCoefficient(hole, sharedCards, bettingContext);
     return makeDecisionBasedOnProbabilities(p, minBet, bigBlind);
 }
 
-double ProbabilisticBettingStrategy::calculateCoefficient(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, pokerGame::context::BettingContext* bettingContext) {
+double ProbabilisticBettingStrategy::calculateCoefficient(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, pokerGame::context::BettingContext* bettingContext) {
     double p = handStrengthEvaluator->evaluate(hole, sharedCards, bettingContext->getNumberOfPlayers());
 
     // Decision depends on the number of players

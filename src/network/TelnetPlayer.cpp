@@ -118,7 +118,7 @@ void TelnetPlayer::seeOpponentMoney(std::string player, float money) {
     deliver(ss.str());
 }
 
-void TelnetPlayer::seeOpponentHole(std::string player, const pokerGame::Hand& playersHand) {
+void TelnetPlayer::seeOpponentHole(std::string player, const pokerGame::card::Hand& playersHand) {
     std::string msg = "Player " + player + " has " + playersHand.toString() + ".";
     deliver(msg);
 }
@@ -139,12 +139,12 @@ void TelnetPlayer::sendChatMessage(std::string sender, std::string message) {
     room->sendChatMessage(msg);
 }
 
-void TelnetPlayer::seeHole(std::vector<pokerGame::Card> hole) {
+void TelnetPlayer::seeHole(std::vector<pokerGame::card::Card> hole) {
     std::string msg = "You cards are: " + hole[0].toString() + " ," + hole[1].toString();
     deliver(msg);
 }
 
-pokerGame::Decision TelnetPlayer::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
+pokerGame::Decision TelnetPlayer::makeDecision(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
     read_state = RS_WAITING_FOR_PLAY;
     decision.choice = pokerGame::WAITING;
     while (decision.choice == pokerGame::WAITING) {

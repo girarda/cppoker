@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "pokerGame/OpponentModel.h"
-#include "pokerGame/Hand.h"
+#include "pokerGame/card/Hand.h"
 #include "pokerGame/PlayerController.h"
 #include "pokerGame/context/BettingContext.h"
 
@@ -16,7 +16,7 @@ public:
     Player(PlayerController *aPlayerController, float initialMoney);
     virtual ~Player();
 
-    virtual Decision makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards, context::BettingContext* bettingContext, std::vector<OpponentModel> opponents);
+    virtual Decision makeDecision(float minBet, float bigBlind, std::vector<card::Card> sharedCards, context::BettingContext* bettingContext, std::vector<OpponentModel> opponents);
 
     virtual void setMoney(float newValue);
 
@@ -25,9 +25,9 @@ public:
     virtual void fold();
     virtual void setupForNewRound();
 
-    virtual bool hasBetterHand(const Player& other, std::vector<Card> sharedCards) const;
+    virtual bool hasBetterHand(const Player& other, std::vector<card::Card> sharedCards) const;
     virtual float getPot() const;
-    virtual std::vector<Card> getVisibleHole() const;
+    virtual std::vector<card::Card> getVisibleHole() const;
 
     virtual bool isPlaying() const;
     virtual bool isFolded() const;
@@ -37,7 +37,7 @@ public:
 
     virtual void showCards();
 
-    virtual void addCardToHole(Card card);
+    virtual void addCardToHole(card::Card card);
     virtual void addToPot(float moneyToAdd);
     virtual void winMoney(float gainedMoney);
 
@@ -71,7 +71,7 @@ private:
 
     void discardCards();
 
-    std::vector<Card> hole;
+    std::vector<card::Card> hole;
 
     PlayerController *playerController;
 

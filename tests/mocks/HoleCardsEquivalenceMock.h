@@ -11,7 +11,7 @@ public:
     HoleCardsEquivalenceMock() :pokerGame::HoleCardsEquivalence(2,3) {}
     MOCK_CONST_METHOD0(getNumber1, int());
     MOCK_CONST_METHOD0(getNumber2, int());
-    MOCK_CONST_METHOD0(equivalenceToCards, std::vector<pokerGame::Card>());
+    MOCK_CONST_METHOD0(equivalenceToCards, std::vector<pokerGame::card::Card>());
 };
 
 }

@@ -3,7 +3,7 @@
 namespace playerInterface {
 namespace bot {
 
-AgressiveBettingStrategy::AgressiveBettingStrategy(pokerGame::HandStrengthEvaluator* handEvaluator, BettingStrategy* secondBettingStrategy) : ContextBasedBettingStrategy(handEvaluator, secondBettingStrategy) {
+AgressiveBettingStrategy::AgressiveBettingStrategy(pokerGame::card::HandStrengthEvaluator* handEvaluator, BettingStrategy* secondBettingStrategy) : ContextBasedBettingStrategy(handEvaluator, secondBettingStrategy) {
 }
 
 pokerGame::Decision AgressiveBettingStrategy::decideBet(float minBet, float bigBlind, int oppponentsWithBetterEstimatedHandStrength, int opponentsModeledCount) {

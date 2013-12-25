@@ -3,7 +3,7 @@
 namespace playerInterface {
 namespace bot {
 
-ConservativeBettingStrategy::ConservativeBettingStrategy(pokerGame::HandStrengthEvaluator* handEvaluator, BettingStrategy* secondBettingStrategy) : ContextBasedBettingStrategy(handEvaluator, secondBettingStrategy) {
+ConservativeBettingStrategy::ConservativeBettingStrategy(pokerGame::card::HandStrengthEvaluator* handEvaluator, BettingStrategy* secondBettingStrategy) : ContextBasedBettingStrategy(handEvaluator, secondBettingStrategy) {
 }
 
 pokerGame::Decision ConservativeBettingStrategy::decideBet(float minBet, float bigBlind, int oppponentsWithBetterEstimatedHandStrength, int opponentsModeledCount) {

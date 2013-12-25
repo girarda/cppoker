@@ -1,11 +1,14 @@
-#include "pokerGame/Card.h"
+#include "pokerGame/card/Card.h"
 #include <assert.h>
 #include <sstream>
 
 namespace pokerGame {
+namespace card {
+
+
 Card::Card(int rank, int suit): rank(rank), suit(suit), visible(true) {
-    assert(rank <= pokerGame::MAX_RANK && rank >= pokerGame::MIN_RANK);
-    assert(suit <= pokerGame::MAX_SUIT && suit >= pokerGame::MIN_SUIT);
+    assert(rank <= MAX_RANK && rank >= MIN_RANK);
+    assert(suit <= MAX_SUIT && suit >= MIN_SUIT);
 }
 
 int Card::getRank() const {
@@ -66,6 +69,8 @@ std::string Card::toString() const {
     }
 
     return retval;
+
 }
 
+}
 }

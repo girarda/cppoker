@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
 #include <vector>
 #include "pokerGame/GameRound.h"
-#include "pokerGame/Card.h"
+#include "pokerGame/card/Card.h"
 #include "PlayerMock.h"
-#include "DeckMock.h"
+#include "mocks/pokerGame/card/DeckMock.h"
 #include "BettingRoundMock.h"
 #include "pokerGame/BettingRoundType.h"
 #include <string>
@@ -23,7 +23,7 @@ protected:
     test::PlayerMock* anotherPlayer;
     test::DeckMock* deck;
     test::BettingRoundMock* bettingRound;
-    pokerGame::Card* aCard;
+    pokerGame::card::Card* aCard;
 
     std::vector<pokerGame::Player*> players;
 
@@ -42,7 +42,7 @@ protected:
     static const pokerGame::BettingRoundType A_BETTING_ROUND_TYPE;
 
     virtual void SetUp() {
-        aCard = new pokerGame::Card(2, pokerGame::CLUB);
+        aCard = new pokerGame::card::Card(2, pokerGame::card::CLUB);
         aPlayer = new test::PlayerMock();
         anotherPlayer = new test::PlayerMock();
         deck = new test::DeckMock();

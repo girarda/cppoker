@@ -1,9 +1,10 @@
-#include "pokerGame/HandStrengthEvaluator.h"
-#include "pokerGame/Deck.h"
-#include "pokerGame/Hand.h"
+#include "pokerGame/card/HandStrengthEvaluator.h"
+#include "pokerGame/card/Deck.h"
+#include "pokerGame/card/Hand.h"
 #include <cmath>
 
 namespace pokerGame {
+namespace card {
 
 HandStrengthEvaluator::HandStrengthEvaluator() {
 }
@@ -46,4 +47,5 @@ double HandStrengthEvaluator::calculateHandStrength(int wins, int ties, int loss
     return pow(numberOfWins/totalNumber, numberOfPlayers);
 }
 
+}
 }

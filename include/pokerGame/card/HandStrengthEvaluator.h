@@ -5,6 +5,7 @@
 #include"Card.h"
 
 namespace pokerGame {
+namespace card {
 
 class HandStrengthEvaluator {
 public:
@@ -17,6 +18,7 @@ private:
 
 };
 
+}
 }
 
 #endif

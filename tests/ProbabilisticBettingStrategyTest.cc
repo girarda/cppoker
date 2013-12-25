@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "HandStrengthEvaluatorMock.h"
+#include "mocks/pokerGame/card/HandStrengthEvaluatorMock.h"
 #include "playerInterface/bot/ProbabilisticBettingStrategy.h"
 #include "tests/mocks/PreFlopStatisticsMock.h"
 #include "pokerGame/context/BettingContext.h"
@@ -9,8 +9,8 @@ using ::testing::_;
 
 class ProbabilisticBettingStrategyTest : public ::testing::Test {
 protected:
-    std::vector<pokerGame::Card>* hole;
-    std::vector<pokerGame::Card>* sharedCards;
+    std::vector<pokerGame::card::Card>* hole;
+    std::vector<pokerGame::card::Card>* sharedCards;
     playerInterface::bot::BettingStrategy* probabilisticBettingStrategy;
     test::HandStrengthEvaluatorMock* handEvaluator;
     test::PreFlopStatisticsMock* preFlopStatistics;
@@ -30,8 +30,8 @@ protected:
     static const pokerGame::BettingRoundType A_BETTING_ROUND_TYPE;
 
     virtual void SetUp() {
-        hole = new std::vector<pokerGame::Card>();
-        sharedCards = new std::vector<pokerGame::Card>();
+        hole = new std::vector<pokerGame::card::Card>();
+        sharedCards = new std::vector<pokerGame::card::Card>();
         handEvaluator = new test::HandStrengthEvaluatorMock();
         preFlopStatistics = new test::PreFlopStatisticsMock();
         probabilisticBettingStrategy = new playerInterface::bot::ProbabilisticBettingStrategy(handEvaluator, preFlopStatistics);
@@ -164,18 +164,18 @@ const pokerGame::BettingRoundType ProbabilisticBettingStrategyTest::A_BETTING_RO
 //}
 
 void ProbabilisticBettingStrategyTest::initPreFlopHand() {
-    pokerGame::Card c1(2, pokerGame::SPADE);
-    pokerGame::Card c2(3, pokerGame::HEART);
+    pokerGame::card::Card c1(2, pokerGame::card::SPADE);
+    pokerGame::card::Card c2(3, pokerGame::card::HEART);
     hole->push_back(c1);
     hole->push_back(c2);
 }
 
 void ProbabilisticBettingStrategyTest::initPostFlopHand() {
-    pokerGame::Card c1(2, pokerGame::SPADE);
-    pokerGame::Card c2(3, pokerGame::HEART);
-    pokerGame::Card c3(3, pokerGame::SPADE);
-    pokerGame::Card c4(3, pokerGame::CLUB);
-    pokerGame::Card c5(6, pokerGame::HEART);
+    pokerGame::card::Card c1(2, pokerGame::card::SPADE);
+    pokerGame::card::Card c2(3, pokerGame::card::HEART);
+    pokerGame::card::Card c3(3, pokerGame::card::SPADE);
+    pokerGame::card::Card c4(3, pokerGame::card::CLUB);
+    pokerGame::card::Card c5(6, pokerGame::card::HEART);
     hole->push_back(c1);
     hole->push_back(c2);
     sharedCards->push_back(c3);

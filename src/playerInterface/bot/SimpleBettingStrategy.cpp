@@ -9,10 +9,10 @@ SimpleBettingStrategy::SimpleBettingStrategy() {
 SimpleBettingStrategy::~SimpleBettingStrategy() {
 }
 
-pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
-    pokerGame::Hand hand(hole);
+pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(std::vector<pokerGame::card::Card> hole, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
+    pokerGame::card::Hand hand(hole);
     pokerGame::Decision decision;
-    if(hand.getHandValue().type == pokerGame::HandType::PAIR) {
+    if(hand.getHandValue().type == pokerGame::card::HandType::PAIR) {
         decision.choice = pokerGame::RAISE;
         decision.bet = minBet + bigBlind;
     } else if(hand.getSumOfPower() > 16) {
@@ -25,10 +25,10 @@ pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(std::vector<poker
     return decision;
 }
 
-pokerGame::Decision SimpleBettingStrategy::makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
-    pokerGame::Hand hand(hole, sharedCards);
+pokerGame::Decision SimpleBettingStrategy::makePostFlopDecision(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
+    pokerGame::card::Hand hand(hole, sharedCards);
     pokerGame::Decision decision;
-    if(hand.getHandValue().type == pokerGame::HandType::HIGH_CARD) {
+    if(hand.getHandValue().type == pokerGame::card::HandType::HIGH_CARD) {
         if(minBet == 0) {
             decision.choice = pokerGame::CALL;
             decision.bet = minBet;
@@ -36,7 +36,7 @@ pokerGame::Decision SimpleBettingStrategy::makePostFlopDecision(std::vector<poke
             decision.choice = pokerGame::FOLD;
             decision.bet = 0;
         }
-    } else if(hand.getHandValue().type >= pokerGame::STRAIGHT) {
+    } else if(hand.getHandValue().type >= pokerGame::card::STRAIGHT) {
         decision.choice = pokerGame::RAISE;
         decision.bet = minBet + bigBlind;
     } else {

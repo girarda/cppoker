@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "pokerGame/HoleCardsEquivalence.h"
-#include "pokerGame/Card.h"
+#include "pokerGame/card/Card.h"
 
 class HoleCardsEquivalenceTest : public ::testing::Test {
 protected:
@@ -26,7 +26,7 @@ const int HoleCardsEquivalenceTest::DIFFERENT_CARD_RANK_2(5);
 
 TEST_F(HoleCardsEquivalenceTest, ifCardsHaveSameValueThenEquivalenceCardsHaveSameRankButDifferentSuits) {
     holeCardsEquivalence = new pokerGame::HoleCardsEquivalence(SAME_CARD_RANK, SAME_CARD_RANK);
-    std::vector<pokerGame::Card> equivalenceCards = holeCardsEquivalence->equivalenceToCards();
+    std::vector<pokerGame::card::Card> equivalenceCards = holeCardsEquivalence->equivalenceToCards();
     bool ranksAreEqual = (equivalenceCards[0].getRank() == equivalenceCards[1].getRank()) && (equivalenceCards[0].getRank() == SAME_CARD_RANK);
     bool suitsAreEqual = equivalenceCards[0].getSuit() == equivalenceCards[1].getSuit();
     ASSERT_TRUE(ranksAreEqual);
@@ -35,7 +35,7 @@ TEST_F(HoleCardsEquivalenceTest, ifCardsHaveSameValueThenEquivalenceCardsHaveSam
 
 TEST_F(HoleCardsEquivalenceTest, ifCardsHaveDifferentValuesThenEquivalenceCardsHaveDifferentValuesButSameSuit) {
     holeCardsEquivalence = new pokerGame::HoleCardsEquivalence(DIFFERENT_CARD_RANK_1, DIFFERENT_CARD_RANK_2);
-    std::vector<pokerGame::Card> equivalenceCards = holeCardsEquivalence->equivalenceToCards();
+    std::vector<pokerGame::card::Card> equivalenceCards = holeCardsEquivalence->equivalenceToCards();
     bool ranksAreEqual = equivalenceCards[0].getRank() == equivalenceCards[1].getRank();
     bool suitsAreEqual = equivalenceCards[0].getSuit() == equivalenceCards[1].getSuit();
     ASSERT_FALSE(ranksAreEqual);

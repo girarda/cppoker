@@ -17,7 +17,7 @@ protected:
     test::PlayerMock* anotherPlayer;
     pokerGame::context::BettingContext* bettingContext;
 
-    std::vector<pokerGame::Card> sharedCards;
+    std::vector<pokerGame::card::Card> sharedCards;
     pokerGame::GameContext* gameContext;
 
     static const float BIG_BLIND;

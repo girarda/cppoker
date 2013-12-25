@@ -3,18 +3,18 @@
 
 #include <vector>
 #include "pokerGame/Player.h"
-#include "Deck.h"
-#include "BettingRound.h"
+#include "pokerGame/card/Deck.h"
+#include "pokerGame/BettingRound.h"
 #include "GameContext.h"
 #include "BettingRoundType.h"
-#include "pokerGame/HandStrengthEvaluator.h"
+#include "pokerGame/card/HandStrengthEvaluator.h"
 #include "gtest/gtest_prod.h"
 
 namespace pokerGame {
 
 class GameRound {
 public:
-    GameRound(Deck *deckToUse, BettingRound* bettingRoundToUse);
+    GameRound(card::Deck *deckToUse, BettingRound* bettingRoundToUse);
 
     virtual void playRound(GameContext* gameContext);
 
@@ -24,13 +24,13 @@ protected:
     virtual void distributeHoles();
     void distributeOneCard();
 
-    Deck* deck;
+    card::Deck* deck;
     GameContext* gameContext;
 
 private:
-    std::vector<Card> sharedCards;
+    std::vector<card::Card> sharedCards;
     BettingRound* bettingRound;
-    HandStrengthEvaluator handEvaluator;
+    card::HandStrengthEvaluator handEvaluator;
     std::map<Player*, std::vector<context::ActionContext> > bettingActions;
 
     void initialize(GameContext* gameContext);

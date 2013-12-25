@@ -11,7 +11,7 @@ namespace simulator {
 PreFlopSimulator::PreFlopSimulator() :
     statisticsController(),
     holeCardsEquivalences(),
-    deck(new Deck()),
+    deck(new card::Deck()),
     bettingRound(new BettingRound()),
     gameRoundSimulator(0),
     statistics(),

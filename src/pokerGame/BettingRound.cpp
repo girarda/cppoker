@@ -7,7 +7,7 @@ namespace pokerGame {
 BettingRound::BettingRound() : gameContext(0), sharedCards(), numberOfRaises(0), actionContexts() {
 }
 
-void BettingRound::start(GameContext* gameContext, std::vector<Card> sharedCards, BettingRoundType bettingRoundType) {
+void BettingRound::start(GameContext* gameContext, std::vector<card::Card> sharedCards, BettingRoundType bettingRoundType) {
     initialize(gameContext, sharedCards, bettingRoundType);
 
     bool entirePass = false;
@@ -23,7 +23,7 @@ void BettingRound::start(GameContext* gameContext, std::vector<Card> sharedCards
     } while (!(entirePass && allPotsAreEven()));
 }
 
-void BettingRound::initialize(GameContext* gameContext, std::vector<Card> sharedCards, BettingRoundType bettingRoundType) {
+void BettingRound::initialize(GameContext* gameContext, std::vector<card::Card> sharedCards, BettingRoundType bettingRoundType) {
     this->gameContext = gameContext;
     this->sharedCards = sharedCards;
     this->gameContext->setCurrentPlayerDealer();

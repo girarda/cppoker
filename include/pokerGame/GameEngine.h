@@ -1,5 +1,5 @@
 #include "pokerGame/Player.h"
-#include "pokerGame/Deck.h"
+#include "pokerGame/card/Deck.h"
 #include "network/OnlineRoom.h"
 #include "GameRound.h"
 #include "GameContext.h"

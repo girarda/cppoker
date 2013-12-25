@@ -8,7 +8,7 @@ namespace bot {
 
 class ConservativeBettingStrategy: public ContextBasedBettingStrategy {
 public:
-    ConservativeBettingStrategy(pokerGame::HandStrengthEvaluator* handEvaluator, BettingStrategy* secondBettingStrategy);
+    ConservativeBettingStrategy(pokerGame::card::HandStrengthEvaluator* handEvaluator, BettingStrategy* secondBettingStrategy);
 
     virtual pokerGame::Decision decideBet(float minBet, float bigBlind, int oppponentsWithBetterEstimatedHandStrength, int opponentsModeledCount);
 };

@@ -11,10 +11,10 @@ SimpleBettingBluffStrategy::~SimpleBettingBluffStrategy() {
 
 }
 
-pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(std::vector<pokerGame::Card> hole, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
-    pokerGame::Hand hand(hole);
+pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(std::vector<pokerGame::card::Card> hole, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
+    pokerGame::card::Hand hand(hole);
     pokerGame::Decision decision;
-    if(hand.getHandValue().type == pokerGame::HandType::PAIR || hand.getSumOfPower() < 9) {
+    if(hand.getHandValue().type == pokerGame::card::HandType::PAIR || hand.getSumOfPower() < 9) {
         decision.choice = pokerGame::RAISE;
         decision.bet = minBet + bigBlind;
     } else if(hand.getSumOfPower() > 16)
@@ -29,10 +29,10 @@ pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(std::vector<
     return decision;
 }
 
-pokerGame::Decision SimpleBettingBluffStrategy::makePostFlopDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
-    pokerGame::Hand hand(hole, sharedCards);
+pokerGame::Decision SimpleBettingBluffStrategy::makePostFlopDecision(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
+    pokerGame::card::Hand hand(hole, sharedCards);
     pokerGame::Decision decision;
-    if(hand.getHandValue().type == pokerGame::HandType::HIGH_CARD || hand.getHandValue().type >= pokerGame::THREE_OF_A_KIND) {
+    if(hand.getHandValue().type == pokerGame::card::HandType::HIGH_CARD || hand.getHandValue().type >= pokerGame::card::THREE_OF_A_KIND) {
         decision.choice = pokerGame::RAISE;
         decision.bet = minBet + bigBlind;
     } else if(minBet == 0) {

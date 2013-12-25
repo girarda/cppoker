@@ -11,7 +11,7 @@ BotPlayerController::~BotPlayerController() {
     }
 }
 
-pokerGame::Decision BotPlayerController::makeDecision(std::vector<pokerGame::Card> hole, std::vector<pokerGame::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
+pokerGame::Decision BotPlayerController::makeDecision(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, float minBet, float bigBlind, pokerGame::context::BettingContext* bettingContext, std::vector<pokerGame::OpponentModel> opponents) {
     return bettingStrategy->makeDecision(hole, sharedCards, minBet, bigBlind, bettingContext, opponents);
 }
 
@@ -27,13 +27,13 @@ void BotPlayerController::seeSmallBlind(std::string player, float smallBlind) {
 void BotPlayerController::seeWinner(std::string winner) {
 }
 
-void BotPlayerController::seeOpponentHole(std::string opponent, const pokerGame::Hand& hand) {
+void BotPlayerController::seeOpponentHole(std::string opponent, const pokerGame::card::Hand& hand) {
 }
 
 void BotPlayerController::seeOpponentMoney(std::string opponent, float money) {
 }
 
-void BotPlayerController::seeHole(std::vector<pokerGame::Card> hole) {
+void BotPlayerController::seeHole(std::vector<pokerGame::card::Card> hole) {
 }
 
 void BotPlayerController::seeMoney(float money) {

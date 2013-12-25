@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "pokerGame/Deck.h"
+#include "pokerGame/card/Deck.h"
 
 class DeckTest : public ::testing::Test {
 protected:
@@ -8,22 +8,22 @@ protected:
     virtual void TearDown() {
     }
 
-    pokerGame::Deck d;
+    pokerGame::card::Deck d;
 };
 
 TEST_F(DeckTest, burnRemovesOneCardFromTheDeck) {
     d.burn();
-    ASSERT_EQ(d.getCount(), pokerGame::DECK_SIZE-1);
+    ASSERT_EQ(d.getCount(), pokerGame::card::DECK_SIZE-1);
 }
 
 TEST_F(DeckTest, drawCard) {
-    pokerGame::Card newCard(d.draw());
-    ASSERT_EQ(newCard.getSuit(), pokerGame::SPADE);
-    ASSERT_EQ(newCard.getRank(), pokerGame::ACE);
+    pokerGame::card::Card newCard(d.draw());
+    ASSERT_EQ(newCard.getSuit(), pokerGame::card::SPADE);
+    ASSERT_EQ(newCard.getRank(), pokerGame::card::ACE);
 
-    pokerGame::Card secondCard(d.draw());
-    ASSERT_EQ(secondCard.getSuit(), pokerGame::CLUB);
-    ASSERT_EQ(secondCard.getRank(), pokerGame::ACE);
+    pokerGame::card::Card secondCard(d.draw());
+    ASSERT_EQ(secondCard.getSuit(), pokerGame::card::CLUB);
+    ASSERT_EQ(secondCard.getRank(), pokerGame::card::ACE);
 }
 
 TEST_F(DeckTest, drawingACardRemovesTheCardFromTheDeck) {

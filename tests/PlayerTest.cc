@@ -12,7 +12,7 @@ protected:
     test::PlayerControllerMock* aPlayerController;
     pokerGame::Player* aPlayer;
     pokerGame::context::BettingContext* bettingContext;
-    std::vector<pokerGame::Card>* sharedCards;
+    std::vector<pokerGame::card::Card>* sharedCards;
 
     static const float NO_MONEY;
     static const float MONEY_WON;
@@ -25,7 +25,7 @@ protected:
 
     virtual void SetUp() {
         aPlayerController = new test::PlayerControllerMock();
-        sharedCards = new std::vector<pokerGame::Card>();
+        sharedCards = new std::vector<pokerGame::card::Card>();
         aPlayer = new pokerGame::Player(aPlayerController, INITIAL_AMOUNT_MONEY);
         aPlayer->startPlaying();
         bettingContext = new pokerGame::context::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);

@@ -3,7 +3,7 @@
 
 namespace pokerGame {
 
-GameRound::GameRound(Deck *deckToUse, BettingRound* bettingRoundToUse): gameContext(0), deck(deckToUse), bettingRound(bettingRoundToUse), sharedCards(), handEvaluator() {
+GameRound::GameRound(card::Deck *deckToUse, BettingRound* bettingRoundToUse): gameContext(0), deck(deckToUse), bettingRound(bettingRoundToUse), sharedCards(), handEvaluator() {
 }
 
 void GameRound::playRound(GameContext* gameContext) { // TODO: test this method
@@ -52,14 +52,14 @@ void GameRound::distributeOneCard() {
     deck->burn();
     do {
         gameContext->nextPlayer();
-        Card c = deck->draw();
+        card::Card c = deck->draw();
         gameContext->getCurrentPlayer()->addCardToHole(c);
         //std::cout << "Card " << c.toString() << " was distributed to " << gameContext->players[currentPlayer]->getName() << std::endl;
     } while (gameContext->getCurrentPlayerIndex() != gameContext->getDealerIndex());
 }
 
 void GameRound::addOneCardToBoard() {
-    Card card = deck->draw();
+    card::Card card = deck->draw();
     sharedCards.push_back(card);
     //std::cout << "Card " << card.toString() << " was distributed added to board" << std::endl;
 }

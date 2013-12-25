@@ -1,11 +1,12 @@
 #ifndef DECK_H
 #define DECK_H
 
-#include "pokerGame/Card.h"
+#include "pokerGame/card/Card.h"
 #include <vector>
 #include <deque>
 
 namespace pokerGame {
+namespace card {
 
 const int DECK_SIZE(52);
 
@@ -27,6 +28,7 @@ private:
     std::deque<Card> cards;
 };
 
+}
 }
 
 #endif

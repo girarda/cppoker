@@ -8,7 +8,7 @@ namespace bot {
 
 class AgressiveBettingStrategy: public ContextBasedBettingStrategy {
 public:
-    AgressiveBettingStrategy(pokerGame::HandStrengthEvaluator* handEvaluator, BettingStrategy* secondBettingStrategy);
+    AgressiveBettingStrategy(pokerGame::card::HandStrengthEvaluator* handEvaluator, BettingStrategy* secondBettingStrategy);
 
     virtual pokerGame::Decision decideBet(float minBet, float bigBlind, int oppponentsWithBetterEstimatedHandStrength, int opponentsModeledCount);
 };

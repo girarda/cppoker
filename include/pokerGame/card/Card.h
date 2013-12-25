@@ -4,6 +4,7 @@
 #include <string>
 
 namespace pokerGame {
+namespace card {
 
 enum Face {JACK = 11, QUEEN = 12, KING = 13, ACE = 14};
 enum Suit {DIAMOND, HEART, CLUB, SPADE};
@@ -37,6 +38,7 @@ private:
     bool visible;
 };
 
+}
 }
 
 #endif

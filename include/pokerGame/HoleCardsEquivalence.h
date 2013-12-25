@@ -1,7 +1,7 @@
 #ifndef HOLECARDSEQUIVALENCE_H
 #define HOLECARDSEQUIVALENCE_H
 
-#include "Card.h"
+#include "pokerGame/card/Card.h"
 #include <vector>
 
 #include <boost/serialization/serialization.hpp>
@@ -18,7 +18,7 @@ public:
     virtual int getNumber1() const;
     virtual int getNumber2() const;
 
-    virtual std::vector<Card> equivalenceToCards() const;
+    virtual std::vector<card::Card> equivalenceToCards() const;
 
     template<class Archive>
     void serialize(Archive & ar, unsigned int file_version)

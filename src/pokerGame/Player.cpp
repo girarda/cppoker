@@ -48,9 +48,9 @@ void Player::clearPot() {
     pot = 0;
 }
 
-bool Player::hasBetterHand(const Player& other, std::vector<Card> sharedCards) const {//TODO: test this method
-    Hand hand(hole, sharedCards);
-    Hand otherHand(other.hole, sharedCards);
+bool Player::hasBetterHand(const Player& other, std::vector<card::Card> sharedCards) const {//TODO: test this method
+    card::Hand hand(hole, sharedCards);
+    card::Hand otherHand(other.hole, sharedCards);
     return hand > otherHand;
 }
 
@@ -74,7 +74,7 @@ bool Player::isAllIn() const {
     return isPlaying() && getMoney() == 0;
 }
 
-void Player::addCardToHole(Card card) {
+void Player::addCardToHole(card::Card card) {
     if (hole.empty()) {
         card.hide();
     }
@@ -95,7 +95,7 @@ void Player::winMoney(float gainedMoney) {
     money += gainedMoney;
 }
 
-Decision Player::makeDecision(float minBet, float bigBlind, std::vector<Card> sharedCards, context::BettingContext* bettingContext, std::vector<OpponentModel> opponents) {
+Decision Player::makeDecision(float minBet, float bigBlind, std::vector<card::Card> sharedCards, context::BettingContext* bettingContext, std::vector<OpponentModel> opponents) {
 
     float diffToAdd = minBet - pot;;
     Decision decision = playerController->makeDecision(hole, sharedCards, minBet, bigBlind, bettingContext, opponents);
@@ -127,9 +127,9 @@ void Player::showCards() {
     hole[1].show();
 }
 
-std::vector<Card> Player::getVisibleHole() const {
-    std::vector<Card> visibleHole;
-    for (Card c: hole) {
+std::vector<card::Card> Player::getVisibleHole() const {
+    std::vector<card::Card> visibleHole;
+    for (card::Card c: hole) {
         if(c.isVisible()) {
             visibleHole.push_back(c);
         }
