@@ -3,10 +3,10 @@
 
 #include <string>
 #include <vector>
-#include "pokerGame/OpponentModel.h"
+#include "pokerGame/modeling/OpponentModel.h"
 #include "pokerGame/card/Hand.h"
 #include "pokerGame/PlayerController.h"
-#include "pokerGame/context/BettingContext.h"
+#include "pokerGame/modeling/BettingContext.h"
 
 namespace pokerGame {
 
@@ -16,7 +16,7 @@ public:
     Player(PlayerController *aPlayerController, float initialMoney);
     virtual ~Player();
 
-    virtual Decision makeDecision(float minBet, float bigBlind, std::vector<card::Card> sharedCards, context::BettingContext* bettingContext, std::vector<OpponentModel> opponents);
+    virtual Decision makeDecision(float minBet, float bigBlind, std::vector<card::Card> sharedCards, modeling::BettingContext* bettingContext, std::vector<modeling::OpponentModel> opponents);
 
     virtual void setMoney(float newValue);
 

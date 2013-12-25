@@ -3,17 +3,17 @@
 #include <exception>
 #include "network/Server.h"
 #include "network/OnlineRoom.h"
-#include "pokerGame/GameEngine.h"
+#include "pokerGame/Game.h"
 #include "pokerGame/GameContext.h"
 #include "pokerGame/GameRound.h"
 #include "pokerGame/card/Deck.h"
 #include "pokerGame/BettingRound.h"
-#include "playerInterface/BotPlayerController.h"
-#include "playerInterface/bot/SimpleBettingStrategy.h"
-#include "playerInterface/bot/ProbabilisticBettingStrategy.h"
+#include "playerController//BotPlayerController.h"
+#include "playerController/bot/SimpleBettingStrategy.h"
+#include "playerController/bot/ProbabilisticBettingStrategy.h"
 #include "pokerGame/card/HandStrengthEvaluator.h"
-#include "pokerGame/simulator/PreFlopSimulator.h"
-#include "playerInterface/bot/AgressiveBettingStrategy.h"
+#include "pokerGame/simulation/PreFlopSimulator.h"
+#include "playerController/bot/AgressiveBettingStrategy.h"
 
 #include "boost/thread/thread.hpp"
 
@@ -26,7 +26,7 @@ void runServer() {
     pokerGame::GameRound* gameRoundToUse = new pokerGame::GameRound(deckToUse, bettingRoundToUse);
 
 
-    pokerGame::GameEngine* room = new pokerGame::GameEngine(gameContext, gameRoundToUse);
+    pokerGame::Game* room = new pokerGame::Game(gameContext, gameRoundToUse);
         network::Server ts((network::OnlineRoom*) room);
         ts.initService(); //function does not return.
         while (true) {
@@ -43,7 +43,7 @@ void runBotSimulation() {
 //    pokerGame::GameRound* gameRoundToUse = new pokerGame::GameRound(deckToUse, bettingRoundToUse);
 
 
-//    pokerGame::GameEngine* room = new pokerGame::GameEngine(gameContext, gameRoundToUse);
+//    pokerGame::Game* room = new pokerGame::Game(gameContext, gameRoundToUse);
 
 //    pokerGame::simulator::PreFlopStatistics* preFlopStatistics = new pokerGame::simulator::PreFlopStatistics();
 
@@ -85,7 +85,7 @@ void runContextBotSimulation() {
 //    pokerGame::GameRound* gameRoundToUse = new pokerGame::GameRound(deckToUse, bettingRoundToUse);
 
 
-//    pokerGame::GameEngine* room = new pokerGame::GameEngine(gameContext, gameRoundToUse);
+//    pokerGame::Game* room = new pokerGame::Game(gameContext, gameRoundToUse);
 
 //    playerInterface::bot::BettingStrategy* sbs1 = new playerInterface::bot::SimpleBettingStrategy();
 //    pokerGame::HandStrengthEvaluator* handStrengthEvaluator = new pokerGame::HandStrengthEvaluator();
@@ -123,7 +123,7 @@ void runContextBotSimulation() {
 }
 
 void runPreFlopSimulation() {
-    pokerGame::simulator::PreFlopSimulator simulator;
+    pokerGame::simulation::PreFlopSimulator simulator;
     simulator.simulate();
 }
 

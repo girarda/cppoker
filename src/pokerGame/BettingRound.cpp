@@ -35,12 +35,12 @@ void BettingRound::playerTurn(Player* player) {
     announcePlayerTurn(player);
     announcements(player);
     if(player->isPlaying()) {
-        context::BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers());
+        modeling::BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers());
         Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, &bettingContext, gameContext->getCurrentOpponentModels(actionContexts));
         if (d.choice == pokerGame::RAISE) {
             numberOfRaises++;
         }
-        actionContexts.insert(std::make_pair(player, context::ActionContext(bettingContext, d)));
+        actionContexts.insert(std::make_pair(player, modeling::ActionContext(bettingContext, d)));
     }
 }
 
@@ -83,7 +83,7 @@ bool BettingRound::allPotsAreEven() const {
     return true;
 }
 
-std::map<Player*, context::ActionContext> BettingRound::getActionContexts() {
+std::map<Player*, modeling::ActionContext> BettingRound::getActionContexts() {
     return actionContexts;
 }
 

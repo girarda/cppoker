@@ -2,10 +2,10 @@
 #define IPlayer_H
 
 #include <vector>
-#include "pokerGame/OpponentModel.h"
+#include "pokerGame/modeling/OpponentModel.h"
 #include "pokerGame/card/Hand.h"
 #include "pokerGame/Decision.h"
-#include "pokerGame/context/BettingContext.h"
+#include "pokerGame/modeling/BettingContext.h"
 
 namespace pokerGame {
 
@@ -14,7 +14,7 @@ public:
     PlayerController();
     virtual ~PlayerController();
 
-    virtual Decision makeDecision(std::vector<card::Card> hole, std::vector<card::Card> sharedCards, float minBet, float bigBlind, context::BettingContext* bettingContext, std::vector<OpponentModel> opponents) = 0;
+    virtual Decision makeDecision(std::vector<card::Card> hole, std::vector<card::Card> sharedCards, float minBet, float bigBlind, modeling::BettingContext* bettingContext, std::vector<modeling::OpponentModel> opponents) = 0;
 
     virtual void deliver(const std::string& msg) = 0;
 

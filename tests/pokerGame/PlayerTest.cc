@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
 #include "pokerGame/Player.h"
-#include "PlayerControllerMock.h"
-#include "pokerGame/OpponentModel.h"
+#include "tests/mocks/pokerGame/PlayerControllerMock.h"
+#include "pokerGame/modeling/OpponentModel.h"
 #include "pokerGame/PlayerController.h"
-#include "pokerGame/context/BettingContext.h"
+#include "pokerGame/modeling/BettingContext.h"
 
 using ::testing::Return;
 using ::testing::_;
@@ -12,9 +12,9 @@ class PlayerTest : public ::testing::Test {
 protected:
     test::PlayerControllerMock* aPlayerController;
     pokerGame::Player* aPlayer;
-    pokerGame::context::BettingContext* bettingContext;
+    pokerGame::modeling::BettingContext* bettingContext;
     std::vector<pokerGame::card::Card>* sharedCards;
-    std::vector<pokerGame::OpponentModel> opponentModels;
+    std::vector<pokerGame::modeling::OpponentModel> opponentModels;
 
     static const float NO_MONEY;
     static const float MONEY_WON;
@@ -35,7 +35,7 @@ protected:
         sharedCards = new std::vector<pokerGame::card::Card>();
         aPlayer = new pokerGame::Player(aPlayerController, INITIAL_AMOUNT_MONEY);
         aPlayer->startPlaying();
-        bettingContext = new pokerGame::context::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);
+        bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);
     }
     virtual void TearDown() {
         delete aPlayer;
