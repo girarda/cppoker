@@ -130,10 +130,10 @@ void runPreFlopSimulation() {
 int main(int argc, char** argv) {
 
     initRandom();
-    //runPreFlopSimulation();
+    runPreFlopSimulation();
 //    runBotSimulation();
 //    runContextBotSimulation();
-    runServer();
+    //runServer();
     return 0;
 }
 
