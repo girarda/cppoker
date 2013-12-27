@@ -37,7 +37,7 @@ tcp::socket& TelnetPlayer::getSocket() {
     return socket;
 }
 
-void TelnetPlayer::deliver(const std::string& message) {
+void TelnetPlayer::deliver(std::string message) {
     std::string msg = message + TELNET_NEWLINE;
     boost::asio::async_write(
                 socket,
@@ -139,12 +139,12 @@ void TelnetPlayer::sendChatMessage(std::string sender, std::string message) {
     room->sendChatMessage(msg);
 }
 
-void TelnetPlayer::seeHole(std::vector<pokerGame::card::Card> hole) {
-    std::string msg = "You cards are: " + hole[0].toString() + " ," + hole[1].toString();
+void TelnetPlayer::seeHoleCards(const std::vector<pokerGame::card::Card> &holeCards) {
+    std::string msg = "You cards are: " + holeCards[0].toString() + " ," + holeCards[1].toString();
     deliver(msg);
 }
 
-pokerGame::Decision TelnetPlayer::makeDecision(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, std::vector<pokerGame::modeling::OpponentModel> opponents) {
+pokerGame::Decision TelnetPlayer::makeDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
     read_state = RS_WAITING_FOR_PLAY;
     decision.choice = pokerGame::WAITING;
     while (decision.choice == pokerGame::WAITING) {

@@ -14,17 +14,18 @@ class BettingRound {
 public:
     BettingRound();
 
-    virtual void start(GameContext* gameContext, std::vector<card::Card> sharedCards, BettingRoundType bettingRoundType);
+    virtual void start(GameContext* gameContext, const std::vector<card::Card> &sharedCards, const BettingRoundType &bettingRoundType);
     virtual float getCurrentMinimumBid() const;
 
     virtual std::map<Player*,modeling::ActionContext> getActionContexts();
 
 private:
     void playerTurn(Player* player);
+    void play(Player* player);
     void announcePlayerTurn(Player* player);
     void announcements(Player* player);
 
-    void initialize(GameContext* gameContext, std::vector<card::Card> sharedCards, BettingRoundType bettingRoundType);
+    void initialize(GameContext* gameContext, const std::vector<card::Card> &sharedCards, const BettingRoundType &bettingRoundType);
 
     bool allPotsAreEven() const;
 

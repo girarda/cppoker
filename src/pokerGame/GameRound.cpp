@@ -95,7 +95,10 @@ void GameRound::showdown() {
     Player* winner = getWinner();
     winner->winMoney(getTotalPot());
     announceRoundWinner(winner, getTotalPot());
+    saveShowdownedHandsToContext();
+}
 
+void GameRound::saveShowdownedHandsToContext() {
     for (std::map<Player*, std::vector<modeling::ActionContext> >::iterator it = bettingActions.begin(); it != bettingActions.end(); it++) {
         if (it->first->isPlaying()) {
             gameContext->addHandContext(it->first, it->second, handEvaluator.evaluate(it->first->getVisibleHoleCards(), sharedCards, gameContext->getNumberOfPlayingPlayers()));
@@ -117,7 +120,7 @@ void GameRound::announceRoundWinner(Player* winner, float moneyWon) {
     }
 }
 
-void GameRound::executeNewBettingRound(BettingRoundType bettingRoundType) {
+void GameRound::executeNewBettingRound(const BettingRoundType &bettingRoundType) {
     //std::cout << "new betting round" << std::endl;
     bettingRound->start(gameContext, sharedCards, bettingRoundType);
     std::vector<Player*> players = gameContext->getPlayers();

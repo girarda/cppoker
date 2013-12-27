@@ -27,7 +27,7 @@ public:
 
     virtual void join(PlayerController* player);
     virtual void leave(PlayerController* player);
-    virtual void sendChatMessage(const std::string& mesage);
+    virtual void sendChatMessage(std::string mesage);
 
 private:
     void chooseNextDealer();

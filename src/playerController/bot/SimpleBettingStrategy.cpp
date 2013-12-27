@@ -9,8 +9,8 @@ SimpleBettingStrategy::SimpleBettingStrategy() {
 SimpleBettingStrategy::~SimpleBettingStrategy() {
 }
 
-pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(std::vector<pokerGame::card::Card> hole, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, std::vector<pokerGame::modeling::OpponentModel> opponents) {
-    pokerGame::card::Hand hand(hole);
+pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(const std::vector<pokerGame::card::Card> &holeCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
+    pokerGame::card::Hand hand(holeCards);
     pokerGame::Decision decision;
     if(hand.getHandValue().type == pokerGame::card::HandType::PAIR) {
         decision.choice = pokerGame::RAISE;
@@ -25,8 +25,8 @@ pokerGame::Decision SimpleBettingStrategy::makePreFlopDecision(std::vector<poker
     return decision;
 }
 
-pokerGame::Decision SimpleBettingStrategy::makePostFlopDecision(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, std::vector<pokerGame::modeling::OpponentModel> opponents) {
-    pokerGame::card::Hand hand(hole, sharedCards);
+pokerGame::Decision SimpleBettingStrategy::makePostFlopDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
+    pokerGame::card::Hand hand(holeCards, sharedCards);
     pokerGame::Decision decision;
     if(hand.getHandValue().type == pokerGame::card::HandType::HIGH_CARD) {
         if(minBet == 0) {

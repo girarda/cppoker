@@ -27,8 +27,8 @@ const HandValue NO_HAND_VALUE = {
 class Hand {
 public:
     Hand();
-    Hand(std::vector<Card> hole);
-    Hand(std::vector<Card> hole, std::vector<Card> sharedCards);
+    Hand(const std::vector<Card> &holeCards);
+    Hand(const std::vector<Card> &holeCards, const std::vector<Card> &sharedCards);
     int getSize() const;
     void addCard(const Card &aCard);
     HandValue getHandValue() const;

@@ -3,7 +3,7 @@
 namespace pokerGame {
 namespace modeling {
 
-BettingContext::BettingContext(BettingRoundType curentBettingRoundType, int nbOfRaises, int nbOfPlayers): bettingRoundType(curentBettingRoundType), numberOfRaises(nbOfRaises), numberOfPlayers(nbOfPlayers) {
+BettingContext::BettingContext(const BettingRoundType &curentBettingRoundType, int nbOfRaises, int nbOfPlayers): bettingRoundType(curentBettingRoundType), numberOfRaises(nbOfRaises), numberOfPlayers(nbOfPlayers) {
 }
 
 int BettingContext::getNumberOfRaises() const {

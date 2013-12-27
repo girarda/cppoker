@@ -11,7 +11,7 @@ public:
     virtual ~OnlineRoom() {}
     virtual void join(pokerGame::PlayerController* player) = 0;
     virtual void leave(pokerGame::PlayerController* player) = 0;
-    virtual void sendChatMessage(const std::string& mesage) = 0;
+    virtual void sendChatMessage(std::string mesage) = 0;
 };
 
 }

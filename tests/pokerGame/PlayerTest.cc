@@ -200,7 +200,7 @@ TEST_F(PlayerTest, playerControllerSeesOpponentMoneyWhenSeeOpponentMoneyIsCalled
 }
 
 TEST_F(PlayerTest, playerControllerSeesHoleCardsWhenSeeHoleCardsIsCalled) {
-    EXPECT_CALL(*aPlayerController, seeHole(_));
+    EXPECT_CALL(*aPlayerController, seeHoleCards(_));
 
     aPlayer->addCardToHole(A_CARD);
     aPlayer->addCardToHole(ANOTHER_CARD);

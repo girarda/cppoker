@@ -42,8 +42,8 @@ public:
 
     std::vector<Player*> getPlayers() const;
 
-    void addHandContext(Player* player, std::vector<modeling::ActionContext>, double handStrength);
-    std::vector<modeling::OpponentModel> getCurrentOpponentModels(std::map<Player*, modeling::ActionContext> bettingActions) const;
+    void addHandContext(Player* player, const std::vector<modeling::ActionContext> &actions, double handStrength);
+    std::vector<modeling::OpponentModel> getCurrentOpponentModels(const std::map<Player*, modeling::ActionContext> &bettingActions) const;
 
 private:
     int dealerIndex;

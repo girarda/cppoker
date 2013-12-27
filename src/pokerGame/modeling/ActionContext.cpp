@@ -3,7 +3,7 @@
 namespace pokerGame {
 namespace modeling {
 
-ActionContext::ActionContext(BettingContext currentContext, Decision decisionMade) : bettingContext(currentContext), decision(decisionMade)
+ActionContext::ActionContext(const BettingContext &currentContext, const Decision &decisionMade) : bettingContext(currentContext), decision(decisionMade)
 {
 }
 

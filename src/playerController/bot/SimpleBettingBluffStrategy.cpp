@@ -11,8 +11,8 @@ SimpleBettingBluffStrategy::~SimpleBettingBluffStrategy() {
 
 }
 
-pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(std::vector<pokerGame::card::Card> hole, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, std::vector<pokerGame::modeling::OpponentModel> opponents) {
-    pokerGame::card::Hand hand(hole);
+pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(const std::vector<pokerGame::card::Card> &holeCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
+    pokerGame::card::Hand hand(holeCards);
     pokerGame::Decision decision;
     if(hand.getHandValue().type == pokerGame::card::HandType::PAIR || hand.getSumOfPower() < 9) {
         decision.choice = pokerGame::RAISE;
@@ -29,8 +29,8 @@ pokerGame::Decision SimpleBettingBluffStrategy::makePreFlopDecision(std::vector<
     return decision;
 }
 
-pokerGame::Decision SimpleBettingBluffStrategy::makePostFlopDecision(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, std::vector<pokerGame::modeling::OpponentModel> opponents) {
-    pokerGame::card::Hand hand(hole, sharedCards);
+pokerGame::Decision SimpleBettingBluffStrategy::makePostFlopDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
+    pokerGame::card::Hand hand(holeCards, sharedCards);
     pokerGame::Decision decision;
     if(hand.getHandValue().type == pokerGame::card::HandType::HIGH_CARD || hand.getHandValue().type >= pokerGame::card::THREE_OF_A_KIND) {
         decision.choice = pokerGame::RAISE;

@@ -78,7 +78,7 @@ void Game::leave(PlayerController* player) {// TODO: test this method
     //players.erase(player);
 }
 
-void Game::sendChatMessage(const std::string& msg) {// TODO: test this method
+void Game::sendChatMessage(std::string msg) {// TODO: test this method
     std::for_each(context->getPlayers().begin(), context->getPlayers().end(),
                   boost::bind(&Player::deliver, _1, boost::ref(msg)));
 }

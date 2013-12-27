@@ -8,7 +8,7 @@ namespace modeling {
 
 class BettingContext {
 public:
-    BettingContext(BettingRoundType curentBettingRoundType, int nbOfRaises, int nbOfPlayers);
+    BettingContext(const BettingRoundType &curentBettingRoundType, int nbOfRaises, int nbOfPlayers);
 
     bool hasManyRaises() const;
     bool hasManyPlayers() const;

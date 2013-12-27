@@ -7,7 +7,7 @@ namespace pokerGame {
 BettingRound::BettingRound() : gameContext(0), sharedCards(), numberOfRaises(0), actionContexts() {
 }
 
-void BettingRound::start(GameContext* gameContext, std::vector<card::Card> sharedCards, BettingRoundType bettingRoundType) {
+void BettingRound::start(GameContext* gameContext, const  std::vector<card::Card> &sharedCards, const BettingRoundType &bettingRoundType) {
     initialize(gameContext, sharedCards, bettingRoundType);
 
     bool entirePass = false;
@@ -23,7 +23,7 @@ void BettingRound::start(GameContext* gameContext, std::vector<card::Card> share
     } while (!(entirePass && allPotsAreEven()));
 }
 
-void BettingRound::initialize(GameContext* gameContext, std::vector<card::Card> sharedCards, BettingRoundType bettingRoundType) {
+void BettingRound::initialize(GameContext* gameContext, const std::vector<card::Card> &sharedCards, const BettingRoundType &bettingRoundType) {
     this->gameContext = gameContext;
     this->sharedCards = sharedCards;
     this->gameContext->setCurrentPlayerDealer();
@@ -35,13 +35,17 @@ void BettingRound::playerTurn(Player* player) {
     announcePlayerTurn(player);
     announcements(player);
     if(player->isPlaying()) {
-        modeling::BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers());
-        Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, &bettingContext, gameContext->getCurrentOpponentModels(actionContexts));
-        if (d.choice == pokerGame::RAISE) {
-            numberOfRaises++;
-        }
-        actionContexts.insert(std::make_pair(player, modeling::ActionContext(bettingContext, d)));
+        play(player);
     }
+}
+
+void BettingRound::play(Player* player) {
+    modeling::BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers());
+    Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, &bettingContext, gameContext->getCurrentOpponentModels(actionContexts));
+    if (d.choice == pokerGame::RAISE) {
+        numberOfRaises++;
+    }
+    actionContexts.insert(std::make_pair(player, modeling::ActionContext(bettingContext, d)));
 }
 
 void BettingRound::announcePlayerTurn(Player* player) {

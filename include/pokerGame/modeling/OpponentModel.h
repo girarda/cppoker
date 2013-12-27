@@ -10,7 +10,7 @@ namespace modeling {
 
 class OpponentModel {
 public:
-    OpponentModel(modeling::ActionContext actionContext, std::vector<modeling::HandContext> handContexts);
+    OpponentModel(const modeling::ActionContext &actionContext, const std::vector<modeling::HandContext> &handContexts);
 
     int getNumberOfOccurrences() const;
     double getHandStrengthAverage() const;

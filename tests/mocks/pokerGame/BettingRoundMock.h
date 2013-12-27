@@ -8,7 +8,7 @@ namespace test {
 
 class BettingRoundMock : public pokerGame::BettingRound {
 public:
-    MOCK_METHOD3(start, void(pokerGame::GameContext* gameContext, std::vector<pokerGame::card::Card> sharedCards, pokerGame::BettingRoundType bettingRoundType));
+    MOCK_METHOD3(start, void(pokerGame::GameContext* gameContext, const std::vector<pokerGame::card::Card> &sharedCards, const pokerGame::BettingRoundType &bettingRoundType));
     MOCK_CONST_METHOD0(getCurrentMinimumBid, float());
 };
 

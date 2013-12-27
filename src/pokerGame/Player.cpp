@@ -48,7 +48,7 @@ void Player::clearPot() {
     pot = 0;
 }
 
-bool Player::hasBetterHand(const Player& other, std::vector<card::Card> sharedCards) const {//TODO: test this method
+bool Player::hasBetterHand(const Player& other, const std::vector<card::Card> &sharedCards) const {//TODO: test this method
     card::Hand hand(holeCards, sharedCards);
     card::Hand otherHand(other.holeCards, sharedCards);
     return hand > otherHand;
@@ -95,7 +95,7 @@ void Player::winMoney(float gainedMoney) {
     money += gainedMoney;
 }
 
-Decision Player::makeDecision(float minBet, float bigBlind, std::vector<card::Card> sharedCards, modeling::BettingContext* bettingContext, std::vector<modeling::OpponentModel> opponents) {
+Decision Player::makeDecision(float minBet, float bigBlind, const std::vector<card::Card> &sharedCards, modeling::BettingContext* bettingContext, const std::vector<modeling::OpponentModel> &opponents) {
 
     float diffToAdd = minBet - pot;;
     Decision decision = playerController->makeDecision(holeCards, sharedCards, minBet, bigBlind, bettingContext, opponents);
@@ -174,7 +174,7 @@ void Player::seeOpponentMoney(const Player& opponent) {
 }
 
 void Player::seeHoleCards() {
-    playerController->seeHole(holeCards);
+    playerController->seeHoleCards(holeCards);
 }
 
 void Player::seeMoney() {
@@ -185,7 +185,7 @@ std::string Player::getName() const {
     return playerController->getName();
 }
 
-void Player::deliver(const std::string& msg) {
+void Player::deliver(std::string msg) {
     playerController->deliver(msg);
 }
 

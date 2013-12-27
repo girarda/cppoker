@@ -123,13 +123,13 @@ int GameContext::getNextPlayingPlayer(int player) {
     }
 }
 
-void GameContext::addHandContext(Player* player, std::vector<modeling::ActionContext> actions, double handStrength) {
-    for(std::vector<modeling::ActionContext>::iterator it = actions.begin(); it != actions.end(); it++) {
+void GameContext::addHandContext(Player* player, const std::vector<modeling::ActionContext> &actions, double handStrength) {
+    for(std::vector<modeling::ActionContext>::const_iterator it = actions.begin(); it != actions.end(); it++) {
         handContexts[player].push_back(modeling::HandContext(*it, handStrength));
     }
 }
 
-std::vector<modeling::OpponentModel> GameContext::getCurrentOpponentModels(std::map<Player*, modeling::ActionContext> actionContexts) const {
+std::vector<modeling::OpponentModel> GameContext::getCurrentOpponentModels(const std::map<Player*, modeling::ActionContext> &actionContexts) const {
     std::vector<modeling::OpponentModel> opponents;
     for (std::map<Player*, std::vector<modeling::HandContext> >::const_iterator it = handContexts.begin(); it != handContexts.end(); it++) {
         if (it->first->isPlaying()) {

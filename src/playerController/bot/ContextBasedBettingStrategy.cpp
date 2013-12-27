@@ -9,12 +9,12 @@ ContextBasedBettingStrategy::ContextBasedBettingStrategy(pokerGame::card::HandSt
 ContextBasedBettingStrategy::~ContextBasedBettingStrategy() {
 }
 
-pokerGame::Decision ContextBasedBettingStrategy::makePreFlopDecision(std::vector<pokerGame::card::Card> hole, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, std::vector<pokerGame::modeling::OpponentModel> opponents) {
-    return secondaryBettingStrategy->makeDecision(hole, std::vector<pokerGame::card::Card>(), minBet, bigBlind, bettingContext, opponents);
+pokerGame::Decision ContextBasedBettingStrategy::makePreFlopDecision(const std::vector<pokerGame::card::Card> &holeCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
+    return secondaryBettingStrategy->makeDecision(holeCards, std::vector<pokerGame::card::Card>(), minBet, bigBlind, bettingContext, opponents);
 }
 
-pokerGame::Decision ContextBasedBettingStrategy::makePostFlopDecision(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, std::vector<pokerGame::modeling::OpponentModel> opponents) {
-    double handStrength = handStrengthEvaluator->evaluate(hole, sharedCards, bettingContext->getNumberOfPlayers());
+pokerGame::Decision ContextBasedBettingStrategy::makePostFlopDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
+    double handStrength = handStrengthEvaluator->evaluate(holeCards, sharedCards, bettingContext->getNumberOfPlayers());
     int opponentsModeledCount = 0;
     int oppponentsWithBetterEstimatedHandStrength = 0;
 
@@ -29,7 +29,7 @@ pokerGame::Decision ContextBasedBettingStrategy::makePostFlopDecision(std::vecto
 
     if ((double) opponentsModeledCount / bettingContext->getNumberOfPlayers() < 0.15) {
         // If not enough context actions, fallback on secondary strategy
-        return secondaryBettingStrategy->makeDecision(hole, sharedCards, minBet, bigBlind, bettingContext, opponents);
+        return secondaryBettingStrategy->makeDecision(holeCards, sharedCards, minBet, bigBlind, bettingContext, opponents);
     } else {
         return decideBet(minBet, bigBlind, oppponentsWithBetterEstimatedHandStrength, opponentsModeledCount);
     }

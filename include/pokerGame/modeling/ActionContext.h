@@ -10,7 +10,7 @@ namespace modeling {
 class ActionContext
 {
 public:
-    ActionContext(BettingContext currentContext, Decision decisionMade);
+    ActionContext(const BettingContext &currentContext, const Decision &decisionMade);
 
     bool operator==(const ActionContext& other) const;
 

@@ -7,7 +7,7 @@ namespace playerController {
 ConsolePlayer::ConsolePlayer() {
 }
 
-pokerGame::Decision ConsolePlayer::makeDecision(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, std::vector<pokerGame::modeling::OpponentModel> opponents) {
+pokerGame::Decision ConsolePlayer::makeDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
 
     std::string choice;
     pokerGame::Decision decision;
@@ -65,8 +65,8 @@ void ConsolePlayer::seeOpponentMoney(std::string opponent, float money) {
     deliver(ss.str());
 }
 
-void ConsolePlayer::seeHole(std::vector<pokerGame::card::Card> hole) {
-    std::string msg = "You cards are: " + hole[0].toString() + " ," + hole[1].toString();
+void ConsolePlayer::seeHoleCards(const std::vector<pokerGame::card::Card> &holeCards) {
+    std::string msg = "You cards are: " + holeCards[0].toString() + " ," + holeCards[1].toString();
     deliver(msg);
 }
 
@@ -76,7 +76,7 @@ void ConsolePlayer::seeMoney(float money) {
     deliver(ss.str());
 }
 
-void ConsolePlayer::deliver(const std::string &msg) {
+void ConsolePlayer::deliver(std::string msg) {
     std::cout << msg << std::endl;
 }
 

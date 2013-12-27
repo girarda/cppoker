@@ -8,7 +8,7 @@ namespace test {
 
 class HandStrengthEvaluatorMock : public pokerGame::card::HandStrengthEvaluator {
 public:
-    MOCK_METHOD3(evaluate, double(std::vector<pokerGame::card::Card> hole, std::vector<pokerGame::card::Card> sharedCards, int numberOfPlayers));
+    MOCK_METHOD3(evaluate, double(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, int numberOfPlayers));
 };
 
 }

@@ -16,7 +16,7 @@ public:
     Player(PlayerController *aPlayerController, float initialMoney);
     virtual ~Player();
 
-    virtual Decision makeDecision(float minBet, float bigBlind, std::vector<card::Card> sharedCards, modeling::BettingContext* bettingContext, std::vector<modeling::OpponentModel> opponents);
+    virtual Decision makeDecision(float minBet, float bigBlind, const std::vector<card::Card> &sharedCards, modeling::BettingContext* bettingContext, const std::vector<modeling::OpponentModel> &opponents);
 
     virtual void setMoney(float newValue);
 
@@ -25,7 +25,7 @@ public:
     virtual void fold();
     virtual void setupForNewRound();
 
-    virtual bool hasBetterHand(const Player& other, std::vector<card::Card> sharedCards) const;
+    virtual bool hasBetterHand(const Player& other, const std::vector<card::Card> &sharedCards) const;
     virtual float getPot() const;
     virtual std::vector<card::Card> getVisibleHoleCards() const;
 
@@ -56,7 +56,7 @@ public:
 
     virtual std::string getName() const;
 
-    virtual void deliver(const std::string& msg);
+    virtual void deliver(std::string msg);
 
     virtual float getMoney() const;
 

@@ -8,13 +8,13 @@ namespace card {
 Hand::Hand(): size(0) ,cards(), bestHand(NO_HAND_VALUE) {
 }
 
-Hand::Hand(std::vector<Card> hole) : size(hole.size()), cards(), bestHand(NO_HAND_VALUE) {
-    cards.insert(cards.end(), hole.begin(), hole.end());
+Hand::Hand(const std::vector<Card> &holeCards) : size(holeCards.size()), cards(), bestHand(NO_HAND_VALUE) {
+    cards.insert(cards.end(), holeCards.begin(), holeCards.end());
     calculateBestHand();
 }
 
-Hand::Hand(std::vector<Card> hole, std::vector<Card> sharedCards) : size(hole.size()), cards(), bestHand(NO_HAND_VALUE) {
-    cards.insert(cards.end(), hole.begin(), hole.end());
+Hand::Hand(const std::vector<Card> &holeCards, const std::vector<Card> &sharedCards) : size(holeCards.size()), cards(), bestHand(NO_HAND_VALUE) {
+    cards.insert(cards.end(), holeCards.begin(), holeCards.end());
     cards.insert(cards.end(), sharedCards.begin(), sharedCards.end());
     calculateBestHand();
 }

@@ -49,8 +49,10 @@ private:
 
     float getTotalPot() const;
 
-    void executeNewBettingRound(BettingRoundType bettingRoundType);
+    void executeNewBettingRound(const BettingRoundType &bettingRoundType);
     int getNumberOfPlayingPlayers() const;
+
+    void saveShowdownedHandsToContext();
 
     FRIEND_TEST(GameRoundTest,bigAndSmallBlindPlayersAddTheirBlindsToTheirPotWhenBettingPot);
     FRIEND_TEST(GameRoundTest,twoCardsAreAddedToEachPlayingPlayersHoleWhenDistributingHoles);
