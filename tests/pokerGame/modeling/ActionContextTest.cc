@@ -11,6 +11,8 @@ protected:
     static const int A_HIGH_NUMBER_OF_RAISES;
     static const int A_LOW_NUMBER_OF_PLAYERS;
     static const int A_HIGH_NUMBER_OF_PLAYERS;
+    static const float MIN_BET;
+    static const float BIG_BLIND;
     static const pokerGame::BettingRoundType A_BETTING_ROUND_TYPE;
 };
 
@@ -18,11 +20,14 @@ const int ActionContextTest::A_LOW_NUMBER_OF_RAISES(2);
 const int ActionContextTest::A_HIGH_NUMBER_OF_RAISES(4);
 const int ActionContextTest::A_LOW_NUMBER_OF_PLAYERS(2);
 const int ActionContextTest::A_HIGH_NUMBER_OF_PLAYERS(4);
+const float ActionContextTest::MIN_BET(2);
+const float ActionContextTest::BIG_BLIND(2);
 const pokerGame::BettingRoundType ActionContextTest::A_BETTING_ROUND_TYPE(pokerGame::PRE_FLOP);
 
 
 TEST_F(ActionContextTest, twoActionContextsAreEqualsIfTheirActionChoiceIsTheSameAndTheirBettingContextsAreTheSame) {
-    pokerGame::modeling::BettingContext bettingContext(A_BETTING_ROUND_TYPE, A_LOW_NUMBER_OF_RAISES, A_HIGH_NUMBER_OF_PLAYERS);
+    pokerGame::modeling::BettingContext bettingContext(A_BETTING_ROUND_TYPE, A_LOW_NUMBER_OF_RAISES, A_HIGH_NUMBER_OF_PLAYERS, MIN_BET, BIG_BLIND);
+    pokerGame::modeling::BettingContext anotherBettingContext(A_BETTING_ROUND_TYPE, A_HIGH_NUMBER_OF_RAISES, A_LOW_NUMBER_OF_PLAYERS, MIN_BET, BIG_BLIND);
     pokerGame::Decision aDecision = {pokerGame::CALL, 0};
 
     pokerGame::modeling::ActionContext anActionContext(bettingContext, aDecision);
@@ -32,8 +37,8 @@ TEST_F(ActionContextTest, twoActionContextsAreEqualsIfTheirActionChoiceIsTheSame
 }
 
 TEST_F(ActionContextTest, twoActionContextsAreDifferentIfTheirBettingContextAreDifferent) {
-    pokerGame::modeling::BettingContext bettingContext(A_BETTING_ROUND_TYPE, A_LOW_NUMBER_OF_RAISES, A_HIGH_NUMBER_OF_PLAYERS);
-    pokerGame::modeling::BettingContext anotherBettingContext(A_BETTING_ROUND_TYPE, A_LOW_NUMBER_OF_RAISES, A_LOW_NUMBER_OF_PLAYERS);
+    pokerGame::modeling::BettingContext bettingContext(A_BETTING_ROUND_TYPE, A_LOW_NUMBER_OF_RAISES, A_HIGH_NUMBER_OF_PLAYERS, MIN_BET, BIG_BLIND);
+    pokerGame::modeling::BettingContext anotherBettingContext(A_BETTING_ROUND_TYPE, A_LOW_NUMBER_OF_RAISES, A_LOW_NUMBER_OF_PLAYERS, MIN_BET, BIG_BLIND);
     pokerGame::Decision aDecision = {pokerGame::CALL, 0};
 
     pokerGame::modeling::ActionContext anActionContext(bettingContext, aDecision);
@@ -43,7 +48,7 @@ TEST_F(ActionContextTest, twoActionContextsAreDifferentIfTheirBettingContextAreD
 }
 
 TEST_F(ActionContextTest, twoActionContextsAreDifferentIfTheirDecisionAreNotTheSame) {
-    pokerGame::modeling::BettingContext bettingContext(A_BETTING_ROUND_TYPE, A_LOW_NUMBER_OF_RAISES, A_HIGH_NUMBER_OF_PLAYERS);
+    pokerGame::modeling::BettingContext bettingContext(A_BETTING_ROUND_TYPE, A_LOW_NUMBER_OF_RAISES, A_HIGH_NUMBER_OF_PLAYERS, MIN_BET, BIG_BLIND);
     pokerGame::Decision aDecision = {pokerGame::CALL, 0};
     pokerGame::Decision anotherDecision = {pokerGame::FOLD, 0};
 

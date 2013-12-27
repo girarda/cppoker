@@ -33,7 +33,6 @@ protected:
         simpleBettingBluffStrategy = new playerController::bot::SimpleBettingBluffStrategy();
         hole = new std::vector<pokerGame::card::Card>();
         sharedCards = new std::vector<pokerGame::card::Card>();
-        bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS);
     }
     virtual void TearDown() {
         delete hole;
@@ -52,97 +51,113 @@ const pokerGame::BettingRoundType SimpleBettingBluffStrategyTest::A_BETTING_ROUN
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfHandValueIsAPairMakeDecisionReturnsRaise) {
     initPreFlopPair();
-    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).choice;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).choice;
     ASSERT_EQ(pokerGame::RAISE, choice);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfHandValueIsAPairNewBetEqualsSumOfMinBetAndBigBlind) {
     initPreFlopPair();
-    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).bet;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).bet;
     ASSERT_EQ(A_BET+BIG_BLIND, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfSumOfPowerOfHandIsLowerThan9ThenBluffAndRaise) {
     initPreFlopSumOfPowerLower8();
-    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).choice;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).choice;
     ASSERT_EQ(pokerGame::RAISE, choice);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfHandValueIsLowerThan9ThenNewBetEqualsSumOfMinBetBigBlind) {
     initPreFlopSumOfPowerLower8();
-    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).bet;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).bet;
     ASSERT_EQ(A_BET+BIG_BLIND, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfSumOfPowerOfHandIsHigherThan16MakeDecisionReturnsCall) {
     initPreFlopSumOfPowerHigherThan16();
-    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).choice;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).choice;
     ASSERT_EQ(pokerGame::CALL, choice);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfSumOfPowerOfHandIsHigherThan16NewBetIsMinBet) {
     initPreFlopSumOfPowerHigherThan16();
-    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).bet;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).bet;
     ASSERT_EQ(A_BET, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfSumOfPowerOfHandIsLowerThan16MakeDecisionReturnsCall) {
     initPreFlopSumOfPowerLowerThan16HigherThan8();
-    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).choice;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards,bettingContext, opponentModels).choice;
     ASSERT_EQ(pokerGame::FOLD, choice);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPreFlopIfSumOfPowerOfHandIsLowerThan16NewBetIsZero) {
     initPreFlopSumOfPowerLowerThan16HigherThan8();
-    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).bet;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, ZERO_BET, BIG_BLIND);
+    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards,bettingContext, opponentModels).bet;
     ASSERT_EQ(0, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsHigherOrEqualsToThreeOfAKindMakeDecisionReturnsRaise) {
     initPostFlopThreeOfAKind();
-    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).choice;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).choice;
     ASSERT_EQ(pokerGame::RAISE, choice);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsHigherOrEqualsToThreeOfAKindNewBetEqualsSumOfMinBetAndBigBlind) {
     initPostFlopThreeOfAKind();
-    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).bet;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).bet;
     ASSERT_EQ(A_BET+BIG_BLIND, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsHighCardBluffAndRaise) {
     initPostFlopHighCard();
-    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).choice;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards,bettingContext, opponentModels).choice;
     ASSERT_EQ(pokerGame::RAISE, choice);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsHighCardAndBetIsNotZeroThenNewBetEqualsSumOfMinBetAndBigBlind) {
     initPostFlopHighCard();
-    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).bet;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).bet;
     ASSERT_EQ(A_BET+BIG_BLIND, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsLowerThanThreeOfAKindAndBetIsZeroThenCall) {
     initPostFlopPair();
-    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, ZERO_BET, BIG_BLIND, bettingContext, opponentModels).choice;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, ZERO_BET, BIG_BLIND);
+    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).choice;
     ASSERT_EQ(pokerGame::CALL, choice);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsLowerThanThreeOfAKindAndBetIsZeroThenNewBetIsInitialBet) {
     initPostFlopPair();
-    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, ZERO_BET, BIG_BLIND, bettingContext, opponentModels).bet;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, ZERO_BET, BIG_BLIND);
+    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).bet;
     ASSERT_EQ(ZERO_BET, newBet);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsLowerThanThreeOfAKindAndBetIsNotZeroThenFold) {
     initPostFlopPair();
-    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).choice;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    pokerGame::Choice choice = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).choice;
     ASSERT_EQ(pokerGame::FOLD, choice);
 }
 
 TEST_F(SimpleBettingBluffStrategyTest, whenPostFlopIfHandValueIsLowerThanThreeOfAKindAndBetIsNotZeroThenNewBetIsZero) {
     initPostFlopPair();
-    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, A_BET, BIG_BLIND, bettingContext, opponentModels).bet;
+    bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
+    float newBet = simpleBettingBluffStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).bet;
     ASSERT_EQ(0, newBet);
 }
 

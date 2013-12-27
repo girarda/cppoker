@@ -14,7 +14,7 @@ public:
     PlayerController();
     virtual ~PlayerController();
 
-    virtual Decision makeDecision(const std::vector<card::Card> &hole, const std::vector<card::Card> &sharedCards, float minBet, float bigBlind, modeling::BettingContext* bettingContext, const std::vector<modeling::OpponentModel> &opponents) = 0;
+    virtual Decision makeDecision(const std::vector<card::Card> &hole, const std::vector<card::Card> &sharedCards, modeling::BettingContext* bettingContext, const std::vector<modeling::OpponentModel> &opponents) = 0;
 
     virtual void deliver(std::string msg) = 0;
 

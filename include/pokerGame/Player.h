@@ -16,7 +16,7 @@ public:
     Player(PlayerController *aPlayerController, float initialMoney);
     virtual ~Player();
 
-    virtual Decision makeDecision(float minBet, float bigBlind, const std::vector<card::Card> &sharedCards, modeling::BettingContext* bettingContext, const std::vector<modeling::OpponentModel> &opponents);
+    virtual Decision makeDecision(const std::vector<card::Card> &sharedCards, modeling::BettingContext* bettingContext, const std::vector<modeling::OpponentModel> &opponents);
 
     virtual void setMoney(float newValue);
 

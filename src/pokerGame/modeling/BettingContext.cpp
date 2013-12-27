@@ -3,7 +3,7 @@
 namespace pokerGame {
 namespace modeling {
 
-BettingContext::BettingContext(const BettingRoundType &curentBettingRoundType, int nbOfRaises, int nbOfPlayers): bettingRoundType(curentBettingRoundType), numberOfRaises(nbOfRaises), numberOfPlayers(nbOfPlayers) {
+BettingContext::BettingContext(const BettingRoundType &curentBettingRoundType, int nbOfRaises, int nbOfPlayers, float minBetToCall, float currentBigBlind): bettingRoundType(curentBettingRoundType), numberOfRaises(nbOfRaises), numberOfPlayers(nbOfPlayers), minBet(minBetToCall), bigBlind(currentBigBlind) {
 }
 
 int BettingContext::getNumberOfRaises() const {
@@ -25,6 +25,15 @@ bool BettingContext::hasManyPlayers() const {
 BettingRoundType BettingContext::getBettingRoundType() const {
     return bettingRoundType;
 }
+
+float BettingContext::getMinBet() const {
+    return minBet;
+}
+
+float BettingContext::getBigBlind() const {
+    return bigBlind;
+}
+
 
 bool BettingContext::operator==(const BettingContext& other) const {
     return this->numberOfPlayers == other.numberOfPlayers && this->numberOfRaises == other.numberOfRaises;

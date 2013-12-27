@@ -9,11 +9,11 @@ ContextBasedBettingStrategy::ContextBasedBettingStrategy(pokerGame::card::HandSt
 ContextBasedBettingStrategy::~ContextBasedBettingStrategy() {
 }
 
-pokerGame::Decision ContextBasedBettingStrategy::makePreFlopDecision(const std::vector<pokerGame::card::Card> &holeCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
-    return secondaryBettingStrategy->makeDecision(holeCards, std::vector<pokerGame::card::Card>(), minBet, bigBlind, bettingContext, opponents);
+pokerGame::Decision ContextBasedBettingStrategy::makePreFlopDecision(const std::vector<pokerGame::card::Card> &holeCards, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
+    return secondaryBettingStrategy->makeDecision(holeCards, std::vector<pokerGame::card::Card>(), bettingContext, opponents);
 }
 
-pokerGame::Decision ContextBasedBettingStrategy::makePostFlopDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
+pokerGame::Decision ContextBasedBettingStrategy::makePostFlopDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
     double handStrength = handStrengthEvaluator->evaluate(holeCards, sharedCards, bettingContext->getNumberOfPlayers());
     int opponentsModeledCount = 0;
     int oppponentsWithBetterEstimatedHandStrength = 0;
@@ -29,9 +29,9 @@ pokerGame::Decision ContextBasedBettingStrategy::makePostFlopDecision(const std:
 
     if ((double) opponentsModeledCount / bettingContext->getNumberOfPlayers() < 0.15) {
         // If not enough context actions, fallback on secondary strategy
-        return secondaryBettingStrategy->makeDecision(holeCards, sharedCards, minBet, bigBlind, bettingContext, opponents);
+        return secondaryBettingStrategy->makeDecision(holeCards, sharedCards, bettingContext, opponents);
     } else {
-        return decideBet(minBet, bigBlind, oppponentsWithBetterEstimatedHandStrength, opponentsModeledCount);
+        return decideBet(bettingContext->getMinBet(), bettingContext->getBigBlind(), oppponentsWithBetterEstimatedHandStrength, opponentsModeledCount);
     }
 }
 

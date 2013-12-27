@@ -40,8 +40,8 @@ void BettingRound::playerTurn(Player* player) {
 }
 
 void BettingRound::play(Player* player) {
-    modeling::BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers());
-    Decision d = player->makeDecision(getCurrentMinimumBid(), gameContext->getBigBlind(), sharedCards, &bettingContext, gameContext->getCurrentOpponentModels(actionContexts));
+    modeling::BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers(), getCurrentMinimumBid(), gameContext->getBigBlind());
+    Decision d = player->makeDecision(sharedCards, &bettingContext, gameContext->getCurrentOpponentModels(actionContexts));
     if (d.choice == pokerGame::RAISE) {
         numberOfRaises++;
     }

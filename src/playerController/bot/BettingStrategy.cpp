@@ -11,11 +11,11 @@ BettingStrategy::~BettingStrategy() {
 
 }
 
-pokerGame::Decision BettingStrategy::makeDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, float minBet, float bigBlind, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
+pokerGame::Decision BettingStrategy::makeDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
     if(sharedCards.empty()) {
-        return makePreFlopDecision(holeCards, minBet, bigBlind, bettingContext, opponents);
+        return makePreFlopDecision(holeCards, bettingContext, opponents);
     } else {
-        return makePostFlopDecision(holeCards, sharedCards, minBet, bigBlind, bettingContext, opponents);
+        return makePostFlopDecision(holeCards, sharedCards, bettingContext, opponents);
     }
 }
 
