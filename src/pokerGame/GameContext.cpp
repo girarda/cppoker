@@ -80,7 +80,7 @@ std::vector<Player*> GameContext::getPlayers() const {
     return players;
 }
 
-Player* GameContext::getCurrentPlayer() {
+Player* GameContext::getCurrentPlayer() const {
     return players[currentPlayerIndex];
 }
 

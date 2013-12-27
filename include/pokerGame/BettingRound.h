@@ -15,7 +15,7 @@ public:
     BettingRound();
 
     virtual void start(GameContext* gameContext, const std::vector<card::Card> &sharedCards, const BettingRoundType &bettingRoundType);
-    virtual float getCurrentMinimumBid() const;
+    virtual float getCurrentMaximumBid() const;
 
     virtual std::map<Player*,modeling::ActionContext> getActionContexts();
 

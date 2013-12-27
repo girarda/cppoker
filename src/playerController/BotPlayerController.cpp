@@ -11,7 +11,7 @@ BotPlayerController::~BotPlayerController() {
     }
 }
 
-pokerGame::Decision BotPlayerController::makeDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
+pokerGame::Decision BotPlayerController::makeDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, const pokerGame::modeling::BettingContext &bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
     return bettingStrategy->makeDecision(holeCards, sharedCards, bettingContext, opponents);
 }
 

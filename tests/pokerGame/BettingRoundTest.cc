@@ -73,7 +73,7 @@ TEST_F(BettingRoundTest, playersDoNotMakeDecisionsIfTheyAreNotPlaying) {
     ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
     EXPECT_CALL(*anotherPlayer, makeDecision(sharedCards, _, _)).Times(0);
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(false));
-    EXPECT_CALL(*aPlayer, makeDecision(sharedCards, bettingContext, _)).Times(0);
+    EXPECT_CALL(*aPlayer, makeDecision(sharedCards, *bettingContext, _)).Times(0);
 
     bettingRound->start(gameContext, sharedCards, A_BETTING_ROUND_TYPE);
 }
@@ -94,7 +94,7 @@ TEST_F(BettingRoundTest, whenAPlayerRaisesTheMinimumBetIsRaisedAndPlayingPlayers
 
     bettingRound->start(gameContext, sharedCards, A_BETTING_ROUND_TYPE);
 
-    float newMinBet = bettingRound->getCurrentMinimumBid();
+    float newMinBet = bettingRound->getCurrentMaximumBid();
     float expectedMinBet = A_BET + BIG_BLIND;
     ASSERT_EQ(expectedMinBet, newMinBet);
 }

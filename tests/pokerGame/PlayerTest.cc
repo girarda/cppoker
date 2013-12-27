@@ -242,9 +242,9 @@ TEST_F(PlayerTest, canGetPlayerMoney) {
 TEST_F(PlayerTest, makingDecisionReturnsCallWhenPlayerCalls) {
     pokerGame::Decision aDecision = {pokerGame::CALL, 0};
     bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, NO_MONEY, BIG_BLIND);
-    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, bettingContext, opponentModels)).Times(1).WillOnce(Return(aDecision));
+    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, *bettingContext, opponentModels)).Times(1).WillOnce(Return(aDecision));
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(*sharedCards, bettingContext, opponentModels);
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(*sharedCards, *bettingContext, opponentModels);
 
     ASSERT_EQ(aDecision.choice, returnedDecision.choice);
     ASSERT_EQ(aDecision.bet, returnedDecision.bet);
@@ -255,9 +255,9 @@ TEST_F(PlayerTest, makingDecisionReturnsCallWhenPlayerCalls) {
 TEST_F(PlayerTest, userIsAllInIfHeDoesNotHaveEnoughMoneyForHisDecision) {
     pokerGame::Decision callDecision = {pokerGame::CALL, TOO_MUCH_MONEY};
     bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, TOO_MUCH_MONEY, BIG_BLIND);
-    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, bettingContext, opponentModels)).Times(1).WillOnce(Return(callDecision));
+    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, *bettingContext, opponentModels)).Times(1).WillOnce(Return(callDecision));
 
-    aPlayer->makeDecision(*sharedCards, bettingContext, opponentModels);
+    aPlayer->makeDecision(*sharedCards, *bettingContext, opponentModels);
 
     ASSERT_TRUE(aPlayer->isAllIn());
 
@@ -268,8 +268,8 @@ TEST_F(PlayerTest, makingDecisionReturnsRaiseWhenPlayerRaisesAndHasEnoughMoney) 
     aPlayer->setMoney(5);
     pokerGame::Decision raiseDecision = {pokerGame::RAISE, 5};
     bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, NO_MONEY, BIG_BLIND);
-    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, bettingContext, opponentModels)).Times(1).WillOnce(Return(raiseDecision));
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(*sharedCards, bettingContext, opponentModels);
+    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, *bettingContext, opponentModels)).Times(1).WillOnce(Return(raiseDecision));
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(*sharedCards, *bettingContext, opponentModels);
 
     ASSERT_EQ(raiseDecision.choice, returnedDecision.choice);
     ASSERT_EQ(raiseDecision.bet, returnedDecision.bet);
@@ -280,9 +280,9 @@ TEST_F(PlayerTest, makingDecisionReturnsRaiseWhenPlayerRaisesAndHasEnoughMoney) 
 TEST_F(PlayerTest, playerFoldsWhenDecisionIsToFold) {
     pokerGame::Decision foldDecision = {pokerGame::FOLD, 0};
     bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, NO_MONEY, BIG_BLIND);
-    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, bettingContext, opponentModels)).Times(1).WillOnce(Return(foldDecision));
+    EXPECT_CALL(*aPlayerController, makeDecision(_, *sharedCards, *bettingContext, opponentModels)).Times(1).WillOnce(Return(foldDecision));
 
-    pokerGame::Decision returnedDecision = aPlayer->makeDecision(*sharedCards, bettingContext, opponentModels);
+    pokerGame::Decision returnedDecision = aPlayer->makeDecision(*sharedCards, *bettingContext, opponentModels);
     bool playerFolded = aPlayer->isFolded();
 
     ASSERT_EQ(foldDecision.choice, returnedDecision.choice);

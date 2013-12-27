@@ -65,7 +65,7 @@ TEST_F(ProbabilisticBettingStrategyTest, whenPreFlopIfHandStrengthIsHigherThanHi
     bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
     EXPECT_CALL(*preFlopStatistics, load(_));
     EXPECT_CALL(*preFlopStatistics, getWinningProbability(_, _)).WillOnce(Return(HIGHER_THAN_HIGH_THRESHOLD));
-    pokerGame::Choice choice = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).choice;
+    pokerGame::Choice choice = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, *bettingContext, opponentModels).choice;
     ASSERT_EQ(pokerGame::RAISE, choice);
 }
 
@@ -74,7 +74,7 @@ TEST_F(ProbabilisticBettingStrategyTest, whenPreFlopIfHandStrengthIsHigherThanHi
     bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
     EXPECT_CALL(*preFlopStatistics, load(_));
     EXPECT_CALL(*preFlopStatistics, getWinningProbability(_, _)).WillOnce(Return(HIGHER_THAN_HIGH_THRESHOLD));
-    float newBet = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).bet;
+    float newBet = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, *bettingContext, opponentModels).bet;
     ASSERT_EQ(A_BET+BIG_BLIND, newBet);
 }
 
@@ -83,7 +83,7 @@ TEST_F(ProbabilisticBettingStrategyTest, whenPreFlopIfHandStrengthIsHigherThanLo
     bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
     EXPECT_CALL(*preFlopStatistics, load(_));
     EXPECT_CALL(*preFlopStatistics, getWinningProbability(_, _)).WillOnce(Return(HIGHER_THAN_LOW_THRESHOLD));
-    pokerGame::Choice choice = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards,bettingContext, opponentModels).choice;
+    pokerGame::Choice choice = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, *bettingContext, opponentModels).choice;
     ASSERT_EQ(pokerGame::CALL, choice);
 }
 
@@ -92,7 +92,7 @@ TEST_F(ProbabilisticBettingStrategyTest, whenPreFlopIfHandStrengthIsHigherThanLo
     bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
     EXPECT_CALL(*preFlopStatistics, load(_));
     EXPECT_CALL(*preFlopStatistics, getWinningProbability(_, _)).WillOnce(Return(HIGHER_THAN_LOW_THRESHOLD));
-    float newBet = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).bet;
+    float newBet = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, *bettingContext, opponentModels).bet;
     ASSERT_EQ(A_BET, newBet);
 }
 
@@ -101,7 +101,7 @@ TEST_F(ProbabilisticBettingStrategyTest, whenPreFlopIfHandStrengthIsLowerThanLow
     bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
     EXPECT_CALL(*preFlopStatistics, load(_));
     EXPECT_CALL(*preFlopStatistics, getWinningProbability(_, _)).WillOnce(Return(LOWER_THAN_LOW_THRESHOLD));
-    pokerGame::Choice choice = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).choice;
+    pokerGame::Choice choice = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, *bettingContext, opponentModels).choice;
     ASSERT_EQ(pokerGame::FOLD, choice);
 }
 
@@ -110,7 +110,7 @@ TEST_F(ProbabilisticBettingStrategyTest, whenPreFlopIfHandStrengthIsLowerThanLow
     bettingContext = new pokerGame::modeling::BettingContext(A_BETTING_ROUND_TYPE, NUMBER_OF_RAISES, NUMBER_OF_PLAYERS, A_BET, BIG_BLIND);
     EXPECT_CALL(*preFlopStatistics, load(_));
     EXPECT_CALL(*preFlopStatistics, getWinningProbability(_, _)).WillOnce(Return(LOWER_THAN_LOW_THRESHOLD));
-    float newBet = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, bettingContext, opponentModels).bet;
+    float newBet = probabilisticBettingStrategy->makeDecision(*hole, *sharedCards, *bettingContext, opponentModels).bet;
     ASSERT_EQ(0, newBet);
 }
 

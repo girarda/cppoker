@@ -66,6 +66,18 @@ TEST_F(BettingContextTest, canGetNumberOfPlayers) {
     ASSERT_EQ(A_HIGH_NUMBER_OF_PLAYERS, numberOfPlayers);
 }
 
+TEST_F(BettingContextTest, canGetMinBet) {
+    pokerGame::modeling::BettingContext bettingContext(A_BETTING_ROUND_TYPE, A_LOW_NUMBER_OF_RAISES, A_HIGH_NUMBER_OF_PLAYERS, MIN_BET, BIG_BLIND);
+    float minBet = bettingContext.getMinBet();
+    ASSERT_EQ(MIN_BET, minBet);
+}
+
+TEST_F(BettingContextTest, canGetBigBlind) {
+    pokerGame::modeling::BettingContext bettingContext(A_BETTING_ROUND_TYPE, A_LOW_NUMBER_OF_RAISES, A_HIGH_NUMBER_OF_PLAYERS, MIN_BET, BIG_BLIND);
+    float bigBlind = bettingContext.getBigBlind();
+    ASSERT_EQ(BIG_BLIND, bigBlind);
+}
+
 TEST_F(BettingContextTest, twoBettingContextsAreEqualsIfEveryMembersAreQeuals) {
     pokerGame::modeling::BettingContext bettingContext(A_BETTING_ROUND_TYPE, A_LOW_NUMBER_OF_RAISES, A_HIGH_NUMBER_OF_PLAYERS, MIN_BET, BIG_BLIND);
     pokerGame::modeling::BettingContext anotherContext(A_BETTING_ROUND_TYPE, A_LOW_NUMBER_OF_RAISES, A_HIGH_NUMBER_OF_PLAYERS, MIN_BET, BIG_BLIND);

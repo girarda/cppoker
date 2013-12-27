@@ -40,8 +40,8 @@ void BettingRound::playerTurn(Player* player) {
 }
 
 void BettingRound::play(Player* player) {
-    modeling::BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers(), getCurrentMinimumBid(), gameContext->getBigBlind());
-    Decision d = player->makeDecision(sharedCards, &bettingContext, gameContext->getCurrentOpponentModels(actionContexts));
+    modeling::BettingContext bettingContext(bettingRoundType, numberOfRaises, gameContext->getNumberOfPlayingPlayers(), getCurrentMaximumBid(), gameContext->getBigBlind());
+    Decision d = player->makeDecision(sharedCards, bettingContext, gameContext->getCurrentOpponentModels(actionContexts));
     if (d.choice == pokerGame::RAISE) {
         numberOfRaises++;
     }
@@ -59,7 +59,7 @@ void BettingRound::announcements(Player* player) {
     player->seeBigBlind(*gameContext->getPlayers()[gameContext->getBigBlindIndex()], gameContext->getBigBlind());
 }
 
-float BettingRound::getCurrentMinimumBid() const {
+float BettingRound::getCurrentMaximumBid() const {
     float maxBid = gameContext->getBigBlind();
     for(Player* p: gameContext->getPlayers()) {
         if (p->getPot() > maxBid) {

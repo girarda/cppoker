@@ -144,12 +144,12 @@ void TelnetPlayer::seeHoleCards(const std::vector<pokerGame::card::Card> &holeCa
     deliver(msg);
 }
 
-pokerGame::Decision TelnetPlayer::makeDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
+pokerGame::Decision TelnetPlayer::makeDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, const pokerGame::modeling::BettingContext &bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
     read_state = RS_WAITING_FOR_PLAY;
     decision.choice = pokerGame::WAITING;
     while (decision.choice == pokerGame::WAITING) {
         std::stringstream ss;
-        ss << "The minimum bet is " << bettingContext->getMinBet() << "." << TELNET_NEWLINE
+        ss << "The minimum bet is " << bettingContext.getMinBet() << "." << TELNET_NEWLINE
            << "To make a choice, enter:\n\"\"RAISE\", \"CALL\", or \"FOLD\"\n";
         deliver(ss.str());
         while (choice == "") {
@@ -165,11 +165,11 @@ pokerGame::Decision TelnetPlayer::makeDecision(const std::vector<pokerGame::card
                 boost::this_thread::sleep(boost::posix_time::milliseconds(100));
                 std::istringstream ss(choice);
                 ss >> newBet;
-            } while (newBet < bettingContext->getMinBet());
+            } while (newBet < bettingContext.getMinBet());
             decision.bet = newBet;
         } else if (choice == "CALL") {
             decision.choice = pokerGame::CALL;
-            decision.bet = bettingContext->getMinBet();
+            decision.bet = bettingContext.getMinBet();
         } else if (choice == "FOLD") {
             decision.choice = pokerGame::FOLD;
             decision.bet = 0;

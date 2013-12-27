@@ -34,7 +34,7 @@ public:
     float getBigBlind() const;
     float getSmallBlind() const;
 
-    Player* getCurrentPlayer();
+    Player* getCurrentPlayer() const;
 
     void setDealerIndex(int index);
     void setBigBlindIndex(int index);

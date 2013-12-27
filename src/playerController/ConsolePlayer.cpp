@@ -7,7 +7,7 @@ namespace playerController {
 ConsolePlayer::ConsolePlayer() {
 }
 
-pokerGame::Decision ConsolePlayer::makeDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, pokerGame::modeling::BettingContext* bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
+pokerGame::Decision ConsolePlayer::makeDecision(const std::vector<pokerGame::card::Card> &holeCards, const std::vector<pokerGame::card::Card> &sharedCards, const pokerGame::modeling::BettingContext &bettingContext, const std::vector<pokerGame::modeling::OpponentModel> &opponents) {
 
     std::string choice;
     pokerGame::Decision decision;
@@ -21,11 +21,11 @@ pokerGame::Decision ConsolePlayer::makeDecision(const std::vector<pokerGame::car
             float newBet;
             do {
                 std::cin >> newBet;
-            } while (std::cin.fail() && newBet < bettingContext->getMinBet());
+            } while (std::cin.fail() && newBet < bettingContext.getMinBet());
             decision.bet = newBet;
         } else if (choice == "CALL") {
             decision.choice = pokerGame::CALL;
-            decision.bet = bettingContext->getMinBet();
+            decision.bet = bettingContext.getMinBet();
         } else if (choice == "FOLD\n") {
             decision.choice = pokerGame::FOLD;
             decision.bet = 0;

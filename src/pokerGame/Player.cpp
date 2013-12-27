@@ -95,9 +95,9 @@ void Player::winMoney(float gainedMoney) {
     money += gainedMoney;
 }
 
-Decision Player::makeDecision(const std::vector<card::Card> &sharedCards, modeling::BettingContext* bettingContext, const std::vector<modeling::OpponentModel> &opponents) {
+Decision Player::makeDecision(const std::vector<card::Card> &sharedCards, const modeling::BettingContext &bettingContext, const std::vector<modeling::OpponentModel> &opponents) {
 
-    float diffToAdd = bettingContext->getMinBet() - pot;;
+    float diffToAdd = bettingContext.getMinBet() - pot;;
     Decision decision = playerController->makeDecision(holeCards, sharedCards, bettingContext, opponents);
     if (decision.choice == FOLD) {
         fold();
@@ -106,7 +106,7 @@ Decision Player::makeDecision(const std::vector<card::Card> &sharedCards, modeli
             addToPot(diffToAdd);
         } else {
             decision.choice = CALL;
-            decision.bet = bettingContext->getMinBet();
+            decision.bet = bettingContext.getMinBet();
             addToPot(money);
         }
     } else {
@@ -115,7 +115,7 @@ Decision Player::makeDecision(const std::vector<card::Card> &sharedCards, modeli
             addToPot(diffToAdd);
         } else {
             decision.choice = CALL;
-            decision.bet = bettingContext->getMinBet();
+            decision.bet = bettingContext.getMinBet();
             addToPot(money);
         }
     }
