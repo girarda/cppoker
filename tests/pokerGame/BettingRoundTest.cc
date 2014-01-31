@@ -99,29 +99,35 @@ TEST_F(BettingRoundTest, whenAPlayerRaisesTheMinimumBetIsRaisedAndPlayingPlayers
     ASSERT_EQ(expectedMinBet, newMinBet);
 }
 
-TEST_F(BettingRoundTest, everyPlayersSeePlayerTurnWhenAnnoucingPlayerTurn) {
-    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(false));
-    ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
-    EXPECT_CALL(*aPlayer, seePlayerTurn(_)).Times(1);
-    EXPECT_CALL(*anotherPlayer, seePlayerTurn(_)).Times(1);
-    bettingRound->start(gameContext, sharedCards, A_BETTING_ROUND_TYPE);
-}
+//TEST_F(BettingRoundTest, everyPlayersSeePlayerTurnWhenAnnoucingPlayerTurn) {
+//    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(false));
+//    ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
+//    EXPECT_CALL(*aPlayer, seePlayerTurn(_)).Times(1);
+//    EXPECT_CALL(*anotherPlayer, seePlayerTurn(_)).Times(1);
+//    bettingRound->start(gameContext, sharedCards, A_BETTING_ROUND_TYPE);
+//}
+
 
 TEST_F(BettingRoundTest, thePlayersSeeWhoTheDealerIsWhenItIsTheirTurn) {
     pokerGame::Decision aDecision = {pokerGame::CALL, 0};
     ON_CALL(*aPlayer, makeDecision(sharedCards, _, _)).WillByDefault(Return(aDecision));
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(false));
-    EXPECT_CALL(*anotherPlayer, isPlaying()).Times(2).WillOnce(Return(false)).WillOnce(Return(false));
+    ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
     EXPECT_CALL(*aPlayer, seeDealer(_));
+    EXPECT_CALL(*anotherPlayer, seeDealer(_));
     bettingRound->start(gameContext, sharedCards, A_BETTING_ROUND_TYPE);
 }
+
 
 TEST_F(BettingRoundTest, announcementsShowsToThePlayerTheBigBlind) {
     pokerGame::Decision aDecision = {pokerGame::CALL, 0};
     ON_CALL(*aPlayer, makeDecision(sharedCards, _, _)).WillByDefault(Return(aDecision));
     ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(false));
-    EXPECT_CALL(*anotherPlayer, isPlaying()).Times(2).WillOnce(Return(false)).WillOnce(Return(false));
+    ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
+
     EXPECT_CALL(*aPlayer, seeBigBlind(_, BIG_BLIND));
+    EXPECT_CALL(*anotherPlayer, seeBigBlind(_, BIG_BLIND));
+
     bettingRound->start(gameContext, sharedCards, A_BETTING_ROUND_TYPE);
 }
 

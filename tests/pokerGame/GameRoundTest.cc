@@ -100,6 +100,7 @@ TEST_F(GameRoundTest, twoCardsAreAddedToEachPlayingPlayersHoleWhenDistributingHo
 
 TEST_F(GameRoundTest, holesAreNotDistributedToPlayersWhoAreNotPlaying) {
     gameRound->initialize(gameContext);
+    ON_CALL(*aPlayer, isPlaying()).WillByDefault(Return(true));
     ON_CALL(*anotherPlayer, isPlaying()).WillByDefault(Return(false));
     ON_CALL(*deck, draw()).WillByDefault(Return(*aCard));
     EXPECT_CALL(*aPlayer, addCardToHole(_)).Times(2);
